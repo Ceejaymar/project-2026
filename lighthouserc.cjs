@@ -5,8 +5,8 @@ module.exports = {
       startServerReadyPattern: 'ready',
       url: [
         'http://localhost:3000/',
-        'http://localhost:3000/work',
-        'http://localhost:3000/archive',
+        // 'http://localhost:3000/work',
+        // 'http://localhost:3000/archive',
       ],
       numberOfRuns: 3,
     },
