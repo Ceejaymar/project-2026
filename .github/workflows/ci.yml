@@ -54,23 +54,5 @@ jobs:
         id: storybook-tests
         run: pnpm test:storybook:ci
 
-      - name: Publish Storybook test results
-        if: always()
-        uses: dorny/test-reporter@v2
-        with:
-          name: Storybook UI tests
-          path: reports/storybook-junit.xml
-          reporter: java-junit
-          fail-on-error: false
-
-      - name: Upload Storybook test report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: storybook-test-report
-          path: reports/
-          if-no-files-found: ignore
-          retention-days: 14
-
       - name: Lighthouse CI
         run: pnpm lhci
