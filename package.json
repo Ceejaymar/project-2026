@@ -17,7 +17,9 @@
     "lhci": "lhci autorun",
     "lhci:local": "pnpm build && pnpm lhci",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:storybook": "vitest --project=storybook",
+    "test:storybook:ci": "mkdir -p reports && vitest --project=storybook --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=reports/storybook-junit.xml"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -32,6 +34,7 @@
     "@lhci/cli": "^0.15.1",
     "@storybook/addon-a11y": "^10.4.6",
     "@storybook/addon-docs": "^10.4.6",
+    "@storybook/addon-vitest": "^10.4.6",
     "@storybook/nextjs-vite": "^10.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -40,6 +43,10 @@
     "lefthook": "^2.1.9",
     "storybook": "^10.4.6",
     "typescript": "^5",
-    "vite": "^8.0.16"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9",
+    "playwright": "^1.61.0",
+    "@vitest/browser-playwright": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.9"
   }
 }
