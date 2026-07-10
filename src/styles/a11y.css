@@ -1,0 +1,47 @@
+@layer a11y {
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --color-border-subtle: var(--color-border-strong);
+    }
+
+    :focus-visible {
+      outline-width: 3px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid CanvasText;
+      outline-offset: 4px;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    button,
+    a {
+      forced-color-adjust: auto;
+    }
+  }
+}
