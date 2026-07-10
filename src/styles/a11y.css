@@ -8,6 +8,11 @@
     outline-offset: 4px;
   }
 
+  /*
+   * !important is intentional here so reduced-motion user preferences
+   * override component-level animations and transitions.
+   */
+  /* biome-ignore-start lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -37,11 +42,6 @@
 
     a {
       text-decoration: underline;
-    }
-
-    button,
-    a {
-      forced-color-adjust: auto;
     }
   }
 }
