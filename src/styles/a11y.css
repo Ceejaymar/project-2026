@@ -1,0 +1,46 @@
+@layer a11y {
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
+      animation-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
+      animation-iteration-count: 1 !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override smooth scrolling. */
+      scroll-behavior: auto !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component transition styles. */
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --color-border: var(--color-border-strong);
+    }
+
+    :focus-visible {
+      outline-width: 3px;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid CanvasText;
+      outline-offset: 4px;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}

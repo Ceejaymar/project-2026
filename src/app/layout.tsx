@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { ThemeProvider } from '@/components/theme/theme-provider';
 
-import './globals.css';
+import '@/styles/layers.css';
+import '@/styles//globals.css';
 import '@/styles/reset.css';
 import '@/styles/tokens.css';
-import '@/styles/themes.css';
 import '@/styles/a11y.css';
+import '@/styles/themes.css';
 import '@/styles/globals.css';
 
 const geistSans = Geist({
@@ -29,8 +31,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+    <html
+      suppressHydrationWarning
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
