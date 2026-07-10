@@ -24,7 +24,7 @@ export default function Button({
   children,
   variant = 'primary',
   href,
-  type,
+  type = 'button',
   onClick,
   className,
 }: ButtonProps) {
