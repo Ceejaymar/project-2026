@@ -13,7 +13,8 @@
         circle at top left,
         color-mix(in srgb, var(--color-accent), transparent 82%),
         transparent 34rem
-      ), var(--color-canvas);
+      ),
+      var(--color-canvas);
     color: var(--color-text-primary);
     font-family: var(--font-body);
     font-size: var(--text-body);
