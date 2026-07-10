@@ -1,5 +1,5 @@
 @layer a11y {
-  :focus {
+  :focus:not(:focus-visible) {
     outline: none;
   }
 
@@ -21,7 +21,7 @@
 
   @media (prefers-contrast: more) {
     :root {
-      --color-border-subtle: var(--color-border-strong);
+      --color-border: var(--color-border-strong);
     }
 
     :focus-visible {
