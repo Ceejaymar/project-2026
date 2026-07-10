@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 
+import '@/styles/layers.css';
 import '@/styles//globals.css';
 import '@/styles/reset.css';
 import '@/styles/tokens.css';

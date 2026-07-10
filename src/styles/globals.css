@@ -11,18 +11,18 @@
     background:
       radial-gradient(
         circle at top left,
-        color-mix(in srgb, var(--color-accent-primary), transparent 82%),
+        color-mix(in srgb, var(--color-accent), transparent 82%),
         transparent 34rem
       ), var(--color-canvas);
     color: var(--color-text-primary);
     font-family: var(--font-body);
-    font-size: var(--text-base);
+    font-size: var(--text-body);
     line-height: var(--leading-body);
     isolation: isolate;
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-accent-primary), transparent 72%);
+    background: color-mix(in srgb, var(--color-accent), transparent 72%);
     color: var(--color-text-primary);
   }
 
