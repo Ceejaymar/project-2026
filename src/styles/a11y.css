@@ -8,18 +8,17 @@
     outline-offset: 4px;
   }
 
-  /*
-   * !important is intentional here so reduced-motion user preferences
-   * override component-level animations and transitions.
-   */
-  /* biome-ignore-start lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
       animation-duration: 0.01ms !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component animation styles. */
       animation-iteration-count: 1 !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override smooth scrolling. */
       scroll-behavior: auto !important;
+      /* biome-ignore lint/complexity/noImportantStyles: Reduced-motion preferences should override component transition styles. */
       transition-duration: 0.01ms !important;
     }
   }
