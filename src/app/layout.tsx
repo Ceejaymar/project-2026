@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 
 import '@/styles/layers.css';
-import '@/styles//globals.css';
 import '@/styles/reset.css';
 import '@/styles/tokens.css';
 import '@/styles/a11y.css';
@@ -11,6 +10,8 @@ import '@/styles/globals.css';
 import { NoiseFilter } from '@/components/effects/noise-filter';
 import { geistMono, geistSans } from '@/styles/fonts';
 import SkipLink from '../components/a11y/skip-link';
+
+import SiteNavigation from '../components/site/site-nav';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -32,6 +33,7 @@ export default function RootLayout({
         <ThemeProvider>
           <NoiseFilter />
           <SkipLink />
+          <SiteNavigation />
           {children}
         </ThemeProvider>
       </body>

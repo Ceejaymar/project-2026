@@ -1,0 +1,209 @@
+@layer components {
+  .header {
+    position: relative;
+    z-index: var(--z-header);
+    padding: var(--space-4) var(--container-padding);
+  }
+
+  .shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+
+    width: min(100%, var(--container-wide));
+    margin-inline: auto;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-surface), transparent 12%);
+    color: var(--color-text-primary);
+
+    font-family: var(--font-display);
+    font-size: var(--text-label);
+    font-weight: 650;
+    letter-spacing: var(--tracking-label);
+    text-decoration: none;
+
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      background var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .brand:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .desktopNav {
+    display: none;
+    margin-left: auto;
+  }
+
+  .navList {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobileNavList {
+    display: grid;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navLink {
+    border-radius: var(--radius-full);
+    padding: var(--space-2) var(--space-3);
+
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    text-decoration: none;
+
+    transition:
+      background var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out);
+  }
+
+  .navLink:hover {
+    background: color-mix(in srgb, var(--color-accent), transparent 88%);
+    color: var(--color-text-primary);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .menuButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: color-mix(in srgb, var(--color-surface), transparent 12%);
+    color: var(--color-text-primary);
+
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      background var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .menuButton:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .menuIcon {
+    display: grid;
+    gap: 0.25rem;
+    width: 1rem;
+  }
+
+  .menuIcon span {
+    display: block;
+    height: 1px;
+    background: currentColor;
+
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .menuButton[aria-expanded="true"] .menuIcon span:first-child {
+    transform: translateY(0.15625rem) rotate(45deg);
+  }
+
+  .menuButton[aria-expanded="true"] .menuIcon span:last-child {
+    transform: translateY(-0.15625rem) rotate(-45deg);
+  }
+
+  .mobileNav {
+    display: grid;
+    gap: var(--space-2);
+
+    width: min(100%, var(--container-wide));
+    max-height: 0;
+    margin-inline: auto;
+    overflow: hidden;
+    padding-inline: var(--space-2);
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.5rem);
+    visibility: hidden;
+
+    transition:
+      max-height var(--duration-slow) var(--ease-out),
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      visibility var(--duration-base) var(--ease-out),
+      padding-block var(--duration-base) var(--ease-out);
+  }
+
+  .mobileNav[data-open="true"] {
+    max-height: 20rem;
+    padding-block: var(--space-4);
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  .mobileNavLink {
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+
+    background: color-mix(in srgb, var(--color-surface), transparent 10%);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .mobileNavLink:hover {
+    background: color-mix(in srgb, var(--color-accent), transparent 88%);
+  }
+
+  @media (min-width: 48rem) {
+    .desktopNav {
+      display: flex;
+    }
+
+    .menuButton,
+    .mobileNav {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand,
+    .navLink,
+    .menuButton,
+    .menuIcon span,
+    .mobileNav {
+      transition: none;
+    }
+
+    .brand:hover,
+    .menuButton:hover {
+      transform: none;
+    }
+  }
+}

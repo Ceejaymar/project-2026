@@ -17,7 +17,7 @@ export default function ExternalLink({ href, className, children, ...props }: Ex
       {...props}
     >
       <span>{children}</span>
-      <span className={styles.screenReaderOnly}> (opens in a new tab)</span>
+      <span className="visually-hidden"> (opens in a new tab)</span>
     </a>
   );
 }
