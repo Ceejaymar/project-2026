@@ -3,7 +3,7 @@
 import usePrefersReducedMotion from '@/hooks/usePrefersReduceMotion';
 
 export function NoiseFilter() {
-  const prefersReduceMotion = usePrefersReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
     <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
@@ -23,7 +23,7 @@ export function NoiseFilter() {
             seed="10"
             result="noise"
           >
-            {!prefersReduceMotion && (
+            {!prefersReducedMotion && (
               <animate
                 attributeName="seed"
                 values="1;2;3;4;5;6;7;8"
@@ -36,12 +36,7 @@ export function NoiseFilter() {
           <feColorMatrix
             in="noise"
             type="matrix"
-            values="
-              1 0 0 0 0
-              0 1 0 0 0
-              0 0 1 0 0
-              0 0 0 0.4 0
-            "
+            values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.4 0"
             result="soft-noise"
           />
 
