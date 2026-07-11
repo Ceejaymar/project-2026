@@ -16,7 +16,7 @@ type Story = StoryObj<typeof ExternalLink>;
 
 export const Default: Story = {
   args: {
-    href: 'https://github',
+    href: 'https://github.com',
     children: 'View code',
   },
 };

@@ -7,11 +7,17 @@ type ExternalLink = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   className?: string;
 };
 
-export default function ExternalLink({ href, className, children }: ExternalLink) {
+export default function ExternalLink({ href, className, children, ...props }: ExternalLink) {
   return (
-    <a className={clsx(styles.link, className)} href={href} target="_blank" rel="noreferrer">
+    <a
+      className={clsx(styles.link, className)}
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      {...props}
+    >
       <span>{children}</span>
-      <span className={styles.screenReaderOnly}>opens in a new tab</span>
+      <span className={styles.screenReaderOnly}> (opens in a new tab)</span>
     </a>
   );
 }
