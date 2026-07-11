@@ -1,0 +1,29 @@
+@layer components {
+  .link {
+    color: var(--color-text-primary);
+    text-decoration-color: color-mix(in srgb, var(--color-accent), transparent 45%);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+    transition:
+      color var(--duration-base) var(--ease-out),
+      text-decoration-color var(--duration-base) var(--ease-out);
+  }
+
+  .link:hover {
+    color: var(--color-accent);
+    text-decoration-color: currentColor;
+  }
+
+  .screenReaderOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+  }
+}

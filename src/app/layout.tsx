@@ -10,6 +10,7 @@ import '@/styles/themes.css';
 import '@/styles/globals.css';
 import { NoiseFilter } from '@/components/effects/noise-filter';
 import { geistMono, geistSans } from '@/styles/fonts';
+import SkipLink from '../components/a11y/skip-link';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <NoiseFilter />
+          <SkipLink />
           {children}
         </ThemeProvider>
       </body>
