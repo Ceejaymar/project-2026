@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ThemeToggle from '../theme/theme-toggle';
 import styles from './site-nav.module.css';
@@ -14,6 +14,7 @@ const navItems = [
 ];
 
 export default function SiteNavigation() {
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function SiteNavigation() {
     function handleDocumentKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
         setIsMenuOpen(false);
+        menuButtonRef.current?.focus();
       }
     }
     document.addEventListener('keydown', handleDocumentKeyDown);
@@ -62,6 +64,7 @@ export default function SiteNavigation() {
           <ThemeToggle />
 
           <button
+            ref={menuButtonRef}
             aria-controls="mobile-navigation"
             aria-expanded={isMenuOpen}
             className={styles.menuButton}

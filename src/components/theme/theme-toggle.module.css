@@ -23,7 +23,7 @@
       transform var(--duration-base) var(--ease-out);
   }
 
-  .toggle:hover {
+  .toggle:not(:disabled):hover {
     border-color: var(--color-accent);
     transform: translateY(-1px);
   }
@@ -33,7 +33,7 @@
       transition: none;
     }
 
-    .toggle:hover {
+    .toggle:not(:disabled):hover {
       transform: none;
     }
   }
