@@ -1,7 +1,7 @@
 import Button from '@/components/primitives/button/button';
 import ExternalLink from '@/components/primitives/externalLink/external-link';
-
 import styles from './hero.module.css';
+import Marquee from './marquee/marquee';
 
 export default function Hero() {
   return (
@@ -21,6 +21,9 @@ export default function Hero() {
         </div>
       </div>
       <div className={styles.visual}>{/* image goes here */}</div>
+      <div className={styles.marqueeWrapper}>
+        <Marquee />
+      </div>
     </section>
   );
 }

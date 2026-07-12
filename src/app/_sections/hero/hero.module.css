@@ -9,7 +9,7 @@
 
   .content {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-6);
     max-width: 44rem;
   }
 
@@ -60,5 +60,11 @@
         ),
         var(--color-surface);
     }
+  }
+
+  .marqueeWrapper {
+    grid-column: 1 / -1;
+    width: 100%;
+    align-self: end;
   }
 }
