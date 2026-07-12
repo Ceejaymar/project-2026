@@ -8,7 +8,7 @@ import '@/styles/a11y.css';
 import '@/styles/themes.css';
 import '@/styles/globals.css';
 import { NoiseFilter } from '@/components/effects/noise-filter';
-import { geistMono, geistSans } from '@/styles/fonts';
+import { geistMono, geistSans, instrumentSerif } from '@/styles/fonts';
 import SkipLink from '../components/a11y/skip-link';
 
 import SiteNavigation from '../components/site/site-nav';
@@ -27,7 +27,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
         <ThemeProvider>
