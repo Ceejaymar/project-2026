@@ -54,6 +54,7 @@
     }
 
     .visual {
+      display: block;
       min-height: 28rem;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
