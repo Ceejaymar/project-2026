@@ -1,45 +1,49 @@
+'use client';
+
+import { useState } from 'react';
+
 import styles from './marquee.module.css';
 
 const technologies = [
   {
     name: 'React',
-    icon: 'devicon-react-original colored',
+    icon: 'devicon-react-original ',
   },
   {
     name: 'React Native',
-    icon: 'devicon-reactnative-original colored',
+    icon: 'devicon-reactnative-original ',
   },
   {
     name: 'TypeScript',
-    icon: 'devicon-typescript-plain colored',
+    icon: 'devicon-typescript-plain ',
   },
   {
     name: 'JavaScript',
-    icon: 'devicon-javascript-plain colored',
+    icon: 'devicon-javascript-plain ',
   },
   {
     name: 'Node.js',
-    icon: 'devicon-nodejs-plain colored',
+    icon: 'devicon-nodejs-plain ',
   },
   {
     name: 'Next.js',
-    icon: 'devicon-nextjs-plain colored',
+    icon: 'devicon-nextjs-plain ',
   },
   {
     name: 'Tailwind CSS',
-    icon: 'devicon-tailwindcss-original colored',
+    icon: 'devicon-tailwindcss-original ',
   },
   {
     name: 'Styled-components',
-    icon: 'devicon-styledcomponents-plain colored',
+    icon: 'devicon-styledcomponents-plain ',
   },
   {
     name: 'Storybook',
-    icon: 'devicon-storybook-plain colored',
+    icon: 'devicon-storybook-plain ',
   },
   {
     name: 'GitHub Actions',
-    icon: 'devicon-githubactions-plain colored',
+    icon: 'devicon-githubactions-plain ',
   },
 ];
 
@@ -61,11 +65,25 @@ function MarqueeGroup({ duplicate = false }: MarqueeGroup) {
 }
 
 export default function Marquee() {
+  const [isPaused, setIsPaused] = useState(false);
+
   return (
     <div className={styles.marquee}>
-      <div className={styles.track}>
-        <MarqueeGroup />
-        <MarqueeGroup duplicate />
+      <button
+        type="button"
+        className={styles.pauseButton}
+        aria-pressed={isPaused}
+        aria-label={isPaused ? 'Resume marquee animation' : 'Pause marquee animation'}
+        onClick={() => setIsPaused((current) => !current)}
+      >
+        {isPaused ? 'Resume' : 'Pause'}
+      </button>
+
+      <div className={styles.viewport}>
+        <div className={styles.track} data-paused={isPaused ? 'true' : 'false'}>
+          <MarqueeGroup />
+          <MarqueeGroup duplicate />
+        </div>
       </div>
     </div>
   );
