@@ -1,12 +1,11 @@
+import Hero from './_sections/hero/hero';
 import styles from './page.module.css';
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main id="main-content" tabIndex={-1} className={styles.main}>
-        <section id="home" className={styles.section}>
-          <p>Home section</p>
-        </section>
+        <Hero />
 
         <section id="craft" className={styles.section}>
           <p>Craft section</p>

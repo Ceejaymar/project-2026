@@ -8,7 +8,7 @@ import '@/styles/a11y.css';
 import '@/styles/themes.css';
 import '@/styles/globals.css';
 import { NoiseFilter } from '@/components/effects/noise-filter';
-import { geistMono, geistSans } from '@/styles/fonts';
+import { geistMono, geistSans, instrumentSerif } from '@/styles/fonts';
 import SkipLink from '../components/a11y/skip-link';
 
 import SiteNavigation from '../components/site/site-nav';
@@ -27,8 +27,14 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css"
+        />
+      </head>
       <body>
         <ThemeProvider>
           <NoiseFilter />
