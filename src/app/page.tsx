@@ -1,5 +1,6 @@
 import CraftSection from './_sections/craft/craft-section';
 import Hero from './_sections/hero/hero';
+import Projects from './_sections/projects/projects-section';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -10,9 +11,7 @@ export default function Home() {
 
         <CraftSection />
 
-        <section id="projects" className={styles.section}>
-          <p>Projects section</p>
-        </section>
+        <Projects />
 
         <section id="about" className={styles.section}>
           <p>About section</p>
