@@ -178,6 +178,13 @@
     }
   }
 
+  @media (hover: none) {
+    .cardDetails {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .card,
     .cardDetails {
