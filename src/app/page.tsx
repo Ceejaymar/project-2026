@@ -1,3 +1,4 @@
+import CraftSection from './_sections/craft/craft-section';
 import Hero from './_sections/hero/hero';
 import styles from './page.module.css';
 
@@ -7,9 +8,7 @@ export default function Home() {
       <main id="main-content" tabIndex={-1} className={styles.main}>
         <Hero />
 
-        <section id="craft" className={styles.section}>
-          <p>Craft section</p>
-        </section>
+        <CraftSection />
 
         <section id="projects" className={styles.section}>
           <p>Projects section</p>
