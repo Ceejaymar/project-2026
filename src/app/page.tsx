@@ -1,4 +1,5 @@
 import About from './_sections/about/about-section';
+import Contact from './_sections/contact/contact-section';
 import CraftSection from './_sections/craft/craft-section';
 import Hero from './_sections/hero/hero';
 import Projects from './_sections/projects/projects-section';
@@ -16,9 +17,7 @@ export default function Home() {
 
         <About />
 
-        <section id="contact" className={styles.section}>
-          <p>Contact section</p>
-        </section>
+        <Contact />
       </main>
     </div>
   );

@@ -7,7 +7,6 @@ export default function Hero() {
   return (
     <section id="home" className={styles.hero}>
       <div className={styles.content}>
-        <p className={styles.eyebrow}>Design-minded builder</p>
         <h1 className={styles.title}>
           Frontend engineer focused on craft, usability, and thoughtful interactions.
         </h1>

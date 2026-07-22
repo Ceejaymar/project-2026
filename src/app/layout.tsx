@@ -8,9 +8,9 @@ import '@/styles/a11y.css';
 import '@/styles/themes.css';
 import '@/styles/globals.css';
 import { NoiseFilter } from '@/components/effects/noise-filter';
+import SiteFooter from '@/components/site/site-footer';
 import { geistMono, geistSans, instrumentSerif } from '@/styles/fonts';
 import SkipLink from '../components/a11y/skip-link';
-
 import SiteNavigation from '../components/site/site-nav';
 
 export const metadata: Metadata = {
@@ -41,6 +41,7 @@ export default function RootLayout({
           <SkipLink />
           <SiteNavigation />
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
     </html>
