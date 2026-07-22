@@ -1,6 +1,6 @@
 import ExternalLink from '@/components/primitives/externalLink/external-link';
 
-import { aboutMeta, experienceItems, socialLinks } from './about-content';
+import { experienceItems, socialLinks } from './about-content';
 import styles from './about-section.module.css';
 
 export default function About() {
