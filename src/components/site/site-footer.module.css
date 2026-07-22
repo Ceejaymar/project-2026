@@ -1,0 +1,77 @@
+@layer components {
+  .footer {
+    border-top: 1px solid var(--color-border);
+    padding-block: var(--space-6);
+  }
+
+  .inner {
+    display: grid;
+    gap: var(--space-5);
+    width: min(100% - (var(--container-padding) * 2), var(--container-page));
+    margin-inline: auto;
+  }
+
+  .copy {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .signature {
+    color: var(--color-text-primary);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .meta,
+  .copyright {
+    color: var(--color-text-muted);
+    font-size: var(--text-label);
+    line-height: var(--leading-body);
+  }
+
+  .nav {
+    min-width: 0;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .links a {
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    text-decoration-color: transparent;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+  }
+
+  .links a:hover {
+    color: var(--color-text-primary);
+    text-decoration-color: color-mix(in srgb, var(--color-accent), transparent 30%);
+  }
+
+  @media (min-width: 48rem) {
+    .inner {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      align-items: end;
+      gap: var(--space-6);
+    }
+
+    .links {
+      justify-content: flex-end;
+    }
+
+    .copyright {
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+}
