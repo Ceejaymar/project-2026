@@ -4,28 +4,34 @@ import { useState } from 'react';
 
 import styles from './contact-section.module.css';
 
-type CopyEmailButton = {
+type CopyEmailButtonProps = {
   email: string;
 };
 
-export default function CopyEmailButton({ email }: CopyEmailButton) {
+export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   async function copyEmail() {
+    let didCopy = false;
+
     try {
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(email);
+        didCopy = true;
       } else {
-        fallbackCopy(email);
+        didCopy = fallbackCopy(email);
       }
-
-      setCopyStatus('copied');
-      window.setTimeout(() => setCopyStatus('idle'), 1800);
     } catch {
-      fallbackCopy(email);
+      didCopy = fallbackCopy(email);
+    }
+
+    if (didCopy) {
       setCopyStatus('copied');
       window.setTimeout(() => setCopyStatus('idle'), 1800);
+      return;
     }
+
+    setCopyStatus('failed');
   }
 
   return (
@@ -45,7 +51,7 @@ export default function CopyEmailButton({ email }: CopyEmailButton) {
 
       <p className={styles.copyStatus} aria-live="polite">
         {copyStatus === 'copied' ? 'Copied email to clipboard.' : null}
-        {copyStatus === 'failed' ? 'Could not copy email.' : null}
+        {copyStatus === 'failed' ? 'Could not copy email. You can select it manually.' : null}
       </p>
     </div>
   );
@@ -61,8 +67,15 @@ function fallbackCopy(value: string) {
   textarea.style.left = '0';
   textarea.style.opacity = '0';
 
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  document.body.removeChild(textarea);
+  try {
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+
+    return document.execCommand('copy');
+  } catch {
+    return false;
+  } finally {
+    textarea.remove();
+  }
 }

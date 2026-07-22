@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import SiteFooter from './site-nav';
+import SiteFooter from './site-footer';
 
 const meta: Meta<typeof SiteFooter> = {
   title: 'Site/SiteFooter',

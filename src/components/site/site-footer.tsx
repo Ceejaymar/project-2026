@@ -18,7 +18,7 @@ export default function SiteFooter() {
       <div className={styles.inner}>
         <div className={styles.copy}>
           <p className={styles.signature}>Designed and built by Carlos.</p>
-          <p className={styles.meta}>Thank you for for your time.</p>
+          <p className={styles.meta}>Thank you for your time.</p>
         </div>
 
         <nav className={styles.nav} aria-label="Footer navigation">
