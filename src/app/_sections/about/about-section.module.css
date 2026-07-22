@@ -1,0 +1,164 @@
+@layer components {
+  .section {
+    padding-block: var(--space-9);
+  }
+
+  .header {
+    display: grid;
+    gap: var(--space-3);
+    align-items: end;
+    margin-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-title);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-title);
+  }
+
+  .kicker,
+  .socialsLabel,
+  .experienceTitle,
+  .period {
+    color: var(--color-text-muted);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--space-9);
+  }
+
+  .bio {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 44rem;
+  }
+
+  .portrait {
+    width: min(8rem, 40vw);
+    aspect-ratio: 3 / 4;
+    margin-bottom: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+    background:
+      radial-gradient(
+        circle at 35% 25%,
+        color-mix(in srgb, var(--color-accent), transparent 72%),
+        transparent 55%
+      ),
+      var(--color-surface);
+  }
+
+  .copy {
+    max-width: 48rem;
+  }
+
+  .copy p + p {
+    margin-top: var(--space-4);
+  }
+
+  .copy p {
+    color: var(--color-text-secondary);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: var(--leading-body);
+  }
+
+  .socials {
+    display: grid;
+    gap: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+  }
+
+  .socialLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .experience {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+
+  .experienceList {
+    display: grid;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .experienceItem {
+    display: grid;
+    gap: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+  }
+
+  .company {
+    color: var(--color-text-primary);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-title);
+  }
+
+  .role {
+    margin-top: var(--space-1);
+    color: var(--color-text-secondary);
+    font-size: var(--text-label);
+    line-height: var(--leading-body);
+  }
+
+  @media (min-width: 40rem) {
+    .portrait {
+      float: left;
+      width: 9rem;
+      margin: 0 var(--space-4) var(--space-3) 0;
+      shape-outside: inset(0 round var(--radius-sm));
+    }
+
+    .copy::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .header {
+      grid-template-columns: auto 1fr;
+      gap: var(--space-4);
+    }
+
+    .kicker {
+      padding-bottom: 0.35rem;
+    }
+
+    .experienceItem {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+
+    .period {
+      text-align: right;
+      white-space: nowrap;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+      align-items: start;
+    }
+
+    .bio {
+      max-width: none;
+    }
+  }
+}
