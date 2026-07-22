@@ -1,3 +1,4 @@
+import About from './_sections/about/about-section';
 import CraftSection from './_sections/craft/craft-section';
 import Hero from './_sections/hero/hero';
 import Projects from './_sections/projects/projects-section';
@@ -13,9 +14,7 @@ export default function Home() {
 
         <Projects />
 
-        <section id="about" className={styles.section}>
-          <p>About section</p>
-        </section>
+        <About />
 
         <section id="contact" className={styles.section}>
           <p>Contact section</p>
