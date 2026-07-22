@@ -97,11 +97,18 @@
     display: grid;
     gap: var(--space-3);
 
-    opacity: 0;
-    transform: translateY(0.75rem);
+    opacity: 1;
+    transform: none;
     transition:
       opacity var(--duration-base) var(--ease-out),
       transform var(--duration-base) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .projectDetails {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
   }
 
   .projectDescription {
