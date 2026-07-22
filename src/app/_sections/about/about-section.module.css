@@ -57,14 +57,14 @@
     max-width: 48rem;
   }
 
-  .copy p + p {
-    margin-top: var(--space-4);
-  }
-
   .copy p {
     color: var(--color-text-secondary);
     font-size: clamp(1rem, 1.6vw, 1.2rem);
     line-height: var(--leading-body);
+  }
+
+  .copy p + p {
+    margin-top: var(--space-4);
   }
 
   .socials {

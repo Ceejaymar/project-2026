@@ -26,22 +26,22 @@ export const socialLinks = [
 export const experienceItems = [
   {
     company: 'Yubico',
-    title: 'Frontend SOftware Engineer II',
-    period: '2022–2025',
+    title: 'Frontend Software Engineer II',
+    period: '2022—2025',
   },
   {
     company: 'One Drop',
     title: 'Software Engineer, Web',
-    period: '2020-2022',
+    period: '2020—2022',
   },
   {
     company: 'Pursuit',
     title: 'Web Assistant Instructor',
-    period: '2018-2020',
+    period: '2018—2020',
   },
   {
     company: 'Microsoft',
     title: 'Software Engineer Intern',
-    period: '2017-2018',
+    period: '2017—2018',
   },
 ];
