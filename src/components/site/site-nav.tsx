@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutGroup, motion, useReducedMotion } from 'motion/react';
+import { LayoutGroup, motion, type Transition, useReducedMotion } from 'motion/react';
 import { type FocusEvent, useEffect, useRef, useState } from 'react';
 
 import ThemeToggle from '../theme/theme-toggle';
@@ -21,7 +21,7 @@ export default function SiteNavigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeNavHref, setActiveNavHref] = useState<string | null>(null);
 
-  const underlineTransition = prefersReducedMotion
+  const underlineTransition: Transition = prefersReducedMotion
     ? { duration: 0 }
     : {
         type: 'spring',
