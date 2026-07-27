@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { LayoutGroup, motion, type Transition, useReducedMotion } from 'motion/react';
+import { type FocusEvent, useEffect, useRef, useState } from 'react';
 
 import ThemeToggle from '../theme/theme-toggle';
 import styles from './site-nav.module.css';
@@ -15,7 +16,19 @@ const navItems = [
 
 export default function SiteNavigation() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeNavHref, setActiveNavHref] = useState<string | null>(null);
+
+  const underlineTransition: Transition = prefersReducedMotion
+    ? { duration: 0 }
+    : {
+        type: 'spring',
+        stiffness: 500,
+        damping: 36,
+        mass: 0.6,
+      };
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -39,6 +52,16 @@ export default function SiteNavigation() {
     setIsMenuOpen(false);
   }
 
+  function handleNavBlur(event: FocusEvent<HTMLUListElement>) {
+    const nextTarget = event.relatedTarget;
+
+    if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) {
+      return;
+    }
+
+    setActiveNavHref(null);
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.shell}>
@@ -47,17 +70,41 @@ export default function SiteNavigation() {
           <span className="visually-hidden">Carlos homepage</span>
         </a>
         <nav className={styles.desktopNav} aria-label="Primary navigation">
-          <ul className={styles.navList}>
-            {navItems.map((item) => {
-              return (
-                <li key={item.href}>
-                  <a className={styles.navLink} href={item.href}>
-                    {item.label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <LayoutGroup id="primary-navigation">
+            <ul
+              className={styles.navList}
+              onBlur={handleNavBlur}
+              onMouseLeave={() => setActiveNavHref(null)}
+            >
+              {navItems.map((item) => {
+                const isActive = activeNavHref === item.href;
+
+                return (
+                  <li
+                    className={styles.navItem}
+                    key={item.href}
+                    onMouseEnter={() => setActiveNavHref(item.href)}
+                  >
+                    <a
+                      className={styles.navLink}
+                      href={item.href}
+                      onFocus={() => setActiveNavHref(item.href)}
+                    >
+                      {item.label}
+
+                      {isActive ? (
+                        <motion.span
+                          className={styles.navUnderline}
+                          layoutId="primary-navigation-underline"
+                          transition={underlineTransition}
+                        />
+                      ) : null}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </LayoutGroup>
         </nav>
 
         <div className={styles.actions}>
