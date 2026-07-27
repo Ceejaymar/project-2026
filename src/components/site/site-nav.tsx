@@ -58,6 +58,8 @@ export default function SiteNavigation() {
     if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) {
       return;
     }
+
+    setActiveNavHref(null);
   }
 
   return (
