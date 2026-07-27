@@ -8,15 +8,24 @@ export default function Hero() {
     <section id="home" className={styles.hero}>
       <div className={styles.content}>
         <h1 className={styles.title}>
-          Frontend engineer focused on craft, usability, and thoughtful interactions.
+          Builder focused on craft, usability, and thoughtful interactions.
         </h1>
         <p className={styles.lead}>
           I care about the details that make interfaces feel clear, useful, and thoughtfully
           crafted, from interaction states and motion to accessible UI systems.
         </p>
         <div className={styles.actions}>
-          <Button href="#projects">View Work</Button>
-          <ExternalLink href="/resume.pdf">View my resume</ExternalLink>
+          <Button className={styles.primaryAction} href="#projects">
+            View Work
+          </Button>
+          <ExternalLink
+            className={styles.resumeLink}
+            href="/resume.pdf"
+            variant="interactive"
+            showArrow
+          >
+            View my resume
+          </ExternalLink>
         </div>
       </div>
       <div className={styles.visual}>{/* image goes here */}</div>

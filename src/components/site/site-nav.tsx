@@ -7,7 +7,7 @@ import ThemeToggle from '../theme/theme-toggle';
 import styles from './site-nav.module.css';
 
 const navItems = [
-  { label: 'Home', href: '#home' },
+  // { label: 'Home', href: '#home' },
   { label: 'Craft', href: '#craft' },
   { label: 'Projects', href: '#projects' },
   { label: 'About', href: '#about' },

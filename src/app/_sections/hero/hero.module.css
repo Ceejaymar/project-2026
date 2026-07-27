@@ -26,8 +26,18 @@
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
+    gap: var(--space-4);
     align-items: center;
+  }
+
+  .primaryAction {
+    --button-padding: var(--space-4) var(--space-6);
+    --button-font-size: clamp(1rem, 1.4vw, 1.125rem);
+  }
+
+  .resumeLink {
+    --external-link-font-size: clamp(1rem, 1.4vw, 1.125rem);
+    --external-link-line-height: var(--leading-label);
   }
 
   .visual {

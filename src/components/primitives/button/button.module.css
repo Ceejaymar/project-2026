@@ -1,5 +1,8 @@
 @layer components {
   .button {
+    --button-border: color-mix(in srgb, var(--color-text-primary), transparent 42%);
+    --button-hover-text: #fff;
+
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -9,18 +12,20 @@
     justify-content: center;
 
     width: fit-content;
-    border: 1px solid var(--color-border);
+    border: 0;
     border-radius: var(--radius-full);
-    padding: var(--space-3) var(--space-5);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--button-border);
+    padding: var(--button-padding, var(--space-3) var(--space-5));
 
     color: var(--color-text-primary);
-    font-size: var(--text-body);
-    line-height: 1;
+    font-size: var(--button-font-size, var(--text-body));
+    line-height: var(--button-line-height, 1);
     text-decoration: none;
 
     transition:
+      color var(--duration-base) var(--ease-out),
       transform var(--duration-base) var(--ease-out),
-      border-color var(--duration-base) var(--ease-out),
       box-shadow var(--duration-base) var(--ease-out);
   }
 
@@ -29,37 +34,48 @@
     z-index: 1;
   }
 
-  .button[data-variant="primary"] {
-    border-color: var(--color-accent);
-  }
-
   .button[data-variant="secondary"] {
-    border-color: var(--color-border);
+    --button-border: var(--color-border);
   }
 
   .button::before {
     content: "";
-
     position: absolute;
     inset: 0;
     z-index: -1;
 
     border-radius: inherit;
-    background: var(--color-accent);
-    opacity: 0;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-accent), white 20%) 0%,
+      var(--color-accent) 48%,
+      color-mix(in srgb, var(--color-accent), black 20%) 100%
+    );
 
+    opacity: 0;
     transition: opacity var(--duration-base) var(--ease-out);
   }
 
   .button:hover,
   .button:focus-visible {
-    border-color: var(--color-accent);
+    color: var(--button-hover-text);
+    box-shadow: inset 0 0 0 1px transparent;
   }
 
   .button:hover::before,
   .button:focus-visible::before {
     opacity: 1;
     filter: url("#noise-filter");
+  }
+
+  .button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+  /* A scale of 0.97 on the :active pseudo-class with a 150ms transition should do the job. */
+  .button:active {
+    transform: scale(0.97);
+    transition: all 150ms ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {

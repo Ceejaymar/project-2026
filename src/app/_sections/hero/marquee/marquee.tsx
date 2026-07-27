@@ -1,5 +1,6 @@
 'use client';
 
+import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 
 import styles from './marquee.module.css';
@@ -92,7 +93,7 @@ export default function Marquee() {
         aria-label={isPaused ? 'Resume marquee animation' : 'Pause marquee animation'}
         onClick={() => setIsPaused((current) => !current)}
       >
-        {isPaused ? 'Resume' : 'Pause'}
+        {isPaused ? <PlayIcon aria-hidden="true" /> : <PauseIcon aria-hidden="true" />}
       </button>
 
       <div className={styles.viewport}>
