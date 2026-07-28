@@ -100,12 +100,14 @@
     position: absolute;
     inset: var(--portrait-image-inset);
     z-index: 2;
+    isolation: isolate;
   }
 
   .portraitImage img {
     object-fit: contain;
     object-position: center bottom;
-    filter: drop-shadow(0 2rem 2rem color-mix(in srgb, black, transparent 72%));
+    filter: saturate(0.7) contrast(1.02) brightness(0.98)
+      drop-shadow(0 2rem 2rem color-mix(in srgb, black, transparent 78%));
   }
 
   .mobilePortrait {
