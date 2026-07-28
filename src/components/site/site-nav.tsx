@@ -66,7 +66,7 @@ export default function SiteNavigation() {
     <header className={styles.header}>
       <div className={styles.shell}>
         <a className={styles.brand} href="#home">
-          <span aria-hidden="true">CM</span>
+          <span aria-hidden="true">LOS</span>
           <span className="visually-hidden">Carlos homepage</span>
         </a>
         <nav className={styles.desktopNav} aria-label="Primary navigation">

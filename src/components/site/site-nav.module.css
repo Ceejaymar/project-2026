@@ -19,29 +19,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     min-width: 2.5rem;
     min-height: 2.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: color-mix(in srgb, var(--color-surface), transparent 12%);
+    /* border: 1px solid var(--color-border); */
+    /* border-radius: var(--radius-full); */
+    /* background: color-mix(in srgb, var(--color-surface), transparent 12%); */
     color: var(--color-text-primary);
 
     font-family: var(--font-display);
-    font-size: var(--text-label);
-    font-weight: 650;
+    font-size: var(--text-body);
+    font-weight: 700;
     letter-spacing: var(--tracking-label);
     text-decoration: none;
 
     transition:
       border-color var(--duration-base) var(--ease-out),
-      background var(--duration-base) var(--ease-out),
-      transform var(--duration-base) var(--ease-out);
+      background var(--duration-base) var(--ease-out);
   }
 
   .brand:hover {
     border-color: var(--color-accent);
-    transform: translateY(-1px);
   }
 
   .desktopNav {
