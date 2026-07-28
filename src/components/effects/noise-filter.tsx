@@ -18,7 +18,7 @@ export function NoiseFilter() {
         >
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.6"
+            baseFrequency="0.9"
             numOctaves="3"
             seed="10"
             result="noise"

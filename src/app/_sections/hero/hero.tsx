@@ -1,12 +1,15 @@
 import Button from '@/components/primitives/button/button';
 import ExternalLink from '@/components/primitives/externalLink/external-link';
 import styles from './hero.module.css';
+import HeroPortrait from './hero-portrait';
 import Marquee from './marquee/marquee';
 
 export default function Hero() {
   return (
     <section id="home" className={styles.hero}>
       <div className={styles.content}>
+        <HeroPortrait className={styles.mobilePortrait} />
+
         <h1 className={styles.title}>
           Builder focused on craft, usability, and thoughtful interactions.
         </h1>
@@ -24,11 +27,13 @@ export default function Hero() {
             variant="interactive"
             showArrow
           >
-            View my resume
+            Get my resume
           </ExternalLink>
         </div>
       </div>
-      <div className={styles.visual}>{/* image goes here */}</div>
+      <div className={styles.visual}>
+        <HeroPortrait className={styles.desktopPortrait} />
+      </div>
       <div className={styles.marqueeWrapper}>
         <Marquee />
       </div>

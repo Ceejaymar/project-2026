@@ -44,23 +44,102 @@
     display: none;
   }
 
+  .portrait {
+    --portrait-image-inset: -10% -4% 0;
+    --portrait-image-scale: 1.04;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    width: min(10rem, 58vw);
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-sm);
+  }
+
+  .portrait::before {
+    content: "";
+    position: absolute;
+    inset: 12% -1px -1px -1px;
+    z-index: 0;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background:
+      radial-gradient(
+        circle at 90% 18%,
+        color-mix(in srgb, var(--color-accent), white 18%),
+        transparent 34%
+      ),
+      linear-gradient(
+        215deg,
+        color-mix(in srgb, var(--color-accent), transparent 42%) 0%,
+        color-mix(in srgb, var(--color-surface), transparent 10%) 52%,
+        color-mix(in srgb, var(--color-canvas), transparent 8%) 100%
+      );
+    filter: url("#noise-filter");
+
+    clip-path: inset(0 round var(--radius-sm));
+  }
+
+  .portrait::after {
+    content: "";
+    position: absolute;
+    inset: 12% -1px -1px -1px;
+    z-index: 1;
+
+    border-radius: var(--radius-sm);
+    background:
+      linear-gradient(to bottom, color-mix(in srgb, white, transparent 88%), transparent 42%),
+      linear-gradient(to top, color-mix(in srgb, black, transparent 82%), transparent 38%);
+    pointer-events: none;
+    clip-path: inset(0 round var(--radius-sm));
+  }
+
+  .portraitImage {
+    position: absolute;
+    inset: var(--portrait-image-inset);
+    z-index: 2;
+  }
+
+  .portraitImage img {
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 2rem 2rem color-mix(in srgb, black, transparent 72%));
+  }
+
+  .mobilePortrait {
+    justify-self: center;
+  }
+
+  .desktopPortrait {
+    width: 100%;
+    height: 100%;
+  }
+
   @media (min-width: 56rem) {
     .hero {
       grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
     }
 
+    .mobilePortrait {
+      display: none;
+    }
+
     .visual {
       display: block;
-      min-height: 28rem;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      background:
-        radial-gradient(
-          circle at 30% 20%,
-          color-mix(in srgb, var(--color-accent), transparent 72%),
-          transparent 45%
-        ),
-        var(--color-surface);
+      min-height: 32rem;
+    }
+
+    .desktopPortrait {
+      width: 100%;
+      min-height: 32rem;
+      aspect-ratio: 4 / 4.5;
+      border-radius: var(--radius-sm);
+    }
+
+    .desktopPortrait .portraitImage img {
+      object-position: center bottom;
     }
   }
 
