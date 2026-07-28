@@ -10,13 +10,9 @@ export default function Home() {
     <div className={styles.page}>
       <main id="main-content" tabIndex={-1} className={styles.main}>
         <Hero />
-
-        <CraftSection />
-
+        {/* <CraftSection /> */}
         <Projects />
-
         <About />
-
         <Contact />
       </main>
     </div>
