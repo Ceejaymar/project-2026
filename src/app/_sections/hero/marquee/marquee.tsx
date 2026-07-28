@@ -89,6 +89,7 @@ export default function Marquee() {
       <button
         type="button"
         className={styles.pauseButton}
+        data-state={isPaused ? 'paused' : 'playing'}
         aria-pressed={isPaused}
         aria-label={isPaused ? 'Resume marquee animation' : 'Pause marquee animation'}
         onClick={() => setIsPaused((current) => !current)}
