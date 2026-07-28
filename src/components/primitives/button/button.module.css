@@ -75,10 +75,15 @@
   /* A scale of 0.97 on the :active pseudo-class with a 150ms transition should do the job. */
   .button:active {
     transform: scale(0.97);
-    transition: all 150ms ease-out;
+    transition: transform 150ms ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .button:active {
+      transform: none;
+      transition: none;
+    }
+
     .button,
     .button::before {
       transition: none;

@@ -38,7 +38,7 @@
 
   .arrow {
     display: inline-flex;
-    transform: translate(0, 1.2);
+    transform: translate(0, 1.2px);
     transition: transform var(--duration-base) var(--ease-out);
   }
 
