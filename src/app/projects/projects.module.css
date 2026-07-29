@@ -139,11 +139,11 @@
   .cardContent::before {
     content: "";
     position: absolute;
-    inset: calc(var(--space-1) * -1) 0 0;
+    inset: calc(var(--space-1) * 0) 0 0;
     z-index: 0;
 
     border-top: 1px solid color-mix(in srgb, white, transparent 84%);
-    background: color-mix(in srgb, #242424, transparent 35%);
+    background: color-mix(in srgb, #242424, transparent 25%);
     backdrop-filter: blur(20px) saturate(1.08);
     -webkit-backdrop-filter: blur(20px) saturate(1.08);
 
