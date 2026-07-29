@@ -51,8 +51,6 @@ function ProjectCard({ project }: { project: Project }) {
           />
         </div>
 
-        <div className={styles.scrim} aria-hidden="true" />
-
         <div className={styles.cardTop}>
           <span>{project.year}</span>
         </div>
@@ -60,16 +58,19 @@ function ProjectCard({ project }: { project: Project }) {
         <div className={styles.cardContent}>
           <div className={styles.cardHeading}>
             <h2 className={styles.cardTitle}>{project.title}</h2>
-            <p className={styles.description}>{project.shortDescription}</p>
           </div>
 
-          <ul className={styles.techList} aria-label={`Technologies used for ${project.title}`}>
-            {project.tech.map((tech) => (
-              <li key={tech}>{tech}</li>
-            ))}
-          </ul>
+          <div className={styles.cardReveal}>
+            <p className={styles.description}>{project.shortDescription}</p>
 
-          <ProjectLinks links={project.links} />
+            <ul className={styles.techList} aria-label={`Technologies used for ${project.title}`}>
+              {project.tech.map((tech) => (
+                <li key={tech}>{tech}</li>
+              ))}
+            </ul>
+
+            <ProjectLinks links={project.links} />
+          </div>
         </div>
       </article>
     </li>
