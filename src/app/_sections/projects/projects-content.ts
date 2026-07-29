@@ -19,7 +19,7 @@ export const projectItems: ProjectItem[] = [
     description:
       'An interactive product-selection experience built to help users find the right security key through a guided flow.',
     previewType: 'desktop',
-    caseStudyHref: '/projects/yubico-product-finder',
+    caseStudyHref: '/projects/product-finder-quiz',
     liveHref: 'https://www.yubico.com/quiz/',
     imageSrc: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio-2026/quiz-v1.webp',
   },

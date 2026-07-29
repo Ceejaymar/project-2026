@@ -1,6 +1,7 @@
 'use client';
 
 import { LayoutGroup, motion, type Transition, useReducedMotion } from 'motion/react';
+import Link from 'next/link';
 import { type FocusEvent, useEffect, useRef, useState } from 'react';
 
 import ThemeToggle from '../theme/theme-toggle';
@@ -65,10 +66,10 @@ export default function SiteNavigation() {
   return (
     <header className={styles.header}>
       <div className={styles.shell}>
-        <a className={styles.brand} href="#home">
+        <Link className={styles.brand} href="/">
           <span aria-hidden="true">LOS</span>
           <span className="visually-hidden">Carlos homepage</span>
-        </a>
+        </Link>
         <nav className={styles.desktopNav} aria-label="Primary navigation">
           <LayoutGroup id="primary-navigation">
             <ul

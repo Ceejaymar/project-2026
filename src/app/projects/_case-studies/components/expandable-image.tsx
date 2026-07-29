@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  type Transition,
-  useReducedMotion,
-} from 'motion/react';
+import { AnimatePresence, motion, type Transition, useReducedMotion } from 'motion/react';
 import Image from 'next/image';
 import {
   type CSSProperties,
@@ -43,6 +37,7 @@ type ExpandableScreenshotProps = {
   objectPosition?: string;
   size?: 'wide' | 'medium';
   variant?: 'default' | 'mosaic' | 'yubico';
+  sharedLayoutTarget?: 'frame' | 'image';
 };
 
 export default function ExpandableScreenshot({
@@ -60,6 +55,7 @@ export default function ExpandableScreenshot({
   objectPosition = 'center',
   size = 'wide',
   variant = 'default',
+  sharedLayoutTarget = 'frame',
 }: ExpandableScreenshotProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -187,90 +183,104 @@ export default function ExpandableScreenshot({
     }
   }
 
-  return (
-    <LayoutGroup id={layoutId}>
-      <figure
-        className={styles.figure}
-        data-size={size}
-        data-variant={variant}
-        style={screenshotStyle}
-      >
-        <button
-          className={styles.trigger}
-          type="button"
-          aria-label={expandLabel}
-          onClick={() => setIsOpen(true)}
-          ref={triggerRef}
+  const thumbnailImage = <Image className={styles.image} src={src} alt={alt} fill sizes={sizes} />;
+
+  const modalImage = <Image className={styles.image} src={src} alt={alt} fill sizes={modalSizes} />;
+
+  const thumbnailFrame =
+    sharedLayoutTarget === 'image' ? (
+      <div className={styles.frame} data-shared-layout-target="image">
+        <motion.div className={styles.imageInset} layoutId={layoutId} transition={layoutTransition}>
+          {thumbnailImage}
+        </motion.div>
+      </div>
+    ) : (
+      <motion.div className={styles.frame} layoutId={layoutId} transition={layoutTransition}>
+        <div className={styles.imageInset}>{thumbnailImage}</div>
+      </motion.div>
+    );
+
+  const modalFrame =
+    sharedLayoutTarget === 'image' ? (
+      <div className={styles.overlayFrame} data-shared-layout-target="image">
+        <motion.div
+          className={styles.overlayImageInset}
+          layoutId={layoutId}
+          transition={layoutTransition}
         >
-          <motion.div className={styles.frame} layoutId={layoutId} transition={layoutTransition}>
-            <div className={styles.imageInset}>
-              <Image className={styles.image} src={src} alt={alt} fill sizes={sizes} />
-            </div>
-          </motion.div>
+          {modalImage}
+        </motion.div>
+      </div>
+    ) : (
+      <motion.div className={styles.overlayFrame} layoutId={layoutId} transition={layoutTransition}>
+        <div className={styles.overlayImageInset}>{modalImage}</div>
+      </motion.div>
+    );
 
-          <span className={styles.expandTooltip} aria-hidden="true">
-            Click to enlarge
-          </span>
-        </button>
+  return (
+    <figure
+      className={styles.figure}
+      data-size={size}
+      data-variant={variant}
+      style={screenshotStyle}
+    >
+      <button
+        className={styles.trigger}
+        type="button"
+        aria-label={expandLabel}
+        onClick={() => setIsOpen(true)}
+        ref={triggerRef}
+      >
+        {thumbnailFrame}
 
-        {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+        <span className={styles.expandTooltip} aria-hidden="true">
+          Click to enlarge
+        </span>
+      </button>
 
-        {isMounted
-          ? createPortal(
-              <AnimatePresence onExitComplete={returnFocusToTrigger}>
-                {isOpen ? (
-                  <motion.div
-                    className={styles.overlay}
-                    data-variant={variant}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby={titleId}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={backdropTransition}
-                    onMouseDown={closeFromBackdrop}
-                    onKeyDown={keepFocusInOverlay}
-                    ref={overlayRef}
-                    layoutRoot
-                    style={screenshotStyle}
+      {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+
+      {isMounted
+        ? createPortal(
+            <AnimatePresence onExitComplete={returnFocusToTrigger}>
+              {isOpen ? (
+                <motion.div
+                  className={styles.overlay}
+                  data-variant={variant}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={titleId}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={backdropTransition}
+                  onMouseDown={closeFromBackdrop}
+                  onKeyDown={keepFocusInOverlay}
+                  ref={overlayRef}
+                  layoutRoot
+                  style={screenshotStyle}
+                >
+                  <h2 className={styles.visuallyHidden} id={titleId}>
+                    {dialogTitle}
+                  </h2>
+
+                  <button
+                    className={styles.closeButton}
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    ref={closeButtonRef}
                   >
-                    <h2 className={styles.visuallyHidden} id={titleId}>
-                      {dialogTitle}
-                    </h2>
+                    <span aria-hidden="true">×</span>
+                    <span>Close</span>
+                  </button>
 
-                    <button
-                      className={styles.closeButton}
-                      type="button"
-                      onClick={() => setIsOpen(false)}
-                      ref={closeButtonRef}
-                    >
-                      <span aria-hidden="true">×</span>
-                      <span>Close</span>
-                    </button>
-
-                    <motion.div
-                      className={styles.overlayFrame}
-                      layoutId={layoutId}
-                      transition={layoutTransition}
-                    >
-                      <div className={styles.overlayImageInset}>
-                        <Image
-                          className={styles.image}
-                          src={src}
-                          alt={alt}
-                          fill
-                          sizes={modalSizes}
-                        />
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>,
-              document.body,
-            )
-          : null}
-      </figure>
-    </LayoutGroup>
+                  {modalFrame}
+                </motion.div>
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
+    </figure>
   );
 }

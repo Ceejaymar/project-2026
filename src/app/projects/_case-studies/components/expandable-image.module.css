@@ -72,14 +72,27 @@
   .imageInset,
   .overlayImageInset {
     position: absolute;
-    inset: clamp(0.45rem, 1.4vw, 0.8rem);
     overflow: hidden;
     border-radius: 10px;
+    transform-origin: center;
+  }
+
+  .imageInset {
+    inset: clamp(0.45rem, 1.4vw, 0.8rem);
+  }
+
+  .overlayImageInset {
+    inset: clamp(0.55rem, 1.4vw, 0.95rem);
   }
 
   .image {
     object-fit: var(--screenshot-object-fit, contain);
     object-position: var(--screenshot-object-position, center);
+  }
+
+  .frame[data-shared-layout-target="image"],
+  .overlayFrame[data-shared-layout-target="image"] {
+    overflow: visible;
   }
 
   .expandTooltip {
@@ -138,10 +151,6 @@
     aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
     border-radius: 16px;
     box-shadow: 0 30px 95px -52px var(--expandable-shadow);
-  }
-
-  .overlayImageInset {
-    inset: clamp(0.55rem, 1.4vw, 0.95rem);
   }
 
   .closeButton {
