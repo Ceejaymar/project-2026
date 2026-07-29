@@ -61,7 +61,7 @@
   .imageWrap {
     position: absolute;
     inset: 0;
-    z-index: -2;
+    z-index: 0;
   }
 
   .imageWrap img {
@@ -93,16 +93,11 @@
     transform: translateY(0);
   }
 
-  .card:hover .cardReveal,
-  .card:focus-within .cardReveal {
-    max-height: 18rem;
-    opacity: 1;
-    transform: translateY(0);
-  }
   .cardTop {
     position: absolute;
     top: var(--space-4);
     right: var(--space-4);
+    z-index: 2;
 
     display: flex;
     justify-content: flex-end;
@@ -123,8 +118,8 @@
     color: white;
     padding: var(--space-1) var(--space-2);
     box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, black, transparent 70%);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    /* backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px); */
   }
 
   .cardContent {
@@ -132,7 +127,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     isolation: isolate;
 
     display: grid;
@@ -146,16 +141,21 @@
   .cardContent::before {
     content: "";
     position: absolute;
-    inset: calc(var(--space-4) * -1) 0 0;
-    z-index: -1;
+    inset: calc(var(--space-1) * -1) 0 0;
+    z-index: 0;
 
-    background: linear-gradient(
-      to top,
-      color-mix(in srgb, black, transparent 20%) 0%,
-      color-mix(in srgb, black, transparent 30%) 50%,
-      transparent 100%
-    );
+    border-top: 1px solid color-mix(in srgb, white, transparent 84%);
+    background: color-mix(in srgb, #242424, transparent 46%);
+    backdrop-filter: blur(40px) saturate(1.08);
+    -webkit-backdrop-filter: blur(40px) saturate(1.08);
+
     pointer-events: none;
+  }
+
+  .cardHeading,
+  .cardReveal {
+    position: relative;
+    z-index: 1;
   }
 
   .card:hover .cardContent,
@@ -270,7 +270,6 @@
   }
 
   .card:hover .imageWrap img {
-    /* transform: scale(1.035); */
     filter: saturate(1.05) contrast(1.02);
   }
 
