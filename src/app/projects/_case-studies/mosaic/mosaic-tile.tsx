@@ -13,6 +13,11 @@ type MosaicTileProps = {
   ariaHidden?: boolean;
 };
 
+type MosaicTileSegment = {
+  color: string;
+  key: string;
+};
+
 function getMosaicTileLayout(colors: readonly string[]): MosaicTileLayout {
   const layout = MOSAIC_TILE_LAYOUTS[colors.length - 1];
 
@@ -23,7 +28,24 @@ function getMosaicTileLayout(colors: readonly string[]): MosaicTileLayout {
   return layout;
 }
 
+function getMosaicTileSegments(colors: readonly string[]): MosaicTileSegment[] {
+  const colorCounts = new Map<string, number>();
+
+  return colors.map((color) => {
+    const occurrence = colorCounts.get(color) ?? 0;
+
+    colorCounts.set(color, occurrence + 1);
+
+    return {
+      color,
+      key: `${color}-${occurrence}`,
+    };
+  });
+}
+
 export default function MosaicTile({ colors, variant, delay, ariaHidden }: MosaicTileProps) {
+  const segments = getMosaicTileSegments(colors);
+
   return (
     <span
       className={styles.tile}
@@ -32,8 +54,12 @@ export default function MosaicTile({ colors, variant, delay, ariaHidden }: Mosai
       style={getMosaicTileStyle(delay)}
       aria-hidden={ariaHidden ? true : undefined}
     >
-      {colors.map((color) => (
-        <span className={styles.segment} key={`${color}`} style={getMosaicTileColorStyle(color)} />
+      {segments.map((segment) => (
+        <span
+          className={styles.segment}
+          key={segment.key}
+          style={getMosaicTileColorStyle(segment.color)}
+        />
       ))}
     </span>
   );

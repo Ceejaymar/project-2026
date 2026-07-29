@@ -232,7 +232,7 @@ type HeroCalendarCell =
       colors: HeroEmotionColor[];
     };
 
-function getPreviousMonthCalendar(referenceDate = new Date()) {
+function getPreviousMonthCalendar(referenceDate: Date) {
   const finalDayOfPreviousMonth = new Date(
     referenceDate.getFullYear(),
     referenceDate.getMonth(),
@@ -283,7 +283,9 @@ function getPreviousMonthCalendar(referenceDate = new Date()) {
   };
 }
 
-const heroCalendar = getPreviousMonthCalendar();
+const MOSAIC_HERO_REFERENCE_DATE = new Date(2026, 6, 1);
+
+const heroCalendar = getPreviousMonthCalendar(MOSAIC_HERO_REFERENCE_DATE);
 
 const researchSignals = [
   {
@@ -310,16 +312,18 @@ const researchSignals = [
   },
 ] as const;
 
-function MosaicScreenshot({ src, alt }: { src: string; alt: string }) {
+function MosaicScreenshot({
+  src,
+  alt,
+  sizes = '(min-width: 760px) 24rem, 100vw',
+}: {
+  src: string;
+  alt: string;
+  sizes?: string;
+}) {
   return (
     <figure className={styles.interactionScreenImageFrame}>
-      <Image
-        className={styles.interactionScreenImage}
-        src={src}
-        alt={alt}
-        fill
-        sizes="(min-width: 760px) 24rem, 100vw"
-      />
+      <Image className={styles.interactionScreenImage} src={src} alt={alt} fill sizes={sizes} />
     </figure>
   );
 }
@@ -355,7 +359,7 @@ function MosaicHeroScene() {
           <div className={styles.phoneScreen}>
             <div className={styles.phoneTop}>
               <p className={styles.phoneMonth}>
-                {heroCalendar.monthDate.toLocaleString('default', {
+                {heroCalendar.monthDate.toLocaleString('undefined', {
                   month: 'long',
                   year: 'numeric',
                 })}
@@ -484,6 +488,7 @@ export default function MosaicCaseStudy() {
                       key={screenshot.alt}
                       src={screenshot.src}
                       alt={screenshot.alt}
+                      sizes="(min-width: 680px) 33vw, 100vw"
                     />
                   ))}
                 </div>
@@ -566,6 +571,7 @@ export default function MosaicCaseStudy() {
                       key={screenshot.alt}
                       src={screenshot.src}
                       alt={screenshot.alt}
+                      sizes="(min-width: 680px) 50vw, 100vw"
                     />
                   ))}
                 </div>
@@ -589,7 +595,7 @@ export default function MosaicCaseStudy() {
               <div className={styles.visualFoundationColumn}>
                 <div className={styles.foundationGroup}>
                   <p className={styles.foundationEyebrow}>System palette</p>
-                  <h4 className={styles.foundationTitle}>Quiet surfaces, clear hierarchy</h4>
+                  <h3 className={styles.foundationTitle}>Quiet surfaces, clear hierarchy</h3>
                   <p className={styles.foundationText}>
                     Mosaic keeps its interface colors restrained so the colors attached to emotional
                     entries can remain the most expressive part of the experience.
@@ -643,7 +649,7 @@ export default function MosaicCaseStudy() {
               <div className={styles.visualFoundationColumn}>
                 <div className={styles.foundationGroup}>
                   <p className={styles.foundationEyebrow}>Type roles</p>
-                  <h4 className={styles.foundationTitle}>Editorial warmth, clear utility</h4>
+                  <h3 className={styles.foundationTitle}>Editorial warmth, clear utility</h3>
                   <p className={styles.foundationText}>
                     Typography separates reflection from supporting information without making the
                     interface feel ornamental.
@@ -682,6 +688,7 @@ export default function MosaicCaseStudy() {
                 <MosaicScreenshot
                   src={MOSAIC_SCREENSHOTS.today.src}
                   alt={MOSAIC_SCREENSHOTS.today.alt}
+                  sizes="(min-width: 760px) 24rem, 100vw"
                 />
               </div>
             </section>
@@ -701,6 +708,7 @@ export default function MosaicCaseStudy() {
                     key={screenshot.alt}
                     src={screenshot.src}
                     alt={screenshot.alt}
+                    sizes="(min-width: 680px) 50vw, 100vw"
                   />
                 ))}
               </div>
@@ -724,8 +732,9 @@ export default function MosaicCaseStudy() {
                 </div>
 
                 <MosaicScreenshot
-                  src={MOSAIC_SCREENSHOTS.accessibility.src}
-                  alt={MOSAIC_SCREENSHOTS.accessibility.alt}
+                  src={MOSAIC_SCREENSHOTS.today.src}
+                  alt={MOSAIC_SCREENSHOTS.today.alt}
+                  sizes="(min-width: 760px) 24rem, 100vw"
                 />
               </div>
             </section>

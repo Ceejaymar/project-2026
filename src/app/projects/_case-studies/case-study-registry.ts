@@ -14,5 +14,9 @@ export type CaseStudySlug = keyof typeof caseStudies;
 export const caseStudySlugs = Object.keys(caseStudies) as CaseStudySlug[];
 
 export function getCaseStudy(slug: string) {
+  if (!Object.hasOwn(caseStudies, slug)) {
+    return undefined;
+  }
+
   return caseStudies[slug as CaseStudySlug];
 }
