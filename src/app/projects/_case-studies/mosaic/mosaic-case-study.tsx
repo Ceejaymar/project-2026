@@ -732,8 +732,8 @@ export default function MosaicCaseStudy() {
                 </div>
 
                 <MosaicScreenshot
-                  src={MOSAIC_SCREENSHOTS.today.src}
-                  alt={MOSAIC_SCREENSHOTS.today.alt}
+                  src={MOSAIC_SCREENSHOTS.accessibility.src}
+                  alt={MOSAIC_SCREENSHOTS.accessibility.alt}
                   sizes="(min-width: 760px) 24rem, 100vw"
                 />
               </div>
