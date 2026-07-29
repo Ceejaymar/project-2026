@@ -1,0 +1,193 @@
+@layer components {
+  .figure,
+  .overlay {
+    --expandable-bg: var(--color-canvas);
+    --expandable-text: var(--color-text-primary);
+    --expandable-muted: var(--color-text-secondary);
+    --expandable-border: var(--color-border);
+    --expandable-shadow: rgb(0 0 0 / 0.5);
+    --expandable-accent: var(--color-accent);
+    --expandable-accent-text: var(--color-accent);
+  }
+
+  .figure[data-variant="mosaic"],
+  .overlay[data-variant="mosaic"],
+  .figure[data-variant="yubico"],
+  .overlay[data-variant="yubico"] {
+    --expandable-accent: #c09040;
+    --expandable-accent-text: #d9b56a;
+  }
+
+  .figure {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 1.35rem 0 0;
+  }
+
+  .figure[data-size="medium"] {
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .trigger {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: inherit;
+    cursor: zoom-in;
+    text-align: inherit;
+  }
+
+  .trigger:focus-visible {
+    outline: 3px solid var(--expandable-accent);
+    outline-offset: 4px;
+  }
+
+  .frame,
+  .overlayFrame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--expandable-border);
+    border-radius: 14px;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--expandable-bg), var(--expandable-accent) 3%),
+        var(--expandable-bg)
+      ),
+      var(--expandable-bg);
+    box-shadow: 0 22px 56px -48px var(--expandable-shadow);
+  }
+
+  .frame {
+    width: 100%;
+    aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
+  }
+
+  .imageInset,
+  .overlayImageInset {
+    position: absolute;
+    inset: clamp(0.45rem, 1.4vw, 0.8rem);
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .image {
+    object-fit: var(--screenshot-object-fit, contain);
+    object-position: var(--screenshot-object-position, center);
+  }
+
+  .expandTooltip {
+    position: absolute;
+    top: clamp(0.75rem, 2vw, 1rem);
+    right: clamp(0.75rem, 2vw, 1rem);
+    z-index: 1;
+
+    max-width: calc(100% - 1.5rem);
+    padding: 0.42rem 0.58rem;
+    border: 1px solid var(--expandable-border);
+    border-radius: 999px;
+    background-color: color-mix(in oklch, var(--expandable-bg), var(--expandable-accent) 6%);
+    color: var(--expandable-text);
+    box-shadow: 0 16px 38px -30px var(--expandable-shadow);
+
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.2rem);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .trigger:hover .expandTooltip,
+  .trigger:focus-visible .expandTooltip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .caption {
+    max-width: 64ch;
+    color: var(--expandable-muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: grid;
+    place-items: center;
+    padding: clamp(1rem, 3vw, 2.25rem);
+    background-color: rgb(0 0 0 / 0.72);
+  }
+
+  .overlayFrame {
+    width: min(var(--screenshot-modal-width, 72rem), calc(100vw - clamp(2rem, 6vw, 6rem)));
+    max-height: calc(100dvh - clamp(5.5rem, 10vw, 8rem));
+    aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
+    border-radius: 16px;
+    box-shadow: 0 30px 95px -52px var(--expandable-shadow);
+  }
+
+  .overlayImageInset {
+    inset: clamp(0.55rem, 1.4vw, 0.95rem);
+  }
+
+  .closeButton {
+    position: fixed;
+    top: clamp(0.85rem, 2.6vw, 1.5rem);
+    right: clamp(0.85rem, 2.6vw, 1.5rem);
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.5rem;
+    padding: 0.62rem 0.8rem;
+    border: 1px solid var(--expandable-border);
+    border-radius: 999px;
+    background-color: color-mix(in oklch, var(--expandable-bg), var(--expandable-accent) 5%);
+    color: var(--expandable-text);
+    box-shadow: 0 18px 44px -34px var(--expandable-shadow);
+
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .closeButton:focus-visible {
+    outline: 3px solid var(--expandable-accent);
+    outline-offset: 3px;
+  }
+
+  .visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+    padding: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .expandTooltip {
+      transition: none;
+    }
+  }
+}

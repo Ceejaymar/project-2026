@@ -372,22 +372,6 @@
     margin-top: 0.25rem;
   }
 
-  .interactionScreenImageFrame {
-    position: relative;
-
-    width: 100%;
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--mosaic-border);
-    border-radius: 16px;
-    aspect-ratio: 9 / 19.5;
-    background-color: color-mix(in oklch, var(--mosaic-primary), var(--mosaic-bg) 94%);
-  }
-
-  .interactionScreenImage {
-    object-fit: cover;
-  }
-
   .interactionFlowCaption,
   .tileProgressionCaption {
     max-width: 62ch;

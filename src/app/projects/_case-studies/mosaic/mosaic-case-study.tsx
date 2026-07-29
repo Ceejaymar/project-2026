@@ -1,8 +1,7 @@
-import Image from 'next/image';
-
 import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
+import ExpandableScreenshot from '../components/expandable-image';
 
 import styles from './mosaic-case-study.module.css';
 import { mosaicCaseStudyMeta } from './mosaic-case-study-data';
@@ -232,6 +231,21 @@ type HeroCalendarCell =
       colors: HeroEmotionColor[];
     };
 
+const MONTH_LABELS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+] as const;
+
 function getPreviousMonthCalendar(referenceDate: Date) {
   const finalDayOfPreviousMonth = new Date(
     referenceDate.getFullYear(),
@@ -278,7 +292,7 @@ function getPreviousMonthCalendar(referenceDate: Date) {
 
   return {
     daysInMonth,
-    monthDate: new Date(year, monthIndex, 1),
+    monthLabel: `${MONTH_LABELS[monthIndex] ?? 'June'} ${year}`,
     cells,
   };
 }
@@ -312,19 +326,36 @@ const researchSignals = [
   },
 ] as const;
 
+function getScreenshotId(src: string) {
+  return src
+    .replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase();
+}
+
 function MosaicScreenshot({
   src,
   alt,
-  sizes = '(min-width: 760px) 24rem, 100vw',
+  sizes = '(min-width: 680px) 33vw, 100vw',
 }: {
   src: string;
   alt: string;
   sizes?: string;
 }) {
   return (
-    <figure className={styles.interactionScreenImageFrame}>
-      <Image className={styles.interactionScreenImage} src={src} alt={alt} fill sizes={sizes} />
-    </figure>
+    <ExpandableScreenshot
+      id={`mosaic-${getScreenshotId(src)}`}
+      src={src}
+      alt={alt}
+      variant="mosaic"
+      aspectRatio="9 / 19.5"
+      modalMaxWidth="28rem"
+      objectFit="contain"
+      sizes={sizes}
+      modalSizes="(min-width: 760px) 28rem, 90vw"
+      expandLabel={`Open full-size screenshot: ${alt}`}
+      dialogTitle={alt}
+    />
   );
 }
 
@@ -358,12 +389,7 @@ function MosaicHeroScene() {
         <div className={styles.phoneFrame}>
           <div className={styles.phoneScreen}>
             <div className={styles.phoneTop}>
-              <p className={styles.phoneMonth}>
-                {heroCalendar.monthDate.toLocaleString(undefined, {
-                  month: 'long',
-                  year: 'numeric',
-                })}
-              </p>
+              <p className={styles.phoneMonth}>{heroCalendar.monthLabel}</p>
               <span className={styles.phoneBadge}>{heroCalendar.daysInMonth} day streak</span>
             </div>
 

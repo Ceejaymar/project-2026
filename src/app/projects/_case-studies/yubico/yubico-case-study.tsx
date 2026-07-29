@@ -3,6 +3,7 @@ import Image from 'next/image';
 import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
+import ExpandableScreenshot from '../components/expandable-image';
 
 import styles from './yubico-case-study.module.css';
 import { yubicoCaseStudyMeta } from './yubico-case-study-data';
@@ -78,27 +79,40 @@ const HERO_META_ITEMS = [
 ] as const;
 
 type ScreenshotFigureProps = {
+  id: string;
   src: string;
   alt: string;
   caption: string;
   size?: 'wide' | 'medium';
   sizes?: string;
+  modalMaxWidth?: string;
 };
 
 function ScreenshotFigure({
+  id,
   src,
   alt,
   caption,
   size = 'wide',
   sizes = '(min-width: 760px) 52rem, 100vw',
+  modalMaxWidth = '72rem',
 }: ScreenshotFigureProps) {
   return (
-    <figure className={styles.screenshotFigure} data-size={size}>
-      <div className={styles.screenshotFrame}>
-        <Image className={styles.screenshotImage} src={src} alt={alt} fill sizes={sizes} />
-      </div>
-      <figcaption className={styles.screenshotCaption}>{caption}</figcaption>
-    </figure>
+    <ExpandableScreenshot
+      id={`yubico-${id}`}
+      src={src}
+      alt={alt}
+      caption={caption}
+      variant="yubico"
+      size={size}
+      aspectRatio="16 / 10"
+      modalMaxWidth={modalMaxWidth}
+      objectFit="contain"
+      sizes={sizes}
+      modalSizes="(min-width: 760px) 72rem, 100vw"
+      expandLabel={`Open full-size screenshot: ${alt}`}
+      dialogTitle={alt}
+    />
   );
 }
 
@@ -213,6 +227,7 @@ export default function YubicoCaseStudy() {
             </div>
 
             <ScreenshotFigure
+              id="quiz-start"
               src={YUBICO_SCREENSHOTS.start.src}
               alt={YUBICO_SCREENSHOTS.start.alt}
               caption="Four starting points let the quiz match the amount of detail to someone’s familiarity and purchase needs."
@@ -230,6 +245,7 @@ export default function YubicoCaseStudy() {
             </div>
 
             <ScreenshotFigure
+              id="quiz-info"
               src={YUBICO_SCREENSHOTS.info.src}
               alt={YUBICO_SCREENSHOTS.info.alt}
               caption="Supporting information gives people the context they need without turning every path into a longer technical questionnaire."
@@ -259,19 +275,23 @@ export default function YubicoCaseStudy() {
 
             <div className={styles.mediaPair}>
               <ScreenshotFigure
+                id="quiz-results"
                 src={YUBICO_SCREENSHOTS.results.src}
                 alt={YUBICO_SCREENSHOTS.results.alt}
                 caption="Individual paths end with a clearer recommendation and a direct route to the relevant product."
                 size="medium"
-                sizes="(min-width: 760px) 36rem, 100vw"
+                sizes="(min-width: 760px) 50vw, 100vw"
+                modalMaxWidth="64rem"
               />
 
               <ScreenshotFigure
+                id="quiz-cs"
                 src={YUBICO_SCREENSHOTS.customerSuccess.src}
                 alt={YUBICO_SCREENSHOTS.customerSuccess.alt}
                 caption="Larger purchase needs shift from a standard product recommendation to a Customer Success conversation."
                 size="medium"
-                sizes="(min-width: 760px) 36rem, 100vw"
+                sizes="(min-width: 760px) 50vw, 100vw"
+                modalMaxWidth="64rem"
               />
             </div>
           </CaseStudySection>
