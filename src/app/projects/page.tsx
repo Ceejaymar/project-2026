@@ -55,7 +55,6 @@ function ProjectCard({ project }: { project: Project }) {
 
         <div className={styles.cardTop}>
           <span>{project.year}</span>
-          {project.status ? <span>{project.status}</span> : null}
         </div>
 
         <div className={styles.cardContent}>

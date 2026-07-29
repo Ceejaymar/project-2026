@@ -23,7 +23,6 @@ export type Project = {
   links: ProjectLink[];
   cardSize?: 'standard' | 'large';
   imagePosition?: string;
-  status?: 'WIP';
 };
 
 export const fullProjects: Project[] = [
@@ -155,7 +154,6 @@ export const fullProjects: Project[] = [
   {
     title: 'Batéy Fashion',
     analyticsName: 'Batey',
-    status: 'WIP',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/batey.webp',
     shortDescription:
       'A fashion-brand exploration inspired by culture, identity, storytelling, and ecommerce UI systems.',

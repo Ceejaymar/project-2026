@@ -75,14 +75,12 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background:
-      linear-gradient(to bottom, color-mix(in srgb, black, transparent 72%), transparent 32%),
-      linear-gradient(
-        to top,
-        color-mix(in srgb, black, transparent 12%),
-        color-mix(in srgb, black, transparent 54%) 44%,
-        transparent 72%
-      );
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, black, transparent 4%),
+      color-mix(in srgb, black, transparent 22%) 38%,
+      transparent 74%
+    );
   }
 
   .cardTop {
@@ -107,11 +105,12 @@
 
   .cardTop span {
     display: inline-flex;
-    border: 1px solid color-mix(in srgb, white, transparent 54%);
+    border: 1px solid color-mix(in srgb, white, transparent 42%);
     border-radius: var(--radius-full);
-    background: color-mix(in srgb, black, transparent 48%);
+    background: color-mix(in srgb, black, transparent 34%);
     color: white;
     padding: var(--space-1) var(--space-2);
+    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, black, transparent 70%);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
   }
@@ -123,31 +122,42 @@
     left: 0;
 
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-2);
     padding: var(--space-4);
     color: white;
   }
 
   .cardHeading {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-1);
   }
 
   .cardTitle {
-    max-width: 16ch;
+    max-width: 20ch;
+    color: white;
     font-family: var(--font-display);
-    font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+    font-size: clamp(1.25rem, 1.8vw, 1.75rem);
     font-weight: 400;
     line-height: 1;
     letter-spacing: var(--tracking-title);
-    text-wrap: balance;
+    text-shadow: 0 0.08em 0.8em color-mix(in srgb, black, transparent 36%);
   }
 
   .description {
-    max-width: 38rem;
-    color: color-mix(in srgb, white, transparent 14%);
-    font-size: clamp(0.9rem, 1vw, 1rem);
-    line-height: var(--leading-body);
+    max-width: 34rem;
+    color: color-mix(in srgb, white, transparent 10%);
+    font-size: clamp(0.85rem, 0.9vw, 0.95rem);
+    line-height: 1.45;
+    text-shadow: 0 0.08em 0.8em color-mix(in srgb, black, transparent 34%);
+
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .item[data-card-size="large"] .description {
+    -webkit-line-clamp: 2;
   }
 
   .techList {
@@ -158,12 +168,13 @@
     padding: 0;
     list-style: none;
 
-    color: color-mix(in srgb, white, transparent 18%);
-    font-size: var(--text-label);
-    font-weight: 600;
+    color: color-mix(in srgb, white, transparent 10%);
+    font-size: 0.72rem;
+    font-weight: 700;
     line-height: var(--leading-label);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+    text-shadow: 0 0.08em 0.8em color-mix(in srgb, black, transparent 34%);
   }
 
   .techList li {
@@ -239,7 +250,7 @@
 
   @media (min-width: 72rem) {
     .grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .item {
