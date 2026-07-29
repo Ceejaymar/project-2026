@@ -1,5 +1,6 @@
 'use client';
 
+import { CopyIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 
 import styles from './contact-section.module.css';
@@ -10,6 +11,13 @@ type CopyEmailButtonProps = {
 
 export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
+
+  const tooltipText =
+    copyStatus === 'copied'
+      ? 'Email address copied'
+      : copyStatus === 'failed'
+        ? 'Could not copy email'
+        : 'Click to copy email';
 
   async function copyEmail() {
     let didCopy = false;
@@ -32,24 +40,31 @@ export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
     }
 
     setCopyStatus('failed');
+    window.setTimeout(() => setCopyStatus('idle'), 1800);
   }
 
   return (
     <div className={styles.emailGroup}>
-      <button className={styles.emailButton} type="button" onClick={copyEmail}>
+      <button
+        className={styles.emailButton}
+        type="button"
+        onClick={copyEmail}
+        data-copy-status={copyStatus}
+      >
         <span className={styles.emailText}>{email}</span>
 
         <span className={styles.copyIcon} aria-hidden="true">
-          <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-            <rect x="9" y="9" width="10" height="10" rx="2" />
-            <path d="M5 15V7a2 2 0 0 1 2-2h8" />
-          </svg>
+          <CopyIcon weight="regular" size={28} />
+        </span>
+
+        <span className={styles.tooltip} aria-hidden="true">
+          {tooltipText}
         </span>
 
         <span className="visually-hidden">Copy email address</span>
       </button>
 
-      <p className={styles.copyStatus} aria-live="polite">
+      <p className="visually-hidden" aria-live="polite">
         {copyStatus === 'copied' ? 'Copied email to clipboard.' : null}
         {copyStatus === 'failed' ? 'Could not copy email. You can select it manually.' : null}
       </p>

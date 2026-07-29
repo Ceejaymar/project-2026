@@ -9,6 +9,7 @@ export type ProjectItem = {
   liveHref?: string;
   codeHref?: string;
   learnMoreHref?: string;
+  imageSrc: string;
 };
 
 export const projectItems: ProjectItem[] = [
@@ -19,7 +20,8 @@ export const projectItems: ProjectItem[] = [
       'An interactive product-selection experience built to help users find the right security key through a guided flow.',
     previewType: 'desktop',
     caseStudyHref: '/projects/yubico-product-finder',
-    liveHref: 'https://yubico.com/',
+    liveHref: 'https://www.yubico.com/quiz/',
+    imageSrc: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio-2026/quiz-v1.webp',
   },
   {
     title: 'Mosaic',
@@ -28,6 +30,7 @@ export const projectItems: ProjectItem[] = [
       'A privacy-first mood tracker with local-first storage, accessible settings, and a polished mobile interaction system.',
     previewType: 'mobile',
     caseStudyHref: '/projects/mosaic',
-    learnMoreHref: 'https://trymosaic.com',
+    learnMoreHref: 'https://joinmosaic.com',
+    imageSrc: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio-2026/mosaic-v1.webp',
   },
 ];

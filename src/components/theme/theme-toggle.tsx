@@ -1,5 +1,6 @@
 'use client';
 
+import { MoonIcon, SunDimIcon } from '@phosphor-icons/react/dist/ssr';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
@@ -30,7 +31,7 @@ export default function ThemeToggle() {
       aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       onClick={() => setTheme(isDarkMode ? 'light' : 'dark')}
     >
-      {isDarkMode ? 'Light' : 'Dark'}
+      {isDarkMode ? <SunDimIcon size="20" weight="fill" /> : <MoonIcon size="20" weight="fill" />}
     </button>
   );
 }

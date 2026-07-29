@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { projectItems } from './projects-content';
@@ -22,8 +23,20 @@ export default function ProjectsSection() {
         {projectItems.map((project) => (
           <li className={styles.item} data-preview-kind={project.previewType} key={project.title}>
             <article className={styles.project}>
+              <div className={styles.projectImage} aria-hidden="true">
+                <Image
+                  src={project.imageSrc}
+                  alt=""
+                  fill
+                  sizes={
+                    project.previewType === 'mobile'
+                      ? '(min-width: 56rem) 28vw, 100vw'
+                      : '(min-width: 56rem) 65vw, 100vw'
+                  }
+                />
+              </div>
               <div className={styles.projectContent}>
-                <div>
+                <div className={styles.projectHeading}>
                   <p className={styles.projectEyebrow}>{project.eyebrow}</p>
                   <h3 className={styles.projectTitle}>{project.title}</h3>
                 </div>
@@ -63,7 +76,7 @@ export default function ProjectsSection() {
         <li className={styles.archiveItem}>
           <p className={styles.archiveText}>
             These are a couple standout projects. For older work, frontend challenges, experiments,
-            and smaller builds, take a look at <Link href="/projects">my full projects page</Link>.
+            and smaller builds, take a look at my <Link href="/projects">full projects page</Link>.
           </p>
         </li>
       </ul>
