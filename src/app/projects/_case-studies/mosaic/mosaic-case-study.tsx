@@ -359,7 +359,7 @@ function MosaicHeroScene() {
           <div className={styles.phoneScreen}>
             <div className={styles.phoneTop}>
               <p className={styles.phoneMonth}>
-                {heroCalendar.monthDate.toLocaleString('undefined', {
+                {heroCalendar.monthDate.toLocaleString(undefined, {
                   month: 'long',
                   year: 'numeric',
                 })}
