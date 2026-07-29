@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'los-project-images.s3.us-east-1.amazonaws.com',
+        pathname: '/portfolio/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'los-project-images.s3.us-east-1.amazonaws.com',
         pathname: '/portfolio-2026/**',
       },
     ],
