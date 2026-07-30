@@ -124,7 +124,6 @@ function getLinkIcon(type: ProjectLink['type']) {
       return <BookOpenIcon aria-hidden="true" weight="bold" />;
     case 'web':
     case 'marketing':
-    default:
       return <GlobeIcon aria-hidden="true" weight="bold" />;
   }
 }
