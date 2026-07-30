@@ -414,7 +414,7 @@ function MosaicHeroScene() {
 }
 
 export default function MosaicCaseStudy({
-  backHref = '/#projects',
+  backHref = '/#case-studies',
   backLabel = 'Back to case studies',
 }: CaseStudyComponentProps) {
   return (

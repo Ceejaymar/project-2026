@@ -27,7 +27,7 @@ function getCaseStudyBackTarget(from?: string) {
   }
 
   return {
-    href: '/#projects',
+    href: '/#case-studies',
     label: 'Back to case studies',
   };
 }

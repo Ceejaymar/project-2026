@@ -163,7 +163,7 @@ function YubicoHero() {
 }
 
 export default function YubicoCaseStudy({
-  backHref = '/#projects',
+  backHref = '/#case-studies',
   backLabel = 'Back to case studies',
 }: CaseStudyComponentProps) {
   return (

@@ -8,7 +8,7 @@ export default function ProjectsSection() {
   const projectCount = projectItems.length.toString().padStart(2, '0');
 
   return (
-    <section id="projects" className={styles.section} aria-labelledby="projects-title">
+    <section id="case-studies" className={styles.section} aria-labelledby="projects-title">
       <div className={styles.header}>
         <h2 id="projects-title" className={styles.title}>
           Case Studies

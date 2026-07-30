@@ -18,7 +18,7 @@ export default function Hero() {
           crafted, from interaction states and motion to accessible UI systems.
         </p>
         <div className={styles.actions}>
-          <Button className={styles.primaryAction} href="#projects">
+          <Button className={styles.primaryAction} href="#case-studies">
             View Work
           </Button>
           <ExternalLink

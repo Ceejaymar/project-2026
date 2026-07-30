@@ -4,7 +4,7 @@ import styles from './site-footer.module.css';
 
 const footerLinks = [
   { label: 'Craft', href: '#craft' },
-  { label: 'Projects', href: '#projects' },
+  { label: 'Case Studies', href: '#case-studies' },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
   { label: 'Back to top', href: '#home' },
