@@ -13,6 +13,10 @@ export default function ProjectsPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
+        <Link className={styles.backHomeLink} href="/#projects">
+          Back to home
+        </Link>
+
         <h1 className={styles.title}>Projects</h1>
         <p className={styles.lead}>
           A chronological collection of product work, portfolio builds, frontend challenges, and
@@ -84,7 +88,13 @@ function ProjectLinks({ links }: { links: ProjectLink[] }) {
         if ('to' in link) {
           return (
             <li key={link.to}>
-              <Link className={styles.projectLink} href={link.to}>
+              <Link
+                className={styles.projectLink}
+                href={{
+                  pathname: link.to,
+                  query: { from: 'projects' },
+                }}
+              >
                 {getLinkIcon(link.type)}
                 <span>{link.label}</span>
               </Link>
@@ -114,7 +124,6 @@ function getLinkIcon(type: ProjectLink['type']) {
       return <BookOpenIcon aria-hidden="true" weight="bold" />;
     case 'web':
     case 'marketing':
-    default:
       return <GlobeIcon aria-hidden="true" weight="bold" />;
   }
 }

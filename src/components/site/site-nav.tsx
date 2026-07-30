@@ -1,6 +1,7 @@
 'use client';
 
 import { LayoutGroup, motion, type Transition, useReducedMotion } from 'motion/react';
+import Link from 'next/link';
 import { type FocusEvent, useEffect, useRef, useState } from 'react';
 
 import ThemeToggle from '../theme/theme-toggle';
@@ -8,10 +9,10 @@ import styles from './site-nav.module.css';
 
 const navItems = [
   // { label: 'Home', href: '#home' },
-  { label: 'Craft', href: '#craft' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Craft', href: '/#craft' },
+  { label: 'Case Studies', href: '/#case-studies' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export default function SiteNavigation() {
@@ -65,10 +66,10 @@ export default function SiteNavigation() {
   return (
     <header className={styles.header}>
       <div className={styles.shell}>
-        <a className={styles.brand} href="#home">
+        <Link className={styles.brand} href="/">
           <span aria-hidden="true">LOS</span>
           <span className="visually-hidden">Carlos homepage</span>
-        </a>
+        </Link>
         <nav className={styles.desktopNav} aria-label="Primary navigation">
           <LayoutGroup id="primary-navigation">
             <ul
@@ -85,7 +86,7 @@ export default function SiteNavigation() {
                     key={item.href}
                     onMouseEnter={() => setActiveNavHref(item.href)}
                   >
-                    <a
+                    <Link
                       className={styles.navLink}
                       href={item.href}
                       onFocus={() => setActiveNavHref(item.href)}
@@ -99,7 +100,7 @@ export default function SiteNavigation() {
                           transition={underlineTransition}
                         />
                       ) : null}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -140,9 +141,9 @@ export default function SiteNavigation() {
         <ul className={styles.mobileNavList}>
           {navItems.map((item) => (
             <li key={item.href}>
-              <a className={styles.mobileNavLink} href={item.href} onClick={closeMenu}>
+              <Link className={styles.mobileNavLink} href={item.href} onClick={closeMenu}>
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

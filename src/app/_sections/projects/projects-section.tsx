@@ -8,10 +8,10 @@ export default function ProjectsSection() {
   const projectCount = projectItems.length.toString().padStart(2, '0');
 
   return (
-    <section id="projects" className={styles.section} aria-labelledby="projects-title">
+    <section id="case-studies" className={styles.section} aria-labelledby="projects-title">
       <div className={styles.header}>
         <h2 id="projects-title" className={styles.title}>
-          Projects
+          Case Studies
         </h2>
 
         <p className={styles.kicker}>Selected work</p>
@@ -46,7 +46,14 @@ export default function ProjectsSection() {
 
                   <div className={styles.links}>
                     {project.caseStudyHref ? (
-                      <Link href={project.caseStudyHref}>Case Study</Link>
+                      <Link
+                        href={{
+                          pathname: project.caseStudyHref,
+                          query: { from: 'home' },
+                        }}
+                      >
+                        Case Study
+                      </Link>
                     ) : null}
 
                     {project.liveHref ? (

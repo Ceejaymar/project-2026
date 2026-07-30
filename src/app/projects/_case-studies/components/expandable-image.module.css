@@ -1,0 +1,60 @@
+@layer components {
+  .figure {
+    --expandable-bg: var(--color-canvas);
+    --expandable-muted: var(--color-text-secondary);
+    --expandable-border: var(--color-border);
+    --expandable-shadow: rgb(0 0 0 / 0.5);
+    --expandable-accent: var(--color-accent);
+
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 1.35rem 0 0;
+  }
+
+  .figure[data-variant="mosaic"],
+  .figure[data-variant="yubico"] {
+    --expandable-accent: #c09040;
+  }
+
+  .figure[data-size="medium"] {
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .frame {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--expandable-border);
+    border-radius: 14px;
+    aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--expandable-bg), var(--expandable-accent) 3%),
+        var(--expandable-bg)
+      ),
+      var(--expandable-bg);
+    box-shadow: 0 22px 56px -48px var(--expandable-shadow);
+  }
+
+  .imageInset {
+    position: absolute;
+    inset: clamp(0.45rem, 1.4vw, 0.8rem);
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .image {
+    object-fit: var(--screenshot-object-fit, contain);
+    object-position: var(--screenshot-object-position, center);
+  }
+
+  .caption {
+    max-width: 64ch;
+    color: var(--expandable-muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+}

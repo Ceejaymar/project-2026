@@ -1,0 +1,904 @@
+@layer components {
+  .page {
+    width: min(100% - (var(--container-padding) * 2), var(--container-page));
+    margin-inline: auto;
+    padding-block: var(--space-8) var(--space-9);
+  }
+
+  .mosaicScope {
+    --mosaic-gold: #c09040;
+    --mosaic-gold-text: #d9b56a;
+    --mosaic-bg: var(--color-canvas);
+    --mosaic-text: var(--color-text-primary);
+    --mosaic-muted: var(--color-text-secondary);
+    --mosaic-border: var(--color-border);
+    --mosaic-shadow: rgb(0 0 0 / 0.5);
+    --mosaic-primary: var(--color-accent);
+    --case-study-accent: var(--mosaic-gold);
+    --case-study-accent-text: var(--mosaic-gold-text);
+    --emotion-surface-gradient: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.16) 0%,
+      rgb(255 255 255 / 0.03) 46%,
+      rgb(0 0 0 / 0.14) 100%
+    );
+
+    display: grid;
+    gap: var(--space-8);
+    margin-top: var(--space-7);
+  }
+
+  .content {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .heroScene {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    row-gap: clamp(1rem, 2vw, 1.5rem);
+    overflow: hidden;
+
+    min-height: 30rem;
+    margin: 0;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    border: 1px solid color-mix(in oklch, var(--mosaic-border), transparent 12%);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at 18% 22%, oklch(75% 0.15 63 / 0.28), transparent 34%),
+      radial-gradient(circle at 86% 72%, oklch(63% 0.13 304 / 0.22), transparent 38%),
+      linear-gradient(
+        135deg,
+        color-mix(in oklch, var(--mosaic-bg), oklch(86% 0.11 94) 16%),
+        color-mix(in oklch, var(--mosaic-bg), oklch(67% 0.12 250) 12%) 46%,
+        color-mix(in oklch, var(--mosaic-bg), oklch(72% 0.12 154) 14%)
+      ),
+      var(--mosaic-bg);
+    box-shadow: 0 30px 90px -58px var(--mosaic-shadow);
+  }
+
+  .sceneCopy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 34rem;
+  }
+
+  .sceneTitle {
+    max-width: 8ch;
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: clamp(3.25rem, 9vw, 6rem);
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  .sceneSubtitle {
+    max-width: 22ch;
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 600;
+    line-height: 1.08;
+  }
+
+  .sceneText {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--mosaic-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .heroMeta {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    overflow: hidden;
+
+    margin: 0;
+    border: 1px solid color-mix(in oklch, var(--mosaic-border), transparent 8%);
+    border-radius: 16px;
+    background-color: color-mix(in oklch, var(--mosaic-border), transparent 20%);
+  }
+
+  .heroMetaItem {
+    padding: 0.95rem 1rem;
+    background-color: color-mix(in oklch, var(--mosaic-bg), transparent 16%);
+  }
+
+  .heroMetaLabel {
+    margin: 0 0 0.35rem;
+    color: var(--mosaic-muted);
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .heroMetaValue {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .phoneStage {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-height: clamp(22rem, 70vw, 28rem);
+  }
+
+  .calendarHalo {
+    position: absolute;
+    inset: 8% 0 auto;
+    z-index: 0;
+
+    display: grid;
+    grid-template-columns: repeat(18, minmax(0, 1fr));
+    gap: 0.35rem;
+
+    opacity: 0.42;
+    pointer-events: none;
+    transform: rotate(-7deg);
+  }
+
+  .calendarHaloTile {
+    aspect-ratio: 1;
+    border-radius: 0.35rem;
+    background: var(--emotion-surface-gradient), var(--tile-color);
+  }
+
+  .phoneFrame {
+    position: relative;
+    z-index: 1;
+
+    width: min(100%, 22rem);
+    padding: 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--mosaic-border), transparent 18%);
+    border-radius: 2rem;
+    background: color-mix(in oklch, var(--mosaic-bg), var(--mosaic-text) 5%);
+    box-shadow:
+      0 28px 70px -38px var(--mosaic-shadow),
+      inset 0 0 0 1px color-mix(in oklch, var(--mosaic-border), transparent 28%);
+  }
+
+  .phoneScreen {
+    overflow: hidden;
+    padding: 1rem;
+    border-radius: 1.45rem;
+    background-color: color-mix(in oklch, var(--mosaic-bg), var(--mosaic-text) 2.5%);
+  }
+
+  .phoneTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .phoneMonth {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: 0.94rem;
+    font-weight: 800;
+  }
+
+  .phoneBadge {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 1.65rem;
+    padding: 0 0.6rem;
+    border: 1px solid color-mix(in oklch, var(--mosaic-gold), var(--mosaic-border) 58%);
+    border-radius: var(--radius-full);
+    background-color: color-mix(in oklch, var(--mosaic-gold), var(--mosaic-bg) 84%);
+    color: var(--mosaic-gold-text);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .calendarBlank {
+    aspect-ratio: 1;
+  }
+
+  .researchMethod {
+    max-width: 62ch;
+    margin-top: 1rem;
+    color: var(--mosaic-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .researchGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .researchQuote {
+    display: grid;
+    gap: 1rem;
+    min-height: 100%;
+    padding: 1rem;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 16px;
+    background-color: var(--mosaic-bg);
+  }
+
+  .researchLabel {
+    margin: 0;
+    color: var(--mosaic-gold-text);
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .researchExcerpt {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .researchExcerpt p {
+    margin: 0;
+  }
+
+  .researchBlock {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .researchRowLabel {
+    margin: 0;
+    color: var(--mosaic-gold-text);
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .researchRowText {
+    margin: 0;
+    color: var(--mosaic-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .researchInsightNote {
+    max-width: 62ch;
+    margin-top: 1.5rem;
+    color: var(--mosaic-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .interactionLead,
+  .visualSystemLead,
+  .architectureLead {
+    max-width: 68ch;
+    color: var(--mosaic-muted);
+    font-size: clamp(1rem, 2vw, 1.12rem);
+    line-height: 1.75;
+  }
+
+  .dividedList {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .dividedList > * + * {
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .dividedList > *:last-child {
+    padding-bottom: 0;
+  }
+
+  .interactionDecisionList > * {
+    padding: clamp(1.5rem, 4vw, 2.5rem) 0;
+  }
+
+  .interactionDecision {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 72ch;
+  }
+
+  .interactionDecisionEyebrow,
+  .foundationEyebrow,
+  .architectureTechLabel,
+  .architectureEyebrow {
+    margin: 0;
+    color: var(--mosaic-gold-text);
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .interactionDecisionTitle {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.16;
+    letter-spacing: 0;
+  }
+
+  .interactionDecisionText {
+    margin: 0;
+    color: var(--mosaic-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .interactionFlowVisual {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(0.9rem, 2.5vw, 1.25rem);
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .interactionFlowCaption,
+  .tileProgressionCaption {
+    max-width: 62ch;
+    color: var(--mosaic-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .reflectionViewsPair,
+  .visualScreensPair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 4vw, 2.5rem);
+    margin-top: 0.25rem;
+  }
+
+  .reflectionViewsPair > *,
+  .visualScreensPair > * {
+    justify-self: center;
+  }
+
+  .tileProgression {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .tileProgressionCaption {
+    max-width: 52ch;
+    margin-top: 0.65rem;
+    font-size: 0.86rem;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .visualSubsection {
+    display: grid;
+    gap: clamp(1.1rem, 3vw, 1.75rem);
+    margin-top: clamp(2.25rem, 5vw, 3.75rem);
+  }
+
+  .visualSubsection p {
+    margin: 0;
+  }
+
+  .visualSubheading {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  .visualFeatureLayout,
+  .accessibilityLayout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .visualFeatureLayout > div,
+  .accessibilityLayout > div {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .visualFoundationsPanel {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    overflow: hidden;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 16px;
+    background-color: var(--mosaic-bg);
+  }
+
+  .visualFoundationColumn {
+    display: grid;
+    align-content: start;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    padding: clamp(1.35rem, 3vw, 2rem);
+  }
+
+  .visualFoundationColumn + .visualFoundationColumn {
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .foundationGroup {
+    display: grid;
+    align-content: start;
+    gap: 0.85rem;
+  }
+
+  .foundationGroup + .foundationGroup {
+    padding-top: clamp(0.5rem, 2vw, 0.85rem);
+  }
+
+  .foundationTitle,
+  .architectureColumnTitle {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .foundationText,
+  .architectureColumnText,
+  .architecturePostCopy {
+    margin: 0;
+    color: var(--mosaic-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .colorTokenGrid,
+  .emotionColorGrid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .colorTokenGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.95rem 1rem;
+  }
+
+  .colorToken {
+    display: grid;
+    grid-template-columns: 2.15rem minmax(0, 1fr);
+    align-items: center;
+    align-content: start;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+
+  .colorToken > span:last-child {
+    display: grid;
+    gap: 0.18rem;
+    min-width: 0;
+  }
+
+  .colorTokenSwatch {
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 0.45rem;
+    background-color: var(--tile-color);
+  }
+
+  .colorTokenName {
+    color: var(--mosaic-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .colorTokenValue {
+    color: var(--mosaic-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  .emotionColorGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem 0.65rem;
+    padding-top: 0.15rem;
+  }
+
+  .emotionColorItem {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .emotionColorItem > span:last-child {
+    display: grid;
+    gap: 0.18rem;
+    min-width: 0;
+  }
+
+  .emotionColorSwatch {
+    width: 2rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 0.45rem;
+    background: var(--emotion-surface-gradient), var(--tile-color);
+  }
+
+  .emotionColorName {
+    color: var(--mosaic-text);
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .emotionColorValue {
+    color: var(--mosaic-muted);
+    font-size: 0.66rem;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .typeRoleList {
+    display: grid;
+    margin-top: 0.15rem;
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .typeRole {
+    display: grid;
+    gap: 0.5rem;
+    padding: clamp(1rem, 2vw, 1.25rem) 0;
+    border-bottom: 1px solid var(--mosaic-border);
+  }
+
+  .typeRole:last-child {
+    border-bottom: 0;
+  }
+
+  .typeRole span {
+    color: var(--mosaic-gold-text);
+    font-size: 0.64rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .typeRole strong {
+    color: var(--mosaic-text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  .typeRole[data-role="heading"] strong {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .typeRole[data-role="label"] strong {
+    font-family:
+      var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+  }
+
+  .typeRole p {
+    margin: 0;
+    color: var(--mosaic-muted);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .architectureContent {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    width: 100%;
+  }
+
+  .architectureTechLine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.7rem;
+    margin: 0;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--mosaic-border);
+  }
+
+  .architectureTechValue {
+    color: var(--mosaic-text);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+
+  .architecturePanel {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 16px;
+    background-color: var(--mosaic-bg);
+  }
+
+  .architecturePanelHeader {
+    padding: clamp(1.1rem, 2.5vw, 1.5rem);
+    border-bottom: 1px solid var(--mosaic-border);
+  }
+
+  .architecturePanelTitle {
+    margin: 0;
+    color: var(--mosaic-text);
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.16;
+    letter-spacing: 0;
+  }
+
+  .architecturePanelGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .architecturePanelColumn {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+    padding: clamp(1.1rem, 2.5vw, 1.5rem);
+  }
+
+  .architecturePanelColumn + .architecturePanelColumn {
+    border-top: 1px solid var(--mosaic-border);
+  }
+
+  .architectureDataList {
+    display: grid;
+    align-self: start;
+    gap: 1px;
+    overflow: hidden;
+    margin: 0;
+    border: 1px solid var(--mosaic-border);
+    border-radius: 12px;
+    background-color: var(--mosaic-border);
+  }
+
+  .architectureDataItem {
+    display: grid;
+    grid-template-columns: minmax(4.4rem, 0.7fr) minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    background-color: var(--mosaic-bg);
+  }
+
+  .architectureDataLabel {
+    color: var(--mosaic-muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .architectureDataValue {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    color: var(--mosaic-text);
+    font-size: 0.84rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .architectureDataLabel,
+  .architectureDataValue {
+    margin: 0;
+  }
+
+  .architectureReasonList {
+    display: grid;
+    align-self: start;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--mosaic-border);
+    list-style: none;
+  }
+
+  .architectureReasonItem {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.55rem;
+    padding: 0.72rem 0;
+    border-bottom: 1px solid var(--mosaic-border);
+    color: var(--mosaic-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .architectureReasonItem::before {
+    width: 0.38rem;
+    height: 0.38rem;
+    margin-top: 0.52rem;
+    border-radius: 999px;
+    background-color: color-mix(in oklch, var(--mosaic-gold), var(--mosaic-text) 34%);
+    content: "";
+  }
+
+  .architectureReasonItem:last-child {
+    border-bottom: 0;
+  }
+
+  .architecturePostCopy {
+    max-width: 68ch;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .nextDirectionsList {
+    margin-bottom: clamp(1.5rem, 4vw, 2.25rem);
+  }
+
+  .nextDirectionsList > * {
+    padding: clamp(1.25rem, 3vw, 2rem) 0;
+  }
+
+  @media (min-width: 380px) {
+    .colorTokenGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 420px) {
+    .tileProgression {
+      grid-template-columns: repeat(2, minmax(0, max-content));
+    }
+  }
+
+  @media (min-width: 560px) {
+    .emotionColorGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 640px) {
+    .heroMeta {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 640px) and (max-width: 959px) {
+    .heroMetaItem:last-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 680px) {
+    .interactionFlowVisual {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .reflectionViewsPair,
+    .visualScreensPair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tileProgression {
+      grid-template-columns: repeat(4, minmax(0, max-content));
+    }
+  }
+
+  @media (min-width: 760px) {
+    .researchGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows:
+        auto
+        minmax(8.75rem, auto)
+        minmax(8.5rem, auto)
+        auto;
+      align-items: stretch;
+    }
+
+    .researchQuote {
+      grid-row: span 4;
+      grid-template-rows: subgrid;
+    }
+
+    .visualFeatureLayout,
+    .accessibilityLayout {
+      grid-template-columns: minmax(0, 0.9fr) minmax(17rem, 0.7fr);
+    }
+
+    .visualFoundationsPanel {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .visualFoundationColumn + .visualFoundationColumn {
+      border-top: 0;
+      border-left: 1px solid var(--mosaic-border);
+    }
+
+    .architecturePanelGrid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: auto auto auto minmax(0, 1fr);
+      row-gap: 1rem;
+      align-items: stretch;
+    }
+
+    .architecturePanelColumn {
+      grid-row: span 4;
+      grid-template-rows: subgrid;
+      align-content: stretch;
+      gap: 1rem;
+    }
+
+    .architecturePanelColumn + .architecturePanelColumn {
+      border-top: 0;
+      border-left: 1px solid var(--mosaic-border);
+    }
+  }
+
+  @media (min-width: 860px) {
+    .heroScene {
+      grid-template-columns: minmax(0, 0.82fr) minmax(22rem, 1fr);
+      align-items: center;
+    }
+  }
+
+  @media (min-width: 960px) {
+    .heroMeta {
+      grid-template-columns: repeat(4, minmax(7rem, 1fr)) minmax(14rem, 2fr);
+    }
+  }
+}

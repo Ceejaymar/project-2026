@@ -39,9 +39,11 @@
   }
 
   .portrait {
+    position: relative;
     width: min(8rem, 40vw);
     aspect-ratio: 3 / 4;
     margin-bottom: var(--space-4);
+    overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-xs);
     background:
@@ -51,6 +53,11 @@
         transparent 55%
       ),
       var(--color-surface);
+  }
+
+  .portraitImage {
+    object-fit: cover;
+    object-position: center 22%;
   }
 
   .copy {

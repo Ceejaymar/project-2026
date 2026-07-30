@@ -1,0 +1,38 @@
+@layer components {
+  .callout {
+    width: 100%;
+    margin: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--case-study-accent, var(--color-accent)), transparent 88%),
+      color-mix(in oklch, var(--color-surface), transparent 0%)
+    );
+    color: var(--color-text-primary);
+    padding: var(--space-4);
+
+    font-size: 1.02rem;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+
+  .label {
+    margin: 0 0 var(--space-2);
+    color: var(--case-study-accent-text, var(--color-accent));
+    font-size: var(--text-label);
+    font-weight: 800;
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .content {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .content :where(p) {
+    margin: 0;
+  }
+}

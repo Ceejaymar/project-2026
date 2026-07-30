@@ -1,14 +1,13 @@
 export type ProjectLink =
   | {
       label: string;
-      url: string;
-      type: 'github' | 'web' | 'apple' | 'android' | 'marketing';
+      type: 'case-study';
+      to: string;
     }
   | {
       label: string;
-      to: string;
-      type: 'case-study';
-      internal: true;
+      type: 'web' | 'github' | 'marketing';
+      url: string;
     };
 
 export type Project = {
@@ -45,7 +44,6 @@ export const fullProjects: Project[] = [
         label: 'Read Case Study',
         to: '/projects/mosaic',
         type: 'case-study',
-        internal: true,
       },
     ],
   },
@@ -232,7 +230,6 @@ export const fullProjects: Project[] = [
         label: 'Read Case Study',
         to: '/projects/product-finder-quiz',
         type: 'case-study',
-        internal: true,
       },
     ],
   },
