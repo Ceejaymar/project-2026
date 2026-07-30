@@ -1,6 +1,6 @@
 @layer components {
   .section {
-    padding-block: var(--space-9);
+    padding-block: var(--section-padding-block);
   }
 
   .header {
