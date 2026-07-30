@@ -7,12 +7,29 @@ type ProjectCaseStudyPageProps = {
   params: Promise<{
     slug: string;
   }>;
+  searchParams?: Promise<{
+    from?: string;
+  }>;
 };
 
 export function generateStaticParams() {
   return caseStudySlugs.map((slug) => ({
     slug,
   }));
+}
+
+function getCaseStudyBackTarget(from?: string) {
+  if (from === 'projects') {
+    return {
+      href: '/projects',
+      label: 'Back to all projects',
+    };
+  }
+
+  return {
+    href: '/#projects',
+    label: 'Back to case studies',
+  };
 }
 
 export async function generateMetadata({ params }: ProjectCaseStudyPageProps): Promise<Metadata> {
@@ -31,8 +48,12 @@ export async function generateMetadata({ params }: ProjectCaseStudyPageProps): P
   };
 }
 
-export default async function ProjectCaseStudyPage({ params }: ProjectCaseStudyPageProps) {
+export default async function ProjectCaseStudyPage({
+  params,
+  searchParams,
+}: ProjectCaseStudyPageProps) {
   const { slug } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const caseStudy = getCaseStudy(slug);
 
   if (!caseStudy) {
@@ -40,6 +61,7 @@ export default async function ProjectCaseStudyPage({ params }: ProjectCaseStudyP
   }
 
   const CaseStudyComponent = caseStudy.Component;
+  const backTarget = getCaseStudyBackTarget(resolvedSearchParams?.from);
 
-  return <CaseStudyComponent />;
+  return <CaseStudyComponent backHref={backTarget.href} backLabel={backTarget.label} />;
 }

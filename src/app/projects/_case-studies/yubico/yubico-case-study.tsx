@@ -4,6 +4,7 @@ import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
 import ExpandableScreenshot from '../components/expandable-image';
+import type { CaseStudyComponentProps } from '../types';
 import styles from './yubico-case-study.module.css';
 import { yubicoCaseStudyMeta } from './yubico-case-study-data';
 
@@ -161,10 +162,13 @@ function YubicoHero() {
   );
 }
 
-export default function YubicoCaseStudy() {
+export default function YubicoCaseStudy({
+  backHref = '/#projects',
+  backLabel = 'Back to case studies',
+}: CaseStudyComponentProps) {
   return (
     <main className={styles.page}>
-      <CaseStudyBackLink />
+      <CaseStudyBackLink href={backHref}>{backLabel}</CaseStudyBackLink>
 
       <div className={styles.caseStudyScope}>
         <YubicoHero />

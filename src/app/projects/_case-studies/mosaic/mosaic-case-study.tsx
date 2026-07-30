@@ -2,6 +2,7 @@ import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
 import ExpandableScreenshot from '../components/expandable-image';
+import type { CaseStudyComponentProps } from '../types';
 import styles from './mosaic-case-study.module.css';
 import { mosaicCaseStudyMeta } from './mosaic-case-study-data';
 import MosaicTile from './mosaic-tile';
@@ -412,10 +413,13 @@ function MosaicHeroScene() {
   );
 }
 
-export default function MosaicCaseStudy() {
+export default function MosaicCaseStudy({
+  backHref = '/#projects',
+  backLabel = 'Back to case studies',
+}: CaseStudyComponentProps) {
   return (
     <main className={styles.page}>
-      <CaseStudyBackLink />
+      <CaseStudyBackLink href={backHref}>{backLabel}</CaseStudyBackLink>
 
       <div className={styles.mosaicScope}>
         <MosaicHeroScene />

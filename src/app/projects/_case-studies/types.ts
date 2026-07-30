@@ -16,5 +16,10 @@ export type CaseStudyMeta = {
 };
 
 export type CaseStudyEntry = CaseStudyMeta & {
-  Component: ComponentType;
+  Component: ComponentType<CaseStudyComponentProps>;
+};
+
+export type CaseStudyComponentProps = {
+  backHref?: string;
+  backLabel?: string;
 };
