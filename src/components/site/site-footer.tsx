@@ -11,8 +11,6 @@ const footerLinks = [
 ];
 
 export default function SiteFooter() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
