@@ -1,5 +1,5 @@
+import Image from 'next/image';
 import ExternalLink from '@/components/primitives/externalLink/external-link';
-
 import { experienceItems, socialLinks } from './about-content';
 import styles from './about-section.module.css';
 
@@ -17,7 +17,15 @@ export default function About() {
       <div className={styles.layout}>
         <div className={styles.bio}>
           <div className={styles.copy}>
-            <div className={styles.portrait} />
+            <div className={styles.portrait}>
+              <Image
+                className={styles.portraitImage}
+                src="/images/about/headshot-reduced.webp"
+                alt=""
+                fill
+                sizes="(min-width: 40rem) 9rem, 40vw"
+              />
+            </div>
             <p>
               I’m a frontend engineer with a strong eye for design, focused on building polished,
               accessible interfaces that preserve design intent all the way into production.

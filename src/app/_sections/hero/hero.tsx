@@ -23,7 +23,7 @@ export default function Hero() {
           </Button>
           <ExternalLink
             className={styles.resumeLink}
-            href="/resume.pdf"
+            href="/Carlos-Martinez-Resume.pdf"
             variant="interactive"
             showArrow
           >
