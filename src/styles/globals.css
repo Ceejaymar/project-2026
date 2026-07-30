@@ -2,9 +2,7 @@
   html {
     min-height: 100%;
     font-size: 100%;
-    scroll-behavior: smooth;
     background: var(--color-canvas);
-    /* scrollbar-gutter: stable; */
   }
 
   body {
@@ -14,7 +12,6 @@
     font-size: var(--text-body);
     line-height: var(--leading-body);
     isolation: isolate;
-    /* overflow-y: auto; */
   }
 
   ::selection {

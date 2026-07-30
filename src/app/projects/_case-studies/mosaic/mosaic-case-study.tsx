@@ -1,6 +1,5 @@
 import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
-import CaseStudyLayoutGroup from '../components/case-study-layout-group';
 import CaseStudySection from '../components/case-study-section';
 import ExpandableScreenshot from '../components/expandable-image';
 import styles from './mosaic-case-study.module.css';
@@ -326,13 +325,6 @@ const researchSignals = [
   },
 ] as const;
 
-function getScreenshotId(src: string) {
-  return src
-    .replace(/[^a-z0-9]+/gi, '-')
-    .replace(/^-|-$/g, '')
-    .toLowerCase();
-}
-
 function MosaicScreenshot({
   src,
   alt,
@@ -344,17 +336,12 @@ function MosaicScreenshot({
 }) {
   return (
     <ExpandableScreenshot
-      id={`mosaic-${getScreenshotId(src)}`}
       src={src}
       alt={alt}
       variant="mosaic"
       aspectRatio="9 / 19.5"
-      modalMaxWidth="28rem"
       objectFit="contain"
       sizes={sizes}
-      modalSizes="(min-width: 760px) 28rem, 90vw"
-      expandLabel={`Open full-size screenshot: ${alt}`}
-      dialogTitle={alt}
     />
   );
 }
@@ -427,314 +414,172 @@ function MosaicHeroScene() {
 
 export default function MosaicCaseStudy() {
   return (
-    <CaseStudyLayoutGroup id="mosaic-case-study-screenshots">
-      <main className={styles.page}>
-        <CaseStudyBackLink />
+    <main className={styles.page}>
+      <CaseStudyBackLink />
 
-        <div className={styles.mosaicScope}>
-          <MosaicHeroScene />
+      <div className={styles.mosaicScope}>
+        <MosaicHeroScene />
 
-          <div className={styles.content}>
-            <CaseStudySection title="Overview">
-              <p>
-                Mosaic is an emotion journal built for quick, low-pressure reflection. People start
-                with one of seven emotion families, add detail only when it helps, and can save a
-                check-in in as few as three taps. Up to four check-ins become one daily mosaic tile,
-                creating a visual record that makes shifts over time easier to revisit.
-              </p>
-            </CaseStudySection>
+        <div className={styles.content}>
+          <CaseStudySection title="Overview">
+            <p>
+              Mosaic is an emotion journal built for quick, low-pressure reflection. People start
+              with one of seven emotion families, add detail only when it helps, and can save a
+              check-in in as few as three taps. Up to four check-ins become one daily mosaic tile,
+              creating a visual record that makes shifts over time easier to revisit.
+            </p>
+          </CaseStudySection>
 
-            <CaseStudySection title="The problem" spacing="compact">
-              <p>
-                Mood tracking can become another task to manage. In competitive app review research,
-                I repeatedly saw frustration with long check-in flows, unclear emotion language,
-                privacy concerns, and tools that either oversimplified a day or demanded too much
-                effort. Mosaic was designed to hold that balance: quick enough for everyday use,
-                expressive enough for nuance, and calm enough to support honest reflection.
-              </p>
-            </CaseStudySection>
+          <CaseStudySection title="The problem" spacing="compact">
+            <p>
+              Mood tracking can become another task to manage. In competitive app review research, I
+              repeatedly saw frustration with long check-in flows, unclear emotion language, privacy
+              concerns, and tools that either oversimplified a day or demanded too much effort.
+              Mosaic was designed to hold that balance: quick enough for everyday use, expressive
+              enough for nuance, and calm enough to support honest reflection.
+            </p>
+          </CaseStudySection>
 
-            <CaseStudySection title="Competitive review signals" spacing="spacious">
-              <p className={styles.researchMethod}>
-                To understand where existing mood trackers break down, I reviewed 150+ public App
-                Store reviews across 5+ mood-tracking and journaling apps. I grouped repeated
-                feedback into three themes that shaped Mosaic’s interaction model.
-              </p>
+          <CaseStudySection title="Competitive review signals" spacing="spacious">
+            <p className={styles.researchMethod}>
+              To understand where existing mood trackers break down, I reviewed 150+ public App
+              Store reviews across 5+ mood-tracking and journaling apps. I grouped repeated feedback
+              into three themes that shaped Mosaic’s interaction model.
+            </p>
 
-              <div className={styles.researchGrid}>
-                {researchSignals.map((quote) => (
-                  <article className={styles.researchQuote} key={quote.label}>
-                    <p className={styles.researchLabel}>{quote.label}</p>
+            <div className={styles.researchGrid}>
+              {researchSignals.map((quote) => (
+                <article className={styles.researchQuote} key={quote.label}>
+                  <p className={styles.researchLabel}>{quote.label}</p>
 
-                    <blockquote className={styles.researchExcerpt}>
-                      <p>&ldquo;{quote.excerpt}&rdquo;</p>
-                    </blockquote>
+                  <blockquote className={styles.researchExcerpt}>
+                    <p>&ldquo;{quote.excerpt}&rdquo;</p>
+                  </blockquote>
 
-                    <div className={styles.researchBlock}>
-                      <p className={styles.researchRowLabel}>Product risk</p>
-                      <p className={styles.researchRowText}>{quote.risk}</p>
-                    </div>
-
-                    <div className={styles.researchBlock}>
-                      <p className={styles.researchRowLabel}>Design response</p>
-                      <p className={styles.researchRowText}>{quote.response}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <p className={styles.researchInsightNote}>
-                Reviews also showed that logging alone was not enough. People wanted a clearer way
-                to look back at emotional patterns without being pushed into a dense dashboard. That
-                informed Mosaic’s weekly and monthly insight views.
-              </p>
-            </CaseStudySection>
-
-            <CaseStudySection title="Key interaction decisions" spacing="spacious">
-              <p className={styles.interactionLead}>
-                The goal was not to fit every possible tracking option into one check-in. It was to
-                make the first choice easy while ensuring that each entry could become more useful
-                over time.
-              </p>
-
-              <div className={`${styles.dividedList} ${styles.interactionDecisionList}`}>
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Start simple</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Start simple, add detail when it helps
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    People do not always need the same level of emotional specificity. Mosaic begins
-                    with seven emotion families, then lets someone explore more specific feelings
-                    only when they want to. The default stays quick, without treating every day as
-                    simple.
-                  </p>
-
-                  <div className={styles.interactionFlowVisual}>
-                    {CHECK_IN_SCREENSHOTS.map((screenshot) => (
-                      <MosaicScreenshot
-                        key={screenshot.alt}
-                        src={screenshot.src}
-                        alt={screenshot.alt}
-                        sizes="(min-width: 680px) 33vw, 100vw"
-                      />
-                    ))}
+                  <div className={styles.researchBlock}>
+                    <p className={styles.researchRowLabel}>Product risk</p>
+                    <p className={styles.researchRowText}>{quote.risk}</p>
                   </div>
 
-                  <p className={styles.interactionFlowCaption}>
-                    Every check-in starts with a broad choice. More specific feelings, notes, and
-                    context tags remain available without becoming required steps.
-                  </p>
-                </article>
-
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Represent change</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Let a day hold more than one feeling
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    A single label cannot always represent a full day. Mosaic allows up to four
-                    check-ins, then combines them into one daily tile. That makes emotional shifts
-                    visible without turning a day into a scattered list of separate logs.
-                  </p>
-
-                  <div>
-                    <div
-                      className={styles.tileProgression}
-                      role="img"
-                      aria-label="Daily tile progression showing one to four emotion segments"
-                    >
-                      <MosaicTile
-                        colors={[getMosaicEmotionColor('happy')]}
-                        variant="progression"
-                        ariaHidden
-                      />
-                      <MosaicTile
-                        colors={[getMosaicEmotionColor('happy'), getMosaicEmotionColor('calm')]}
-                        variant="progression"
-                        ariaHidden
-                      />
-                      <MosaicTile
-                        colors={[
-                          getMosaicEmotionColor('happy'),
-                          getMosaicEmotionColor('sad'),
-                          getMosaicEmotionColor('calm'),
-                        ]}
-                        variant="progression"
-                        ariaHidden
-                      />
-                      <MosaicTile
-                        colors={[
-                          getMosaicEmotionColor('happy'),
-                          getMosaicEmotionColor('calm'),
-                          getMosaicEmotionColor('sad'),
-                          getMosaicEmotionColor('surprised'),
-                        ]}
-                        variant="progression"
-                        ariaHidden
-                      />
-                    </div>
-
-                    <p className={styles.tileProgressionCaption}>
-                      Each new check-in adds another segment, so one tile can hold the shape of a
-                      changing day.
-                    </p>
+                  <div className={styles.researchBlock}>
+                    <p className={styles.researchRowLabel}>Design response</p>
+                    <p className={styles.researchRowText}>{quote.response}</p>
                   </div>
                 </article>
+              ))}
+            </div>
 
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Reflect gently</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Turn reflection into a pattern, not a score
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    Check-ins become more useful when they can be revisited in context. Monthly and
-                    yearly mosaic views help people step back from individual moments and notice
-                    what has been showing up over time, without turning reflection into a score.
-                  </p>
+            <p className={styles.researchInsightNote}>
+              Reviews also showed that logging alone was not enough. People wanted a clearer way to
+              look back at emotional patterns without being pushed into a dense dashboard. That
+              informed Mosaic’s weekly and monthly insight views.
+            </p>
+          </CaseStudySection>
 
-                  <div className={styles.reflectionViewsPair}>
-                    {REFLECTION_VIEW_SCREENSHOTS.map((screenshot) => (
-                      <MosaicScreenshot
-                        key={screenshot.alt}
-                        src={screenshot.src}
-                        alt={screenshot.alt}
-                        sizes="(min-width: 680px) 50vw, 100vw"
-                      />
-                    ))}
-                  </div>
+          <CaseStudySection title="Key interaction decisions" spacing="spacious">
+            <p className={styles.interactionLead}>
+              The goal was not to fit every possible tracking option into one check-in. It was to
+              make the first choice easy while ensuring that each entry could become more useful
+              over time.
+            </p>
 
-                  <p className={styles.interactionFlowCaption}>
-                    The monthly view keeps individual days legible. The yearly view makes the longer
-                    rhythm of emotional reflection easier to see at a glance.
-                  </p>
-                </article>
-              </div>
-            </CaseStudySection>
-
-            <CaseStudySection title="Designing the visual system" spacing="spacious">
-              <p className={styles.visualSystemLead}>
-                Mosaic uses a dark, quiet foundation so emotional reflection can feel personal
-                rather than clinical. The interface stays restrained while color, type, and small
-                moments of motion give each check-in its own presence.
-              </p>
-
-              <div className={styles.visualFoundationsPanel}>
-                <div className={styles.visualFoundationColumn}>
-                  <div className={styles.foundationGroup}>
-                    <p className={styles.foundationEyebrow}>System palette</p>
-                    <h3 className={styles.foundationTitle}>Quiet surfaces, clear hierarchy</h3>
-                    <p className={styles.foundationText}>
-                      Mosaic keeps its interface colors restrained so the colors attached to
-                      emotional entries can remain the most expressive part of the experience.
-                    </p>
-
-                    <ul className={styles.colorTokenGrid} aria-label="Mosaic system palette">
-                      {SYSTEM_PALETTE_TOKENS.map((token) => (
-                        <li className={styles.colorToken} key={token.name}>
-                          <span
-                            className={styles.colorTokenSwatch}
-                            style={getMosaicTileColorStyle(token.color)}
-                          />
-                          <span>
-                            <span className={styles.colorTokenName}>{token.name}</span>
-                            <span className={styles.colorTokenValue}>{token.color}</span>
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className={styles.foundationGroup}>
-                    <p className={styles.foundationEyebrow}>Emotion families</p>
-                    <p className={styles.foundationText}>
-                      Color variation belongs to emotional entries, while the surrounding interface
-                      stays intentionally quiet.
-                    </p>
-
-                    <ul
-                      className={styles.emotionColorGrid}
-                      aria-label="Mosaic emotion family colors"
-                    >
-                      {EMOTION_SWATCH_ORDER.map((emotionId) => {
-                        const emotion = getMosaicEmotionFamily(emotionId);
-                        const color = emotion.scale[0];
-
-                        return (
-                          <li className={styles.emotionColorItem} key={emotion.id}>
-                            <span
-                              className={styles.emotionColorSwatch}
-                              style={getMosaicTileColorStyle(color)}
-                            />
-                            <span>
-                              <span className={styles.emotionColorName}>{emotion.label}</span>
-                              <span className={styles.emotionColorValue}>{color}</span>
-                            </span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className={styles.visualFoundationColumn}>
-                  <div className={styles.foundationGroup}>
-                    <p className={styles.foundationEyebrow}>Type roles</p>
-                    <h3 className={styles.foundationTitle}>Editorial warmth, clear utility</h3>
-                    <p className={styles.foundationText}>
-                      Typography separates reflection from supporting information without making the
-                      interface feel ornamental.
-                    </p>
-
-                    <div className={styles.typeRoleList}>
-                      {TYPE_ROLE_ROWS.map((row) => (
-                        <div className={styles.typeRole} key={row.role} data-role={row.role}>
-                          <span>{row.label}</span>
-                          <strong>{row.sample}</strong>
-                          <p>{row.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <section className={styles.visualSubsection}>
-                <h3 className={styles.visualSubheading}>Quiet interface, expressive emotion</h3>
-
-                <div className={styles.visualFeatureLayout}>
-                  <div>
-                    <p>
-                      Mosaic keeps the interface deliberately quiet. The black canvas, softened
-                      surfaces, and restrained gold accent create hierarchy without competing with
-                      the colors attached to each emotion.
-                    </p>
-                    <p>
-                      The Today screen is the clearest expression of that balance. Emotion colors
-                      carry the personal signal, while the surrounding interface makes space for the
-                      moment instead of treating it like a dashboard.
-                    </p>
-                  </div>
-
-                  <MosaicScreenshot
-                    src={MOSAIC_SCREENSHOTS.today.src}
-                    alt={MOSAIC_SCREENSHOTS.today.alt}
-                    sizes="(min-width: 760px) 24rem, 100vw"
-                  />
-                </div>
-              </section>
-
-              <section className={styles.visualSubsection}>
-                <h3 className={styles.visualSubheading}>Insights without a dashboard</h3>
-                <p>
-                  Insights are designed as a paced reflection rather than one dense dashboard.
-                  Emotional summaries, recurring feelings, and timing patterns are grouped into
-                  distinct moments, so people can take in what stands out without having to decode
-                  everything at once.
+            <div className={`${styles.dividedList} ${styles.interactionDecisionList}`}>
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Start simple</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Start simple, add detail when it helps
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  People do not always need the same level of emotional specificity. Mosaic begins
+                  with seven emotion families, then lets someone explore more specific feelings only
+                  when they want to. The default stays quick, without treating every day as simple.
                 </p>
 
-                <div className={styles.visualScreensPair}>
-                  {INSIGHT_SCREENSHOTS.map((screenshot) => (
+                <div className={styles.interactionFlowVisual}>
+                  {CHECK_IN_SCREENSHOTS.map((screenshot) => (
+                    <MosaicScreenshot
+                      key={screenshot.alt}
+                      src={screenshot.src}
+                      alt={screenshot.alt}
+                      sizes="(min-width: 680px) 33vw, 100vw"
+                    />
+                  ))}
+                </div>
+
+                <p className={styles.interactionFlowCaption}>
+                  Every check-in starts with a broad choice. More specific feelings, notes, and
+                  context tags remain available without becoming required steps.
+                </p>
+              </article>
+
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Represent change</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Let a day hold more than one feeling
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  A single label cannot always represent a full day. Mosaic allows up to four
+                  check-ins, then combines them into one daily tile. That makes emotional shifts
+                  visible without turning a day into a scattered list of separate logs.
+                </p>
+
+                <div>
+                  <div
+                    className={styles.tileProgression}
+                    role="img"
+                    aria-label="Daily tile progression showing one to four emotion segments"
+                  >
+                    <MosaicTile
+                      colors={[getMosaicEmotionColor('happy')]}
+                      variant="progression"
+                      ariaHidden
+                    />
+                    <MosaicTile
+                      colors={[getMosaicEmotionColor('happy'), getMosaicEmotionColor('calm')]}
+                      variant="progression"
+                      ariaHidden
+                    />
+                    <MosaicTile
+                      colors={[
+                        getMosaicEmotionColor('happy'),
+                        getMosaicEmotionColor('sad'),
+                        getMosaicEmotionColor('calm'),
+                      ]}
+                      variant="progression"
+                      ariaHidden
+                    />
+                    <MosaicTile
+                      colors={[
+                        getMosaicEmotionColor('happy'),
+                        getMosaicEmotionColor('calm'),
+                        getMosaicEmotionColor('sad'),
+                        getMosaicEmotionColor('surprised'),
+                      ]}
+                      variant="progression"
+                      ariaHidden
+                    />
+                  </div>
+
+                  <p className={styles.tileProgressionCaption}>
+                    Each new check-in adds another segment, so one tile can hold the shape of a
+                    changing day.
+                  </p>
+                </div>
+              </article>
+
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Reflect gently</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Turn reflection into a pattern, not a score
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  Check-ins become more useful when they can be revisited in context. Monthly and
+                  yearly mosaic views help people step back from individual moments and notice what
+                  has been showing up over time, without turning reflection into a score.
+                </p>
+
+                <div className={styles.reflectionViewsPair}>
+                  {REFLECTION_VIEW_SCREENSHOTS.map((screenshot) => (
                     <MosaicScreenshot
                       key={screenshot.alt}
                       src={screenshot.src}
@@ -743,155 +588,291 @@ export default function MosaicCaseStudy() {
                     />
                   ))}
                 </div>
-              </section>
 
-              <section className={styles.visualSubsection}>
-                <h3 className={styles.visualSubheading}>Designed to adapt</h3>
+                <p className={styles.interactionFlowCaption}>
+                  The monthly view keeps individual days legible. The yearly view makes the longer
+                  rhythm of emotional reflection easier to see at a glance.
+                </p>
+              </article>
+            </div>
+          </CaseStudySection>
 
-                <div className={styles.accessibilityLayout}>
-                  <div>
-                    <p>
-                      Accessibility is part of the same product system, not a separate version of
-                      Mosaic. High-contrast text makes subtle text and borders easier to see.
-                      Reduced motion removes screen transitions and heavier animations. Haptic
-                      feedback can also be turned off entirely.
-                    </p>
-                    <p>
-                      Those settings let the interface adapt to different needs while preserving the
-                      same core experience.
-                    </p>
-                  </div>
+          <CaseStudySection title="Designing the visual system" spacing="spacious">
+            <p className={styles.visualSystemLead}>
+              Mosaic uses a dark, quiet foundation so emotional reflection can feel personal rather
+              than clinical. The interface stays restrained while color, type, and small moments of
+              motion give each check-in its own presence.
+            </p>
 
-                  <MosaicScreenshot
-                    src={MOSAIC_SCREENSHOTS.accessibility.src}
-                    alt={MOSAIC_SCREENSHOTS.accessibility.alt}
-                    sizes="(min-width: 760px) 24rem, 100vw"
-                  />
+            <div className={styles.visualFoundationsPanel}>
+              <div className={styles.visualFoundationColumn}>
+                <div className={styles.foundationGroup}>
+                  <p className={styles.foundationEyebrow}>System palette</p>
+                  <h3 className={styles.foundationTitle}>Quiet surfaces, clear hierarchy</h3>
+                  <p className={styles.foundationText}>
+                    Mosaic keeps its interface colors restrained so the colors attached to emotional
+                    entries can remain the most expressive part of the experience.
+                  </p>
+
+                  <ul className={styles.colorTokenGrid} aria-label="Mosaic system palette">
+                    {SYSTEM_PALETTE_TOKENS.map((token) => (
+                      <li className={styles.colorToken} key={token.name}>
+                        <span
+                          className={styles.colorTokenSwatch}
+                          style={getMosaicTileColorStyle(token.color)}
+                        />
+                        <span>
+                          <span className={styles.colorTokenName}>{token.name}</span>
+                          <span className={styles.colorTokenValue}>{token.color}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </section>
-            </CaseStudySection>
 
-            <CaseStudySection title="Architecture" spacing="spacious">
-              <div className={styles.architectureContent}>
-                <p className={styles.architectureTechLine}>
-                  <span className={styles.architectureTechLabel}>Built with</span>
-                  <span className={styles.architectureTechValue}>
-                    React Native · Expo · TypeScript · SQLite + Drizzle · Zustand · MMKV · Unistyles
-                  </span>
-                </p>
+                <div className={styles.foundationGroup}>
+                  <p className={styles.foundationEyebrow}>Emotion families</p>
+                  <p className={styles.foundationText}>
+                    Color variation belongs to emotional entries, while the surrounding interface
+                    stays intentionally quiet.
+                  </p>
 
-                <p className={styles.architectureLead}>
-                  The technical work focused on making a simple check-in useful beyond the moment it
-                  is saved. A single entry can shape the day’s mosaic and contribute to longer-term
-                  patterns, while Mosaic keeps the emotional language consistent across the app.
-                </p>
+                  <ul className={styles.emotionColorGrid} aria-label="Mosaic emotion family colors">
+                    {EMOTION_SWATCH_ORDER.map((emotionId) => {
+                      const emotion = getMosaicEmotionFamily(emotionId);
+                      const color = emotion.scale[0];
 
-                <div className={styles.architecturePanel}>
-                  <div className={styles.architecturePanelHeader}>
-                    <h3 className={styles.architecturePanelTitle}>
-                      One check-in, many ways to reflect
-                    </h3>
-                  </div>
+                      return (
+                        <li className={styles.emotionColorItem} key={emotion.id}>
+                          <span
+                            className={styles.emotionColorSwatch}
+                            style={getMosaicTileColorStyle(color)}
+                          />
+                          <span>
+                            <span className={styles.emotionColorName}>{emotion.label}</span>
+                            <span className={styles.emotionColorValue}>{color}</span>
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
 
-                  <div className={styles.architecturePanelGrid}>
-                    {ARCHITECTURE_COLUMNS.map((column) => (
-                      <div className={styles.architecturePanelColumn} key={column.eyebrow}>
-                        <p className={styles.architectureEyebrow}>{column.eyebrow}</p>
-                        <h4 className={styles.architectureColumnTitle}>{column.title}</h4>
-                        <p className={styles.architectureColumnText}>{column.text}</p>
+              <div className={styles.visualFoundationColumn}>
+                <div className={styles.foundationGroup}>
+                  <p className={styles.foundationEyebrow}>Type roles</p>
+                  <h3 className={styles.foundationTitle}>Editorial warmth, clear utility</h3>
+                  <p className={styles.foundationText}>
+                    Typography separates reflection from supporting information without making the
+                    interface feel ornamental.
+                  </p>
 
-                        {column.kind === 'data' ? (
-                          <dl className={styles.architectureDataList} aria-label={column.ariaLabel}>
-                            {column.items.map((item) => (
-                              <div className={styles.architectureDataItem} key={item.label}>
-                                <dt className={styles.architectureDataLabel}>{item.label}</dt>
-                                <dd className={styles.architectureDataValue}>{item.value}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        ) : (
-                          <ul className={styles.architectureReasonList}>
-                            {column.reasons.map((reason) => (
-                              <li className={styles.architectureReasonItem} key={reason}>
-                                {reason}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
+                  <div className={styles.typeRoleList}>
+                    {TYPE_ROLE_ROWS.map((row) => (
+                      <div className={styles.typeRole} key={row.role} data-role={row.role}>
+                        <span>{row.label}</span>
+                        <strong>{row.sample}</strong>
+                        <p>{row.description}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                <p className={styles.architecturePostCopy}>
-                  Instead of copying a label or color into every check-in, Mosaic looks up those
-                  display details when it needs them. That leaves room to refine wording, add
-                  translations, or adjust palettes over time without rewriting someone’s history.
-                </p>
-
-                <CaseStudyCallout label="Key takeaway">
-                  One small check-in can stay useful across the mosaic, insights, and future product
-                  improvements without changing someone’s history.
-                </CaseStudyCallout>
               </div>
-            </CaseStudySection>
+            </div>
 
-            <CaseStudySection title="Early release, ongoing learning" spacing="spacious">
+            <section className={styles.visualSubsection}>
+              <h3 className={styles.visualSubheading}>Quiet interface, expressive emotion</h3>
+
+              <div className={styles.visualFeatureLayout}>
+                <div>
+                  <p>
+                    Mosaic keeps the interface deliberately quiet. The black canvas, softened
+                    surfaces, and restrained gold accent create hierarchy without competing with the
+                    colors attached to each emotion.
+                  </p>
+                  <p>
+                    The Today screen is the clearest expression of that balance. Emotion colors
+                    carry the personal signal, while the surrounding interface makes space for the
+                    moment instead of treating it like a dashboard.
+                  </p>
+                </div>
+
+                <MosaicScreenshot
+                  src={MOSAIC_SCREENSHOTS.today.src}
+                  alt={MOSAIC_SCREENSHOTS.today.alt}
+                  sizes="(min-width: 760px) 24rem, 100vw"
+                />
+              </div>
+            </section>
+
+            <section className={styles.visualSubsection}>
+              <h3 className={styles.visualSubheading}>Insights without a dashboard</h3>
               <p>
-                Mosaic is live and still early. The next phase is focused on learning where more
-                depth would genuinely help, while keeping the core check-in private, lightweight,
-                and easy to return to.
+                Insights are designed as a paced reflection rather than one dense dashboard.
+                Emotional summaries, recurring feelings, and timing patterns are grouped into
+                distinct moments, so people can take in what stands out without having to decode
+                everything at once.
               </p>
 
-              <div className={`${styles.dividedList} ${styles.nextDirectionsList}`}>
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Capacity</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Validate room for a changing day
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    The current four-entry limit keeps a day easy to read at a glance. I&apos;ll use
-                    privacy-conscious interaction signals to understand whether people reach that
-                    limit or want to capture more moments. A higher limit is worth testing only if
-                    the daily mosaic can still make those moments easy to read.
-                  </p>
-                </article>
+              <div className={styles.visualScreensPair}>
+                {INSIGHT_SCREENSHOTS.map((screenshot) => (
+                  <MosaicScreenshot
+                    key={screenshot.alt}
+                    src={screenshot.src}
+                    alt={screenshot.alt}
+                    sizes="(min-width: 680px) 50vw, 100vw"
+                  />
+                ))}
+              </div>
+            </section>
 
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Private insights</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Explore AI-assisted pattern reflection
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    Explore optional AI-assisted summaries that help people notice recurring
-                    emotions, shifts over time, and meaningful timing patterns in their own history.
-                    The goal is to turn existing check-ins into clearer, more useful observations,
-                    with on-device processing where supported.
-                  </p>
-                </article>
+            <section className={styles.visualSubsection}>
+              <h3 className={styles.visualSubheading}>Designed to adapt</h3>
 
-                <article className={styles.interactionDecision}>
-                  <p className={styles.interactionDecisionEyebrow}>Color access</p>
-                  <h3 className={styles.interactionDecisionTitle}>
-                    Make color patterns more accessible
-                  </h3>
-                  <p className={styles.interactionDecisionText}>
-                    Explore alternative emotion palettes and supporting visual cues so Mosaic&apos;s
-                    patterns remain easy to distinguish across different forms of color vision. The
-                    goal is to preserve color as a meaningful part of reflection while making the
-                    system easier for more people to read.
+              <div className={styles.accessibilityLayout}>
+                <div>
+                  <p>
+                    Accessibility is part of the same product system, not a separate version of
+                    Mosaic. High-contrast text makes subtle text and borders easier to see. Reduced
+                    motion removes screen transitions and heavier animations. Haptic feedback can
+                    also be turned off entirely.
                   </p>
-                </article>
+                  <p>
+                    Those settings let the interface adapt to different needs while preserving the
+                    same core experience.
+                  </p>
+                </div>
+
+                <MosaicScreenshot
+                  src={MOSAIC_SCREENSHOTS.accessibility.src}
+                  alt={MOSAIC_SCREENSHOTS.accessibility.alt}
+                  sizes="(min-width: 760px) 24rem, 100vw"
+                />
+              </div>
+            </section>
+          </CaseStudySection>
+
+          <CaseStudySection title="Architecture" spacing="spacious">
+            <div className={styles.architectureContent}>
+              <p className={styles.architectureTechLine}>
+                <span className={styles.architectureTechLabel}>Built with</span>
+                <span className={styles.architectureTechValue}>
+                  React Native · Expo · TypeScript · SQLite + Drizzle · Zustand · MMKV · Unistyles
+                </span>
+              </p>
+
+              <p className={styles.architectureLead}>
+                The technical work focused on making a simple check-in useful beyond the moment it
+                is saved. A single entry can shape the day’s mosaic and contribute to longer-term
+                patterns, while Mosaic keeps the emotional language consistent across the app.
+              </p>
+
+              <div className={styles.architecturePanel}>
+                <div className={styles.architecturePanelHeader}>
+                  <h3 className={styles.architecturePanelTitle}>
+                    One check-in, many ways to reflect
+                  </h3>
+                </div>
+
+                <div className={styles.architecturePanelGrid}>
+                  {ARCHITECTURE_COLUMNS.map((column) => (
+                    <div className={styles.architecturePanelColumn} key={column.eyebrow}>
+                      <p className={styles.architectureEyebrow}>{column.eyebrow}</p>
+                      <h4 className={styles.architectureColumnTitle}>{column.title}</h4>
+                      <p className={styles.architectureColumnText}>{column.text}</p>
+
+                      {column.kind === 'data' ? (
+                        <dl className={styles.architectureDataList} aria-label={column.ariaLabel}>
+                          {column.items.map((item) => (
+                            <div className={styles.architectureDataItem} key={item.label}>
+                              <dt className={styles.architectureDataLabel}>{item.label}</dt>
+                              <dd className={styles.architectureDataValue}>{item.value}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      ) : (
+                        <ul className={styles.architectureReasonList}>
+                          {column.reasons.map((reason) => (
+                            <li className={styles.architectureReasonItem} key={reason}>
+                              {reason}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
 
+              <p className={styles.architecturePostCopy}>
+                Instead of copying a label or color into every check-in, Mosaic looks up those
+                display details when it needs them. That leaves room to refine wording, add
+                translations, or adjust palettes over time without rewriting someone’s history.
+              </p>
+
               <CaseStudyCallout label="Key takeaway">
-                Mosaic&apos;s next phase is not about more tracking. It is about learning which
-                additions make private reflection clearer without making the daily ritual heavier.
+                One small check-in can stay useful across the mosaic, insights, and future product
+                improvements without changing someone’s history.
               </CaseStudyCallout>
-            </CaseStudySection>
-          </div>
+            </div>
+          </CaseStudySection>
+
+          <CaseStudySection title="Early release, ongoing learning" spacing="spacious">
+            <p>
+              Mosaic is live and still early. The next phase is focused on learning where more depth
+              would genuinely help, while keeping the core check-in private, lightweight, and easy
+              to return to.
+            </p>
+
+            <div className={`${styles.dividedList} ${styles.nextDirectionsList}`}>
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Capacity</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Validate room for a changing day
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  The current four-entry limit keeps a day easy to read at a glance. I&apos;ll use
+                  privacy-conscious interaction signals to understand whether people reach that
+                  limit or want to capture more moments. A higher limit is worth testing only if the
+                  daily mosaic can still make those moments easy to read.
+                </p>
+              </article>
+
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Private insights</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Explore AI-assisted pattern reflection
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  Explore optional AI-assisted summaries that help people notice recurring emotions,
+                  shifts over time, and meaningful timing patterns in their own history. The goal is
+                  to turn existing check-ins into clearer, more useful observations, with on-device
+                  processing where supported.
+                </p>
+              </article>
+
+              <article className={styles.interactionDecision}>
+                <p className={styles.interactionDecisionEyebrow}>Color access</p>
+                <h3 className={styles.interactionDecisionTitle}>
+                  Make color patterns more accessible
+                </h3>
+                <p className={styles.interactionDecisionText}>
+                  Explore alternative emotion palettes and supporting visual cues so Mosaic&apos;s
+                  patterns remain easy to distinguish across different forms of color vision. The
+                  goal is to preserve color as a meaningful part of reflection while making the
+                  system easier for more people to read.
+                </p>
+              </article>
+            </div>
+
+            <CaseStudyCallout label="Key takeaway">
+              Mosaic&apos;s next phase is not about more tracking. It is about learning which
+              additions make private reflection clearer without making the daily ritual heavier.
+            </CaseStudyCallout>
+          </CaseStudySection>
         </div>
-      </main>
-    </CaseStudyLayoutGroup>
+      </div>
+    </main>
   );
 }
