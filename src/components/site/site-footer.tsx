@@ -3,16 +3,14 @@ import Link from 'next/link';
 import styles from './site-footer.module.css';
 
 const footerLinks = [
-  { label: 'Craft', href: '#craft' },
-  { label: 'Case Studies', href: '#case-studies' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
-  { label: 'Back to top', href: '#home' },
+  { label: 'Craft', href: '/#craft' },
+  { label: 'Case Studies', href: '/#case-studies' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
+  { label: 'Back to top', href: '/#home' },
 ];
 
 export default function SiteFooter() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
@@ -30,8 +28,6 @@ export default function SiteFooter() {
             ))}
           </ul>
         </nav>
-
-        <p className={styles.copyright}>© {currentYear}</p>
       </div>
     </footer>
   );

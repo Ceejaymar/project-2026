@@ -1,6 +1,6 @@
 @layer components {
   .section {
-    padding-block: var(--space-9);
+    padding-block: var(--section-padding-block);
   }
 
   .header {
@@ -44,6 +44,7 @@
     isolation: isolate;
     overflow: hidden;
 
+    display: grid;
     min-height: 24rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
@@ -74,9 +75,8 @@
     z-index: 2;
 
     display: grid;
-    align-content: space-between;
+    grid-template-rows: auto 1fr;
     min-height: 100%;
-    height: 100%;
     padding: var(--space-4);
   }
 
@@ -96,14 +96,16 @@
 
     background: color-mix(in srgb, var(--color-canvas), transparent 64%);
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     mask-image: linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
   }
 
   .projectDetails {
+    align-self: end;
+
     display: grid;
     gap: var(--space-3);
 
@@ -112,8 +114,8 @@
 
     background: color-mix(in srgb, var(--color-canvas), transparent 56%);
 
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     mask-image: linear-gradient(to top, black 0%, black 84%, transparent 100%);
     -webkit-mask-image: linear-gradient(to top, black 0%, black 84%, transparent 100%);
@@ -123,6 +125,10 @@
     transition:
       opacity var(--duration-base) var(--ease-out),
       transform var(--duration-base) var(--ease-out);
+  }
+
+  .item[data-preview-kind="mobile"] .project {
+    min-height: clamp(34rem, 135vw, 42rem);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -145,7 +151,8 @@
     gap: var(--space-3);
   }
 
-  .links a {
+  .links a,
+  .links a:visited {
     color: var(--color-text-primary);
     font-size: var(--text-label);
     line-height: var(--leading-label);
@@ -183,6 +190,48 @@
     .count {
       padding-bottom: 0.35rem;
       text-align: right;
+    }
+  }
+
+  @media (min-width: 48rem) and (max-width: 55.999rem) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        "desktop desktop"
+        "archive mobile";
+      align-items: stretch;
+    }
+
+    .item[data-preview-kind="desktop"] {
+      grid-area: desktop;
+    }
+
+    .item[data-preview-kind="mobile"] {
+      grid-area: mobile;
+    }
+
+    .archiveItem {
+      grid-area: archive;
+      align-self: stretch;
+
+      display: grid;
+      place-items: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .item[data-preview-kind="desktop"] .project {
+      min-height: 28rem;
+      aspect-ratio: 16 / 10;
+    }
+
+    .item[data-preview-kind="mobile"] .project {
+      height: 100%;
+      min-height: 34rem;
+      aspect-ratio: auto;
+    }
+
+    .archiveText {
+      font-size: clamp(1.35rem, 3.4vw, 2rem);
     }
   }
 
@@ -238,7 +287,8 @@
     text-wrap: balance;
   }
 
-  .archiveText a {
+  .archiveText a,
+  .archiveText a:visited {
     color: color-mix(in srgb, var(--color-accent), var(--color-text-primary) 22%);
     text-decoration: none;
   }

@@ -5,5 +5,5 @@
 
 .section {
   min-height: 70vh;
-  padding-block: var(--space-8);
+  padding-block: var(--section-padding-block);
 }

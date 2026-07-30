@@ -7,6 +7,7 @@ import '@/styles/tokens.css';
 import '@/styles/a11y.css';
 import '@/styles/themes.css';
 import '@/styles/globals.css';
+
 import { NoiseFilter } from '@/components/effects/noise-filter';
 import SiteFooter from '@/components/site/site-footer';
 import { geistMono, geistSans, instrumentSerif } from '@/styles/fonts';
@@ -26,7 +27,6 @@ export default function RootLayout({
   return (
     <html
       suppressHydrationWarning
-      data-scroll-behavior="smooth"
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
     >

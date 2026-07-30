@@ -13,7 +13,7 @@ export default function ProjectsPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link className={styles.backHomeLink} href="/#projects">
+        <Link className={styles.backHomeLink} href="/#case-studies">
           Back to home
         </Link>
 

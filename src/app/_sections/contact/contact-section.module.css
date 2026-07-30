@@ -1,6 +1,6 @@
 @layer components {
   .section {
-    padding-block: var(--space-9);
+    padding-block: var(--section-padding-block);
   }
 
   .header {
@@ -31,18 +31,22 @@
   }
 
   .statement {
-    max-width: 12ch;
+    max-width: 15ch;
+    margin-inline: auto;
     color: var(--color-text-primary);
     font-size: var(--text-hero);
     font-family: var(--font-display);
     line-height: var(--leading-hero);
     letter-spacing: var(--tracking-title);
+    text-align: center;
   }
 
   .panel {
     display: grid;
     gap: var(--space-7);
     align-content: start;
+    justify-items: center;
+    text-align: center;
   }
 
   .availability {
@@ -55,6 +59,7 @@
   .emailGroup {
     display: grid;
     gap: var(--space-2);
+    justify-items: center;
   }
 
   .emailButton {
@@ -92,7 +97,7 @@
     overflow-wrap: anywhere;
 
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-size: clamp(2.15rem, 9vw, 3rem);
     line-height: 0.95;
     letter-spacing: var(--tracking-title);
     text-decoration: underline;
@@ -165,8 +170,6 @@
       transform var(--duration-base) var(--ease-out);
   }
 
-  .emailButton:hover .tooltip,
-  .emailButton:focus-visible .tooltip,
   .emailButton[data-copy-status="copied"] .tooltip,
   .emailButton[data-copy-status="failed"] .tooltip {
     opacity: 1;
@@ -189,8 +192,19 @@
       grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
     }
 
+    .statement {
+      margin-inline: 0;
+      text-align: left;
+    }
+
     .panel {
+      justify-items: start;
+      text-align: left;
       padding-top: var(--space-5);
+    }
+
+    .emailGroup {
+      justify-items: start;
     }
   }
 
