@@ -17,7 +17,7 @@ export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
       ? 'Email address copied'
       : copyStatus === 'failed'
         ? 'Could not copy email'
-        : 'Click to copy email';
+        : null;
 
   async function copyEmail() {
     let didCopy = false;
@@ -57,9 +57,11 @@ export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
           <CopyIcon weight="regular" size={28} />
         </span>
 
-        <span className={styles.tooltip} aria-hidden="true">
-          {tooltipText}
-        </span>
+        {tooltipText ? (
+          <span className={styles.tooltip} aria-hidden="true">
+            {tooltipText}
+          </span>
+        ) : null}
 
         <span className="visually-hidden">Copy email address</span>
       </button>

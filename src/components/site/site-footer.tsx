@@ -30,8 +30,6 @@ export default function SiteFooter() {
             ))}
           </ul>
         </nav>
-
-        <p className={styles.copyright}>© {currentYear}</p>
       </div>
     </footer>
   );

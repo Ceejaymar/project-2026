@@ -1,15 +1,17 @@
 @layer components {
   .hero {
     display: grid;
-    gap: var(--space-7);
+    row-gap: clamp(1.5rem, 4vw, 2.75rem);
+    column-gap: var(--space-7);
     align-items: center;
-    min-height: calc(100svh - 5rem);
-    padding-block: var(--space-8);
+
+    min-height: auto;
+    padding-block: clamp(1rem, 3vw, 2.5rem) 0;
   }
 
   .content {
     display: grid;
-    gap: var(--space-6);
+    gap: clamp(var(--space-4), 3vw, var(--space-6));
     max-width: 44rem;
   }
 
@@ -17,17 +19,22 @@
     font-size: var(--text-hero);
     line-height: var(--leading-hero);
     letter-spacing: var(--tracking-title);
+    text-align: center;
+    text-wrap: balance;
   }
 
   .lead {
     max-width: 42rem;
     font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: var(--leading-body);
   }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4);
     align-items: center;
+    justify-content: center;
   }
 
   .primaryAction {
@@ -52,7 +59,7 @@
     isolation: isolate;
     overflow: hidden;
 
-    width: min(10rem, 58vw);
+    width: min(9.5rem, 54vw);
     aspect-ratio: 4 / 5;
     border-radius: var(--radius-sm);
   }
@@ -78,7 +85,6 @@
         color-mix(in srgb, var(--color-canvas), transparent 8%) 100%
       );
     filter: url("#noise-filter");
-
     clip-path: inset(0 round var(--radius-sm));
   }
 
@@ -101,6 +107,8 @@
     inset: var(--portrait-image-inset);
     z-index: 2;
     isolation: isolate;
+    transform: scale(var(--portrait-image-scale));
+    transform-origin: center bottom;
   }
 
   .portraitImage img {
@@ -112,6 +120,7 @@
 
   .mobilePortrait {
     justify-self: center;
+    margin-bottom: calc(var(--space-2) * -1);
   }
 
   .desktopPortrait {
@@ -119,9 +128,26 @@
     height: 100%;
   }
 
+  .marqueeWrapper {
+    grid-column: 1 / -1;
+    width: 100%;
+    align-self: end;
+    margin-top: clamp(0.25rem, 2vw, 1rem);
+  }
+
   @media (min-width: 56rem) {
     .hero {
-      grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(16rem, 0.8fr);
+      row-gap: var(--space-5);
+      padding-block-start: clamp(1.75rem, 3vw, 3rem);
+    }
+
+    .title {
+      text-align: left;
+    }
+
+    .actions {
+      justify-content: flex-start;
     }
 
     .mobilePortrait {
@@ -130,12 +156,15 @@
 
     .visual {
       display: block;
-      min-height: 32rem;
+      justify-self: end;
+      width: 100%;
+      max-width: 28rem;
+      min-height: clamp(25rem, 36vw, 31rem);
     }
 
     .desktopPortrait {
       width: 100%;
-      min-height: 32rem;
+      min-height: clamp(25rem, 36vw, 31rem);
       aspect-ratio: 4 / 4.5;
       border-radius: var(--radius-sm);
     }
@@ -145,9 +174,24 @@
     }
   }
 
-  .marqueeWrapper {
-    grid-column: 1 / -1;
-    width: 100%;
-    align-self: end;
+  @media (min-width: 72rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+      padding-block-start: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .visual {
+      max-width: 30rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .portraitImage {
+      transform: none;
+    }
+
+    .portraitImage img {
+      filter: saturate(0.7) contrast(1.02) brightness(0.98);
+    }
   }
 }

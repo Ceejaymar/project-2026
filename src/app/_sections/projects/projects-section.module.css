@@ -96,8 +96,8 @@
 
     background: color-mix(in srgb, var(--color-canvas), transparent 64%);
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     mask-image: linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 84%, transparent 100%);
@@ -112,8 +112,8 @@
 
     background: color-mix(in srgb, var(--color-canvas), transparent 56%);
 
-    backdrop-filter: blur(50px);
-    -webkit-backdrop-filter: blur(50px);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     mask-image: linear-gradient(to top, black 0%, black 84%, transparent 100%);
     -webkit-mask-image: linear-gradient(to top, black 0%, black 84%, transparent 100%);
@@ -123,6 +123,10 @@
     transition:
       opacity var(--duration-base) var(--ease-out),
       transform var(--duration-base) var(--ease-out);
+  }
+
+  .item[data-preview-kind="mobile"] .project {
+    min-height: clamp(34rem, 135vw, 42rem);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -145,7 +149,8 @@
     gap: var(--space-3);
   }
 
-  .links a {
+  .links a,
+  .links a:visited {
     color: var(--color-text-primary);
     font-size: var(--text-label);
     line-height: var(--leading-label);
@@ -238,7 +243,8 @@
     text-wrap: balance;
   }
 
-  .archiveText a {
+  .archiveText a,
+  .archiveText a:visited {
     color: color-mix(in srgb, var(--color-accent), var(--color-text-primary) 22%);
     text-decoration: none;
   }

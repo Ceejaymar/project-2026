@@ -7,6 +7,8 @@ import '@/styles/tokens.css';
 import '@/styles/a11y.css';
 import '@/styles/themes.css';
 import '@/styles/globals.css';
+
+import ViewportDebugger from '@/components/dev/viewport-debugger';
 import { NoiseFilter } from '@/components/effects/noise-filter';
 import SiteFooter from '@/components/site/site-footer';
 import { geistMono, geistSans, instrumentSerif } from '@/styles/fonts';
@@ -42,6 +44,7 @@ export default function RootLayout({
           <SiteNavigation />
           {children}
           <SiteFooter />
+          <ViewportDebugger />
         </ThemeProvider>
       </body>
     </html>
