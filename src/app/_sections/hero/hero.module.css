@@ -11,6 +11,8 @@
 
   .content {
     display: grid;
+    justify-self: center;
+    width: 100%;
     gap: clamp(var(--space-4), 3vw, var(--space-6));
     max-width: 44rem;
   }
@@ -24,9 +26,13 @@
   }
 
   .lead {
-    max-width: 42rem;
+    width: 100%;
+    max-width: 38rem;
+    margin-inline: auto;
     font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: var(--leading-body);
+    text-align: center;
+    text-wrap: pretty;
   }
 
   .actions {
@@ -143,6 +149,15 @@
     }
 
     .title {
+      text-align: left;
+    }
+
+    .content {
+      justify-self: stretch;
+    }
+
+    .lead {
+      margin-inline: 0;
       text-align: left;
     }
 

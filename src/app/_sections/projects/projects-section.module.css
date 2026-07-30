@@ -44,6 +44,7 @@
     isolation: isolate;
     overflow: hidden;
 
+    display: grid;
     min-height: 24rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
@@ -74,9 +75,8 @@
     z-index: 2;
 
     display: grid;
-    align-content: space-between;
+    grid-template-rows: auto 1fr;
     min-height: 100%;
-    height: 100%;
     padding: var(--space-4);
   }
 
@@ -104,6 +104,8 @@
   }
 
   .projectDetails {
+    align-self: end;
+
     display: grid;
     gap: var(--space-3);
 
@@ -188,6 +190,48 @@
     .count {
       padding-bottom: 0.35rem;
       text-align: right;
+    }
+  }
+
+  @media (min-width: 48rem) and (max-width: 55.999rem) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas:
+        "desktop desktop"
+        "archive mobile";
+      align-items: stretch;
+    }
+
+    .item[data-preview-kind="desktop"] {
+      grid-area: desktop;
+    }
+
+    .item[data-preview-kind="mobile"] {
+      grid-area: mobile;
+    }
+
+    .archiveItem {
+      grid-area: archive;
+      align-self: stretch;
+
+      display: grid;
+      place-items: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .item[data-preview-kind="desktop"] .project {
+      min-height: 28rem;
+      aspect-ratio: 16 / 10;
+    }
+
+    .item[data-preview-kind="mobile"] .project {
+      height: 100%;
+      min-height: 34rem;
+      aspect-ratio: auto;
+    }
+
+    .archiveText {
+      font-size: clamp(1.35rem, 3.4vw, 2rem);
     }
   }
 
