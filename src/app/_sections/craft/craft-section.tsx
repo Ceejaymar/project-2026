@@ -12,7 +12,7 @@ export default function CraftSection() {
 
         <p className={styles.kicker}>Selected Craft</p>
 
-        <p className={styles.count}>06 pieces</p>
+        <p className={styles.count}>01 piece</p>
       </div>
 
       <ul className={styles.grid}>
