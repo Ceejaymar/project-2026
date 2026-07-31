@@ -139,6 +139,7 @@
   .links a:visited {
     position: relative;
     z-index: 4;
+    pointer-events: auto;
 
     color: white;
     font-size: var(--text-label);

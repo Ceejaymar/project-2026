@@ -8,6 +8,22 @@ export default function ReduceMotionToggle() {
   const [isReduced, setIsReduced] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function syncPreference() {
+      setIsReduced(mediaQuery.matches);
+    }
+
+    syncPreference();
+
+    mediaQuery.addEventListener('change', syncPreference);
+
+    return () => {
+      mediaQuery.removeEventListener('change', syncPreference);
+    };
+  }, []);
+
+  useEffect(() => {
     document.documentElement.dataset.craftReduceMotion = String(isReduced);
 
     return () => {
