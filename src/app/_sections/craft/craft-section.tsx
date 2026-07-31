@@ -19,7 +19,7 @@ export default function CraftSection() {
         {craftItems.map((item) => (
           <li className={styles.item} key={item.title}>
             <article className={styles.card}>
-              <Link className={styles.cardLink} href={item.href}>
+              <Link className={styles.cardLink} href={`/craft/${item.slug}`}>
                 <span className="visually-hidden">Open live demo for {item.title}</span>
               </Link>
 
@@ -33,7 +33,7 @@ export default function CraftSection() {
                     <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
                       See Code
                     </a>
-                    <Link href={item.href}>Live </Link>
+                    <Link href={`/craft/${item.slug}`}>Live </Link>
                   </div>
                 </div>
               </div>
