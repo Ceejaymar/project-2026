@@ -5,7 +5,7 @@ export const craftItems = [
     description:
       'A polished accordion interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
     codeHref: 'https://github.com',
-    previewSrc: '',
+    previewSrc: '/videos/accordion.mp4',
     details: [
       'Built around native button controls for predictable keyboard interaction.',
       'Keeps the interaction focused by allowing one section to remain open at a time.',

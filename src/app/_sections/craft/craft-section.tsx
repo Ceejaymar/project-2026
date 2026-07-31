@@ -23,6 +23,17 @@ export default function CraftSection() {
                 <span className="visually-hidden">Open live demo for {item.title}</span>
               </Link>
 
+              {item.previewSrc ? (
+                <video
+                  className={styles.preview}
+                  src={item.previewSrc}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : null}
+
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>{item.title}</h3>
 
@@ -33,7 +44,7 @@ export default function CraftSection() {
                     <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
                       See Code
                     </a>
-                    <Link href={`/craft/${item.slug}`}>Live </Link>
+                    <Link href={`/craft/${item.slug}`}>Live</Link>
                   </div>
                 </div>
               </div>
