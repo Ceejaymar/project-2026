@@ -1,38 +1,17 @@
 export const craftItems = [
   {
-    title: 'Motion Button',
-    description: 'A tactile button interaction with subtle texture and motion.',
-    href: '/craft/motion-button',
+    slug: 'a11y-accordion',
+    title: 'Exclusive accordion',
+    description:
+      'A polished accordion interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
     codeHref: 'https://github.com',
-  },
-  {
-    title: 'Theme System',
-    description: 'A small theme switcher built around semantic design tokens.',
-    href: '/craft/motion-button',
-    codeHref: 'https://github.com',
-  },
-  {
-    title: 'Noise Hover',
-    description: 'A static-inspired hover treatment using SVG filters.',
-    href: '/craft/motion-button',
-    codeHref: 'https://github.com',
-  },
-  {
-    title: 'Responsive Grid',
-    description: 'A layout study using intrinsic grid behavior and fluid type.',
-    href: '/craft/motion-button',
-    codeHref: 'https://github.com',
-  },
-  {
-    title: 'A11y States',
-    description: 'Accessible focus, reduced motion, and keyboard-first details.',
-    href: '/craft/motion-button',
-    codeHref: 'https://github.com',
-  },
-  {
-    title: 'Interface Study',
-    description: 'A polished UI experiment focused on spacing and hierarchy.',
-    href: '/craft/motion-button',
-    codeHref: 'https://github.com',
+    previewSrc: '/videos/accordion.mp4',
+    details: [
+      'Built around native button controls for predictable keyboard interaction.',
+      'Keeps the interaction focused by allowing one section to remain open at a time.',
+      'Uses motion to reinforce the relationship between each trigger and its content.',
+      'Maintains clear visual states without relying on animation alone.',
+      'Includes a reduced-motion option for a calmer version of the interaction.',
+    ],
   },
 ];

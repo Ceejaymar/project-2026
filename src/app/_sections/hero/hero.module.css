@@ -138,7 +138,7 @@
     grid-column: 1 / -1;
     width: 100%;
     align-self: end;
-    margin-top: clamp(0.25rem, 2vw, 1rem);
+    margin-top: clamp(0.25rem, 2vw, 4rem);
   }
 
   @media (min-width: 56rem) {

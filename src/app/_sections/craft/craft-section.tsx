@@ -12,16 +12,27 @@ export default function CraftSection() {
 
         <p className={styles.kicker}>Selected Craft</p>
 
-        <p className={styles.count}>06 pieces</p>
+        <p className={styles.count}>01 piece</p>
       </div>
 
       <ul className={styles.grid}>
         {craftItems.map((item) => (
           <li className={styles.item} key={item.title}>
             <article className={styles.card}>
-              <Link className={styles.cardLink} href={item.href}>
+              <Link className={styles.cardLink} href={`/craft/${item.slug}`}>
                 <span className="visually-hidden">Open live demo for {item.title}</span>
               </Link>
+
+              {item.previewSrc ? (
+                <video
+                  className={styles.preview}
+                  src={item.previewSrc}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : null}
 
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>{item.title}</h3>
@@ -33,7 +44,7 @@ export default function CraftSection() {
                     <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
                       See Code
                     </a>
-                    <Link href={item.href}>Live </Link>
+                    <Link href={`/craft/${item.slug}`}>Live</Link>
                   </div>
                 </div>
               </div>
