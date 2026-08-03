@@ -68,6 +68,7 @@
     object-fit: cover;
     filter: saturate(0.95) contrast(0.95);
     transform: scale(1);
+
     transition:
       transform var(--duration-slow) var(--ease-out),
       filter var(--duration-base) var(--ease-out);
@@ -93,20 +94,10 @@
 
     color: white;
 
-    transform: translateY(calc(100% - 3.75rem));
-
     transition:
       transform var(--duration-base) var(--ease-out),
       border-color var(--duration-base) var(--ease-out),
       background-color var(--duration-base) var(--ease-out);
-  }
-
-  .projectTitle {
-    max-width: 18rem;
-    color: white;
-    font-size: clamp(1.5rem, 3vw, 2.75rem);
-    line-height: var(--leading-title);
-    letter-spacing: var(--tracking-title);
   }
 
   .projectHeading {
@@ -114,31 +105,26 @@
     gap: var(--space-1);
   }
 
+  .projectTitle {
+    max-width: fit-content;
+    color: white;
+    font-size: clamp(1.5rem, 3vw, 2.75rem);
+    line-height: var(--leading-title);
+    letter-spacing: var(--tracking-title);
+  }
+
   .projectDetails {
     display: grid;
     gap: var(--space-3);
-
-    opacity: 0;
-    transform: translateY(0.5rem);
 
     transition:
       opacity var(--duration-base) var(--ease-out),
       transform var(--duration-base) var(--ease-out);
   }
 
-  .item[data-preview-kind="mobile"] .project {
-    min-height: clamp(34rem, 135vw, 42rem);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .projectDetails {
-      opacity: 0;
-      transform: translateY(0.75rem);
-    }
-  }
-
   .projectDescription {
     max-width: 34rem;
+
     color: color-mix(in srgb, white, transparent 18%);
     font-size: var(--text-label);
     line-height: var(--leading-body);
@@ -161,17 +147,33 @@
     text-decoration-color: currentColor;
   }
 
-  .project:hover .projectContent,
-  .project:focus-within .projectContent {
-    transform: translateY(0);
-    border-color: color-mix(in srgb, white, transparent 72%);
-    background: color-mix(in srgb, rgb(24 24 27), transparent 14%);
+  .item[data-preview-kind="mobile"] .project {
+    min-height: clamp(34rem, 135vw, 42rem);
   }
 
-  .project:hover .projectDetails,
-  .project:focus-within .projectDetails {
-    opacity: 1;
-    transform: translateY(0);
+  @media (hover: hover) and (pointer: fine) {
+    .projectContent {
+      transform: translateY(calc(100% - 3.75rem));
+    }
+
+    .projectDetails {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+
+    .project:hover .projectContent,
+    .project:focus-within .projectContent {
+      transform: translateY(0);
+
+      border-color: color-mix(in srgb, white, transparent 72%);
+      background: color-mix(in srgb, rgb(24 24 27), transparent 14%);
+    }
+
+    .project:hover .projectDetails,
+    .project:focus-within .projectDetails {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (min-width: 48rem) {
@@ -209,10 +211,11 @@
 
     .archiveItem {
       grid-area: archive;
-      align-self: stretch;
 
       display: grid;
       place-items: center;
+      align-self: stretch;
+
       padding: var(--space-5) var(--space-4);
     }
 
@@ -251,10 +254,11 @@
 
     .archiveItem {
       grid-area: archive;
-      align-self: stretch;
 
       display: grid;
       place-items: center;
+      align-self: stretch;
+
       padding: var(--space-5) var(--space-4);
     }
 
@@ -276,6 +280,7 @@
 
   .archiveText {
     max-width: 44rem;
+
     color: var(--color-text-primary);
     font-size: clamp(1.25rem, 2vw, 2rem);
     line-height: var(--leading-title);
@@ -297,6 +302,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .project,
+    .projectContent,
     .projectDetails,
     .projectImage img {
       transition: none;
