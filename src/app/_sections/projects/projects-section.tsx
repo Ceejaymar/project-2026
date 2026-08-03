@@ -37,8 +37,8 @@ export default function ProjectsSection() {
               </div>
               <div className={styles.projectContent}>
                 <div className={styles.projectHeading}>
-                  <p className={styles.projectEyebrow}>{project.eyebrow}</p>
                   <h3 className={styles.projectTitle}>{project.title}</h3>
+                  <p className={styles.projectEyebrow}>{project.eyebrow}</p>
                 </div>
 
                 <div className={styles.projectDetails}>
