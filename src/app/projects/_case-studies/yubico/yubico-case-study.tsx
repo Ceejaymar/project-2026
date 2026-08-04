@@ -88,6 +88,7 @@ type ScreenshotFigureProps = {
 };
 
 function ScreenshotFigure({
+  id,
   src,
   alt,
   caption,
@@ -96,6 +97,7 @@ function ScreenshotFigure({
 }: ScreenshotFigureProps) {
   return (
     <ExpandableScreenshot
+      id={id}
       src={src}
       alt={alt}
       caption={caption}

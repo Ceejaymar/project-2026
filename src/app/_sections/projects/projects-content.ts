@@ -30,7 +30,7 @@ export const projectItems: ProjectItem[] = [
       'A privacy-first mood tracker with local-first storage, accessible settings, and a polished mobile interaction system.',
     previewType: 'mobile',
     caseStudyHref: '/projects/mosaic',
-    learnMoreHref: 'https://joinmosaic.com',
+    learnMoreHref: 'https://joinmosaic.app',
     imageSrc: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio-2026/mosaic-v1.webp',
   },
 ];
