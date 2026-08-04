@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   allowedDevOrigins: ['192.168.1.201'],
   images: {
@@ -17,6 +16,9 @@ const nextConfig: NextConfig = {
         pathname: '/portfolio-2026/**',
       },
     ],
+  },
+  experimental: {
+    viewTransition: true,
   },
 };
 

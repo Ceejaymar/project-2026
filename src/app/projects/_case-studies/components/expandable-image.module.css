@@ -24,11 +24,17 @@
 
   .frame {
     position: relative;
+
+    display: block;
     width: 100%;
     overflow: hidden;
+
+    padding: 0;
     border: 1px solid var(--expandable-border);
     border-radius: 14px;
     aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
+
+    appearance: none;
     background:
       linear-gradient(
         180deg,
@@ -37,13 +43,33 @@
       ),
       var(--expandable-bg);
     box-shadow: 0 22px 56px -48px var(--expandable-shadow);
+
+    color: inherit;
+    cursor: zoom-in;
+
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
   }
 
-  .imageInset {
+  .frame:focus-visible {
+    outline: 2px solid var(--expandable-accent);
+    outline-offset: 4px;
+  }
+
+  .imageInset,
+  .imagePlaceholder {
     position: absolute;
     inset: clamp(0.45rem, 1.4vw, 0.8rem);
+
+    display: block;
     overflow: hidden;
+
     border-radius: 10px;
+  }
+
+  .imagePlaceholder {
+    visibility: hidden;
   }
 
   .image {
@@ -53,8 +79,90 @@
 
   .caption {
     max-width: 64ch;
+
     color: var(--expandable-muted);
     font-size: 0.85rem;
     line-height: 1.6;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: grid;
+    place-items: center;
+
+    padding: clamp(var(--space-4), 4vw, var(--space-7));
+
+    background: rgb(8 8 10 / 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .modalImage {
+    position: relative;
+
+    width: min(92vw, calc(84svh * var(--screenshot-modal-ratio, 1.6)));
+
+    aspect-ratio: var(--screenshot-aspect-ratio, 16 / 10);
+    overflow: hidden;
+
+    border-radius: 16px;
+    background: rgb(12 12 14);
+    box-shadow: 0 32px 100px rgb(0 0 0 / 0.48);
+  }
+
+  .modalAsset {
+    object-fit: contain;
+    object-position: var(--screenshot-object-position, center);
+  }
+
+  .closeButton {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 2;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 2.75rem;
+    padding-inline: var(--space-4);
+
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 999px;
+    background: rgb(20 20 22 / 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    color: white;
+    font: inherit;
+    font-size: var(--text-label);
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .closeButton:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) {
+    .frame:hover {
+      border-color: color-mix(in oklch, var(--expandable-border), var(--expandable-accent) 42%);
+    }
+
+    .closeButton:hover {
+      background: rgb(36 36 40 / 0.88);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .frame {
+      transition: none;
+    }
   }
 }
