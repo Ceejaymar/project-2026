@@ -10,6 +10,12 @@
     scroll-behavior: smooth;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html[data-scroll-behavior="smooth"] {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     min-height: 100vh;
     color: var(--color-text-primary);
