@@ -138,17 +138,59 @@
 
   .links a,
   .links a:visited {
+    position: relative;
+    z-index: 4;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
     color: white;
+    font-size: var(--text-body);
+    line-height: var(--leading-label);
     text-decoration-color: color-mix(in srgb, white, transparent 45%);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
   }
 
-  .links a:hover {
-    color: var(--color-accent);
+  .links a:hover,
+  .links a:focus-visible {
+    color: white;
     text-decoration-color: currentColor;
   }
 
-  .item[data-preview-kind="mobile"] .project {
-    min-height: clamp(34rem, 135vw, 42rem);
+  .links a > svg {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .links .externalIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-left: -0.15rem;
+    opacity: 0.72;
+
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .links a:hover .externalIcon,
+  .links a:focus-visible .externalIcon {
+    opacity: 1;
+    transform: translate(0.1rem, -0.1rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links .externalIcon {
+      transition: none;
+    }
+
+    .links a:hover .externalIcon,
+    .links a:focus-visible .externalIcon {
+      transform: none;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {

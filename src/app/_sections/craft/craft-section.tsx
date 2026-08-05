@@ -1,4 +1,6 @@
+import { ArrowUpRightIcon, GithubLogoIcon, GlobeIcon } from '@phosphor-icons/react/ssr';
 import Link from 'next/link';
+
 import { craftItems } from './craft-content';
 import styles from './craft-section.module.css';
 
@@ -42,9 +44,22 @@ export default function CraftSection() {
 
                   <div className={styles.links}>
                     <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
-                      See Code
+                      <GithubLogoIcon aria-hidden="true" weight="bold" />
+
+                      <span>See Code</span>
+
+                      <ArrowUpRightIcon
+                        className={styles.externalIcon}
+                        aria-hidden="true"
+                        weight="bold"
+                      />
                     </a>
-                    <Link href={`/craft/${item.slug}`}>Live</Link>
+
+                    <Link href={`/craft/${item.slug}`}>
+                      <GlobeIcon aria-hidden="true" weight="bold" />
+
+                      <span>View Live</span>
+                    </Link>
                   </div>
                 </div>
               </div>
