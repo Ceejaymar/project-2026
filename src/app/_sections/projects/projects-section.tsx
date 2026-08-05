@@ -83,7 +83,11 @@ export default function ProjectsSection() {
         <li className={styles.archiveItem}>
           <p className={styles.archiveText}>
             These are a couple standout projects. For older work, frontend challenges, experiments,
-            and smaller builds, take a look at my <Link href="/projects">full projects page</Link>.
+            and smaller builds, take a look at my{' '}
+            <Link href="/projects" className={styles.archiveLink}>
+              full projects page
+            </Link>
+            .
           </p>
         </li>
       </ul>
