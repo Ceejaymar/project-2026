@@ -138,17 +138,59 @@
 
   .links a,
   .links a:visited {
+    position: relative;
+    z-index: 4;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
     color: white;
+    font-size: var(--text-body);
+    line-height: var(--leading-label);
     text-decoration-color: color-mix(in srgb, white, transparent 45%);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
   }
 
-  .links a:hover {
-    color: var(--color-accent);
+  .links a:hover,
+  .links a:focus-visible {
+    color: white;
     text-decoration-color: currentColor;
   }
 
-  .item[data-preview-kind="mobile"] .project {
-    min-height: clamp(34rem, 135vw, 42rem);
+  .links a > svg {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .links .externalIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-left: -0.15rem;
+    opacity: 0.72;
+
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+
+  .links a:hover .externalIcon,
+  .links a:focus-visible .externalIcon {
+    opacity: 1;
+    transform: translate(0.1rem, -0.1rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .links .externalIcon {
+      transition: none;
+    }
+
+    .links a:hover .externalIcon,
+    .links a:focus-visible .externalIcon {
+      transform: none;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -289,17 +331,6 @@
     text-wrap: balance;
   }
 
-  .archiveText a,
-  .archiveText a:visited {
-    color: color-mix(in srgb, var(--color-accent), var(--color-text-primary) 22%);
-    text-decoration: none;
-  }
-
-  .archiveText a:hover {
-    color: var(--color-text-primary);
-    text-decoration-color: currentColor;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .project,
     .projectContent,
@@ -312,5 +343,57 @@
     .project:focus-within {
       transform: none;
     }
+  }
+
+  .archiveLink,
+  .archiveLink:visited {
+    position: relative;
+
+    display: inline-block;
+    padding-bottom: 0.4rem;
+
+    color: color-mix(in srgb, var(--color-gold-accent), var(--color-text-primary) 22%);
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition: color var(--duration-base) var(--ease-out);
+  }
+
+  .archiveLink::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: 0.75rem;
+
+    background-color: currentColor;
+
+    color: currentColor;
+
+    content: "";
+
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M0 7 Q50 5 100 7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M0 10 Q50 8.5 100 10' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 100% 100%;
+
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'%3E%3Cpath d='M0 7 Q50 5 100 7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M0 10 Q50 8.5 100 10' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: 100% 100%;
+
+    pointer-events: none;
+  }
+
+  .archiveLink:hover {
+    color: var(--color-text-primary);
+  }
+
+  .archiveLink:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 5px;
+    border-radius: 0.15rem;
   }
 }

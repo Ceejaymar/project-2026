@@ -16,6 +16,8 @@
     --color-accent: #7c5cff;
     --color-accent-contrast: #ffffff;
 
+    --color-gold-accent: #fea303;
+
     --color-focus: var(--color-accent);
 
     --color-success: #287a45;
@@ -42,6 +44,8 @@
 
     --color-accent: #b999ff;
     --color-accent-contrast: #151018;
+
+    --color-gold-accent: #fea303;
 
     --color-focus: var(--color-accent);
 

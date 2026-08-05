@@ -1,3 +1,9 @@
+import {
+  ArrowUpRightIcon,
+  BookOpenIcon,
+  GithubLogoIcon,
+  GlobeIcon,
+} from '@phosphor-icons/react/ssr';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -35,9 +41,11 @@ export default function ProjectsSection() {
                   }
                 />
               </div>
+
               <div className={styles.projectContent}>
                 <div className={styles.projectHeading}>
                   <h3 className={styles.projectTitle}>{project.title}</h3>
+
                   <p className={styles.projectEyebrow}>{project.eyebrow}</p>
                 </div>
 
@@ -52,25 +60,54 @@ export default function ProjectsSection() {
                           query: { from: 'home' },
                         }}
                       >
-                        Case Study
+                        <BookOpenIcon aria-hidden="true" weight="bold" />
+
+                        <span>Read Case Study</span>
                       </Link>
                     ) : null}
 
                     {project.liveHref ? (
                       <a href={project.liveHref} target="_blank" rel="noopener noreferrer">
-                        Live
+                        <GlobeIcon aria-hidden="true" weight="bold" />
+
+                        <span>Live Site</span>
+
+                        <ArrowUpRightIcon
+                          className={styles.externalIcon}
+                          aria-hidden="true"
+                          weight="bold"
+                        />
                       </a>
                     ) : null}
 
                     {project.codeHref ? (
                       <a href={project.codeHref} target="_blank" rel="noopener noreferrer">
-                        Code
+                        <GithubLogoIcon aria-hidden="true" weight="bold" />
+
+                        <span>Code</span>
+
+                        <ArrowUpRightIcon
+                          className={styles.externalIcon}
+                          aria-hidden="true"
+                          weight="bold"
+                        />
                       </a>
                     ) : null}
 
                     {project.learnMoreHref ? (
                       <a href={project.learnMoreHref} target="_blank" rel="noopener noreferrer">
-                        Learn More <span className="visually-hidden">about {project.title}</span>
+                        <GlobeIcon aria-hidden="true" weight="bold" />
+
+                        <span>
+                          Learn More
+                          <span className="visually-hidden"> about {project.title}</span>
+                        </span>
+
+                        <ArrowUpRightIcon
+                          className={styles.externalIcon}
+                          aria-hidden="true"
+                          weight="bold"
+                        />
                       </a>
                     ) : null}
                   </div>
@@ -83,7 +120,11 @@ export default function ProjectsSection() {
         <li className={styles.archiveItem}>
           <p className={styles.archiveText}>
             These are a couple standout projects. For older work, frontend challenges, experiments,
-            and smaller builds, take a look at my <Link href="/projects">full projects page</Link>.
+            and smaller builds, take a look at my{' '}
+            <Link href="/projects" className={styles.archiveLink}>
+              full projects page
+            </Link>
+            .
           </p>
         </li>
       </ul>
