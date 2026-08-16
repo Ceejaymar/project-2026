@@ -4,16 +4,46 @@ import { LayoutGroup, motion, type Transition, useReducedMotion } from 'motion/r
 import Link from 'next/link';
 import { type FocusEvent, useEffect, useRef, useState } from 'react';
 
+import { trackEvent } from '@/lib/analytics';
 import ThemeToggle from '../theme/theme-toggle';
 import styles from './site-nav.module.css';
 
 const navItems = [
-  // { label: 'Home', href: '#home' },
-  { label: 'Craft', href: '/#craft' },
-  { label: 'Case Studies', href: '/#case-studies' },
-  { label: 'About', href: '/#about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Craft', href: '/#craft', elementId: 'nav_craft', targetSection: 'craft' },
+  {
+    label: 'Case Studies',
+    href: '/#case-studies',
+    elementId: 'nav_case_studies',
+    targetSection: 'case-studies',
+  },
+  { label: 'About', href: '/#about', elementId: 'nav_about', targetSection: 'about' },
+  { label: 'Contact', href: '/#contact', elementId: 'nav_contact', targetSection: 'contact' },
 ];
+
+type NavItem = (typeof navItems)[number];
+type NavEventPlacement = 'Desktop' | 'Mobile';
+
+function trackBrandClick() {
+  trackEvent('nav_clicked: Home (Brand)', {
+    placement: 'brand',
+    element_id: 'nav_brand_home',
+    element_label: 'LOS',
+    destination_type: 'internal',
+    destination: '/',
+    target_section: 'home',
+  });
+}
+
+function trackNavClick(item: NavItem, eventPlacement: NavEventPlacement) {
+  trackEvent(`nav_clicked: ${item.label} (${eventPlacement})`, {
+    placement: eventPlacement === 'Desktop' ? 'nav' : 'mobile_nav',
+    element_id: `${item.elementId}_${eventPlacement.toLowerCase()}`,
+    element_label: item.label,
+    destination_type: 'internal',
+    destination: item.href,
+    target_section: item.targetSection,
+  });
+}
 
 export default function SiteNavigation() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -53,6 +83,11 @@ export default function SiteNavigation() {
     setIsMenuOpen(false);
   }
 
+  function handleMobileNavClick(item: NavItem) {
+    trackNavClick(item, 'Mobile');
+    closeMenu();
+  }
+
   function handleNavBlur(event: FocusEvent<HTMLUListElement>) {
     const nextTarget = event.relatedTarget;
 
@@ -66,7 +101,7 @@ export default function SiteNavigation() {
   return (
     <header className={styles.header}>
       <div className={styles.shell}>
-        <Link className={styles.brand} href="/">
+        <Link className={styles.brand} href="/" onClick={trackBrandClick}>
           <span aria-hidden="true">LOS</span>
           <span className="visually-hidden">Carlos homepage</span>
         </Link>
@@ -90,6 +125,7 @@ export default function SiteNavigation() {
                       className={styles.navLink}
                       href={item.href}
                       onFocus={() => setActiveNavHref(item.href)}
+                      onClick={() => trackNavClick(item, 'Desktop')}
                     >
                       {item.label}
 
@@ -141,7 +177,11 @@ export default function SiteNavigation() {
         <ul className={styles.mobileNavList}>
           {navItems.map((item) => (
             <li key={item.href}>
-              <Link className={styles.mobileNavLink} href={item.href} onClick={closeMenu}>
+              <Link
+                className={styles.mobileNavLink}
+                href={item.href}
+                onClick={() => handleMobileNavClick(item)}
+              >
                 {item.label}
               </Link>
             </li>

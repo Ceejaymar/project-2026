@@ -1,7 +1,9 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { craftItems } from '@/app/_sections/craft/craft-content';
+import CraftViewTracker from '@/components/analytics/craft-view-tracker';
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getOutboundCraftLinkAnalytics } from '@/lib/analytics';
 
 import ReduceMotionToggle from '../components/reduce-motion-toggle';
 import { type CraftItemSlug, craftItemRegistry } from '../craft-item-registry';
@@ -27,18 +29,34 @@ export default async function CraftPage({ params }: CraftPageProps) {
 
   return (
     <main className={styles.page}>
+      <CraftViewTracker craftSlug={item.slug} craftTitle={item.title} demoType={item.demoType} />
+
       <div className={styles.inner}>
         <div className={styles.utilityRow}>
-          <Link className={styles.backLink} href="/#craft">
+          <TrackedLink
+            className={styles.backLink}
+            href="/#craft"
+            eventName="nav_clicked: Back to home (Craft)"
+            eventProperties={{
+              craft_slug: item.slug,
+              craft_title: item.title,
+              destination: '/#craft',
+              destination_type: 'internal',
+              source_page: 'craft',
+              placement: 'craft_page',
+              element_id: `craft_page_${item.slug}_back_home`,
+              element_label: 'Back to home',
+            }}
+          >
             <span aria-hidden="true">←</span>
             <span>Back to home</span>
-          </Link>
+          </TrackedLink>
 
           <ReduceMotionToggle />
         </div>
 
         <section className={styles.stage} aria-label={`${item.title} interactive demo`}>
-          <CraftComponent />
+          <CraftComponent craftSlug={item.slug} craftTitle={item.title} demoType={item.demoType} />
         </section>
 
         <section className={styles.details} aria-labelledby="craft-item-title">
@@ -49,15 +67,26 @@ export default async function CraftPage({ params }: CraftPageProps) {
 
             <p className={styles.description}>{item.description}</p>
 
-            <a
+            <TrackedLink
               className={styles.codeLink}
               href={item.codeHref}
               target="_blank"
               rel="noopener noreferrer"
+              useNextLink={false}
+              {...getOutboundCraftLinkAnalytics({
+                craftSlug: item.slug,
+                craftTitle: item.title,
+                placement: 'craft_page',
+                placementLabel: 'Craft Page',
+                elementId: `craft_page_${item.slug}_view_code`,
+                elementLabel: 'View code',
+                destination: item.codeHref,
+                sourcePage: 'craft',
+              })}
             >
               View code
               <span aria-hidden="true">↗</span>
-            </a>
+            </TrackedLink>
           </div>
 
           <ul className={styles.detailsList}>

@@ -1,7 +1,9 @@
 type ProjectPreviewType = 'mobile' | 'desktop';
 
 export type ProjectItem = {
+  slug: string;
   title: string;
+  analyticsName?: string;
   eyebrow: string;
   description: string;
   previewType: ProjectPreviewType;
@@ -14,6 +16,7 @@ export type ProjectItem = {
 
 export const projectItems: ProjectItem[] = [
   {
+    slug: 'product-finder-quiz',
     title: 'Yubico Product Finder',
     eyebrow: 'React / TypeScript / UX Engineering',
     description:
@@ -24,6 +27,7 @@ export const projectItems: ProjectItem[] = [
     imageSrc: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio-2026/quiz-v1.webp',
   },
   {
+    slug: 'mosaic',
     title: 'Mosaic',
     eyebrow: 'React Native / Product Engineering',
     description:

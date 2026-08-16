@@ -3,6 +3,7 @@ import type { CaseStudyMeta } from '../types';
 export const yubicoCaseStudyMeta: CaseStudyMeta = {
   slug: 'product-finder-quiz',
   title: 'Yubico Product Finder Quiz',
+  analyticsName: 'Yubico Product Finder',
   eyebrow: 'Product case study',
   summary:
     'A guided product finder that helps people choose the right security key based on their experience, setup, and purchase needs.',

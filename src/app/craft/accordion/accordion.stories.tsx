@@ -14,4 +14,10 @@ export default meta;
 
 type Story = StoryObj<typeof Accordion>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    craftSlug: 'a11y-accordion',
+    craftTitle: 'Exclusive accordion',
+    demoType: 'accordion',
+  },
+};

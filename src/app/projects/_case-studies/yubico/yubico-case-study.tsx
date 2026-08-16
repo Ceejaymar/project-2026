@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getOutboundProjectLinkAnalytics } from '@/lib/analytics';
 import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
@@ -53,18 +55,22 @@ const technicalPoints = [
 
 const YUBICO_SCREENSHOTS = {
   start: {
+    screenshotLabel: 'Quiz Start',
     src: '/images/case-studies/yubico/quiz-start.webp',
     alt: 'Yubico Product Finder entry screen with four paths: Novice, Intermediate, Skilled, and Business.',
   },
   info: {
+    screenshotLabel: 'Quiz Info',
     src: '/images/case-studies/yubico/quiz-info.webp',
     alt: 'Yubico Product Finder question screen with answer options and a side panel explaining relevant security-key terminology.',
   },
   results: {
+    screenshotLabel: 'Quiz Results',
     src: '/images/case-studies/yubico/quiz-results.webp',
     alt: 'Yubico Product Finder recommendation screen showing a suggested security key based on quiz responses.',
   },
   customerSuccess: {
+    screenshotLabel: 'Customer Success',
     src: '/images/case-studies/yubico/quiz-cs.webp',
     alt: 'Yubico Product Finder business result directing larger security-key purchases to Customer Success.',
   },
@@ -83,6 +89,7 @@ type ScreenshotFigureProps = {
   src: string;
   alt: string;
   caption: string;
+  screenshotLabel: string;
   size?: 'wide' | 'medium';
   sizes?: string;
 };
@@ -92,9 +99,12 @@ function ScreenshotFigure({
   src,
   alt,
   caption,
+  screenshotLabel,
   size = 'wide',
   sizes = '(min-width: 760px) 52rem, 100vw',
 }: ScreenshotFigureProps) {
+  const caseStudyTitle = yubicoCaseStudyMeta.analyticsName ?? yubicoCaseStudyMeta.title;
+
   return (
     <ExpandableScreenshot
       id={id}
@@ -106,12 +116,19 @@ function ScreenshotFigure({
       aspectRatio="16 / 10"
       objectFit="contain"
       sizes={sizes}
+      analytics={{
+        caseStudySlug: yubicoCaseStudyMeta.slug,
+        caseStudyTitle,
+        screenshotId: id,
+        screenshotLabel,
+      }}
     />
   );
 }
 
 function YubicoHero() {
   const primaryLink = yubicoCaseStudyMeta.links?.[0];
+  const projectName = yubicoCaseStudyMeta.analyticsName ?? yubicoCaseStudyMeta.title;
 
   return (
     <header className={styles.hero}>
@@ -121,10 +138,27 @@ function YubicoHero() {
         <p className={styles.summary}>{yubicoCaseStudyMeta.summary}</p>
 
         {primaryLink && 'url' in primaryLink ? (
-          <a className={styles.heroLink} href={primaryLink.url} target="_blank" rel="noreferrer">
+          <TrackedLink
+            className={styles.heroLink}
+            href={primaryLink.url}
+            target="_blank"
+            rel="noreferrer"
+            useNextLink={false}
+            {...getOutboundProjectLinkAnalytics({
+              projectSlug: yubicoCaseStudyMeta.slug,
+              projectName,
+              placement: 'case_study',
+              placementLabel: 'Case Study',
+              elementId: `case_study_${yubicoCaseStudyMeta.slug}_live_site`,
+              elementLabel: primaryLink.label,
+              destination: primaryLink.url,
+              linkType: primaryLink.type,
+              sourcePage: 'case_study',
+            })}
+          >
             {primaryLink.label}
             <span aria-hidden="true">↗</span>
-          </a>
+          </TrackedLink>
         ) : null}
       </div>
 
@@ -167,10 +201,20 @@ function YubicoHero() {
 export default function YubicoCaseStudy({
   backHref = '/#case-studies',
   backLabel = 'Back to case studies',
+  projectSlug = yubicoCaseStudyMeta.slug,
+  projectName = yubicoCaseStudyMeta.analyticsName ?? yubicoCaseStudyMeta.title,
+  referrerContext,
 }: CaseStudyComponentProps) {
   return (
     <main className={styles.page}>
-      <CaseStudyBackLink href={backHref}>{backLabel}</CaseStudyBackLink>
+      <CaseStudyBackLink
+        href={backHref}
+        projectSlug={projectSlug}
+        projectName={projectName}
+        referrerContext={referrerContext}
+      >
+        {backLabel}
+      </CaseStudyBackLink>
 
       <div className={styles.caseStudyScope}>
         <YubicoHero />
@@ -228,6 +272,7 @@ export default function YubicoCaseStudy({
               id="quiz-start"
               src={YUBICO_SCREENSHOTS.start.src}
               alt={YUBICO_SCREENSHOTS.start.alt}
+              screenshotLabel={YUBICO_SCREENSHOTS.start.screenshotLabel}
               caption="Four starting points let the quiz match the amount of detail to someone’s familiarity and purchase needs."
             />
           </CaseStudySection>
@@ -246,6 +291,7 @@ export default function YubicoCaseStudy({
               id="quiz-info"
               src={YUBICO_SCREENSHOTS.info.src}
               alt={YUBICO_SCREENSHOTS.info.alt}
+              screenshotLabel={YUBICO_SCREENSHOTS.info.screenshotLabel}
               caption="Supporting information gives people the context they need without turning every path into a longer technical questionnaire."
             />
           </CaseStudySection>
@@ -276,6 +322,7 @@ export default function YubicoCaseStudy({
                 id="quiz-results"
                 src={YUBICO_SCREENSHOTS.results.src}
                 alt={YUBICO_SCREENSHOTS.results.alt}
+                screenshotLabel={YUBICO_SCREENSHOTS.results.screenshotLabel}
                 caption="Individual paths end with a clearer recommendation and a direct route to the relevant product."
                 size="medium"
                 sizes="(min-width: 760px) 50vw, 100vw"
@@ -285,6 +332,7 @@ export default function YubicoCaseStudy({
                 id="quiz-cs"
                 src={YUBICO_SCREENSHOTS.customerSuccess.src}
                 alt={YUBICO_SCREENSHOTS.customerSuccess.alt}
+                screenshotLabel={YUBICO_SCREENSHOTS.customerSuccess.screenshotLabel}
                 caption="Larger purchase needs shift from a standard product recommendation to a Customer Success conversation."
                 size="medium"
                 sizes="(min-width: 760px) 50vw, 100vw"

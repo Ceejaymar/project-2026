@@ -81,38 +81,56 @@ const EMOTION_SWATCH_ORDER = [
 
 const MOSAIC_SCREENSHOTS = {
   emotionFamilies: {
+    screenshotId: 'emotion-families',
+    screenshotLabel: 'Emotion Families',
     src: '/images/case-studies/mosaic/ci-1.webp',
     alt: 'Mosaic emotion-family selection screen',
   },
   calmEmotion: {
+    screenshotId: 'calm-emotion',
+    screenshotLabel: 'Calm Emotion',
     src: '/images/case-studies/mosaic/ci-3.webp',
     alt: 'Mosaic calm emotion selection',
   },
   checkIn: {
+    screenshotId: 'check-in',
+    screenshotLabel: 'Check In',
     src: '/images/case-studies/mosaic/ci-4.webp',
     alt: 'Mosaic check-in screen',
   },
   monthlyView: {
+    screenshotId: 'monthly-view',
+    screenshotLabel: 'Monthly View',
     src: '/images/case-studies/mosaic/m.webp',
     alt: 'Mosaic monthly view',
   },
   yearlyView: {
+    screenshotId: 'yearly-view',
+    screenshotLabel: 'Yearly View',
     src: '/images/case-studies/mosaic/y.webp',
     alt: 'Mosaic yearly view',
   },
   today: {
+    screenshotId: 'today',
+    screenshotLabel: 'Today',
     src: '/images/case-studies/mosaic/t.webp',
     alt: 'Mosaic today screen',
   },
   insightsSummary: {
+    screenshotId: 'insights-summary',
+    screenshotLabel: 'Insights Summary',
     src: '/images/case-studies/mosaic/e-1.webp',
     alt: 'Mosaic insights screen 1',
   },
   insightsTiming: {
+    screenshotId: 'insights-timing',
+    screenshotLabel: 'Insights Timing',
     src: '/images/case-studies/mosaic/e-2.webp',
     alt: 'Mosaic insights screen 2',
   },
   accessibility: {
+    screenshotId: 'accessibility',
+    screenshotLabel: 'Accessibility',
     src: '/images/case-studies/mosaic/a11y.webp',
     alt: 'Mosaic accessibility settings',
   },
@@ -329,12 +347,18 @@ const researchSignals = [
 function MosaicScreenshot({
   src,
   alt,
+  screenshotId,
+  screenshotLabel,
   sizes = '(min-width: 680px) 33vw, 100vw',
 }: {
   src: string;
   alt: string;
+  screenshotId: string;
+  screenshotLabel: string;
   sizes?: string;
 }) {
+  const caseStudyTitle = mosaicCaseStudyMeta.analyticsName ?? mosaicCaseStudyMeta.title;
+
   return (
     <ExpandableScreenshot
       src={src}
@@ -343,6 +367,12 @@ function MosaicScreenshot({
       aspectRatio="9 / 19.5"
       objectFit="contain"
       sizes={sizes}
+      analytics={{
+        caseStudySlug: mosaicCaseStudyMeta.slug,
+        caseStudyTitle,
+        screenshotId,
+        screenshotLabel,
+      }}
     />
   );
 }
@@ -416,10 +446,20 @@ function MosaicHeroScene() {
 export default function MosaicCaseStudy({
   backHref = '/#case-studies',
   backLabel = 'Back to case studies',
+  projectSlug = mosaicCaseStudyMeta.slug,
+  projectName = mosaicCaseStudyMeta.analyticsName ?? mosaicCaseStudyMeta.title,
+  referrerContext,
 }: CaseStudyComponentProps) {
   return (
     <main className={styles.page}>
-      <CaseStudyBackLink href={backHref}>{backLabel}</CaseStudyBackLink>
+      <CaseStudyBackLink
+        href={backHref}
+        projectSlug={projectSlug}
+        projectName={projectName}
+        referrerContext={referrerContext}
+      >
+        {backLabel}
+      </CaseStudyBackLink>
 
       <div className={styles.mosaicScope}>
         <MosaicHeroScene />
@@ -505,6 +545,8 @@ export default function MosaicCaseStudy({
                       key={screenshot.alt}
                       src={screenshot.src}
                       alt={screenshot.alt}
+                      screenshotId={screenshot.screenshotId}
+                      screenshotLabel={screenshot.screenshotLabel}
                       sizes="(min-width: 680px) 33vw, 100vw"
                     />
                   ))}
@@ -588,6 +630,8 @@ export default function MosaicCaseStudy({
                       key={screenshot.alt}
                       src={screenshot.src}
                       alt={screenshot.alt}
+                      screenshotId={screenshot.screenshotId}
+                      screenshotLabel={screenshot.screenshotLabel}
                       sizes="(min-width: 680px) 50vw, 100vw"
                     />
                   ))}
@@ -705,6 +749,8 @@ export default function MosaicCaseStudy({
                 <MosaicScreenshot
                   src={MOSAIC_SCREENSHOTS.today.src}
                   alt={MOSAIC_SCREENSHOTS.today.alt}
+                  screenshotId={MOSAIC_SCREENSHOTS.today.screenshotId}
+                  screenshotLabel={MOSAIC_SCREENSHOTS.today.screenshotLabel}
                   sizes="(min-width: 760px) 24rem, 100vw"
                 />
               </div>
@@ -725,6 +771,8 @@ export default function MosaicCaseStudy({
                     key={screenshot.alt}
                     src={screenshot.src}
                     alt={screenshot.alt}
+                    screenshotId={screenshot.screenshotId}
+                    screenshotLabel={screenshot.screenshotLabel}
                     sizes="(min-width: 680px) 50vw, 100vw"
                   />
                 ))}
@@ -751,6 +799,8 @@ export default function MosaicCaseStudy({
                 <MosaicScreenshot
                   src={MOSAIC_SCREENSHOTS.accessibility.src}
                   alt={MOSAIC_SCREENSHOTS.accessibility.alt}
+                  screenshotId={MOSAIC_SCREENSHOTS.accessibility.screenshotId}
+                  screenshotLabel={MOSAIC_SCREENSHOTS.accessibility.screenshotLabel}
                   sizes="(min-width: 760px) 24rem, 100vw"
                 />
               </div>

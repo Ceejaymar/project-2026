@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import CaseStudyViewTracker from '@/components/analytics/case-study-view-tracker';
+import { getReferrerContext, type ReferrerContext } from '@/lib/analytics';
 import { caseStudySlugs, getCaseStudy } from '../_case-studies/case-study-registry';
 
 type ProjectCaseStudyPageProps = {
@@ -18,8 +20,8 @@ export function generateStaticParams() {
   }));
 }
 
-function getCaseStudyBackTarget(from?: string) {
-  if (from === 'projects') {
+function getCaseStudyBackTarget(referrerContext: ReferrerContext) {
+  if (referrerContext === 'projects') {
     return {
       href: '/projects',
       label: 'Back to all projects',
@@ -61,7 +63,24 @@ export default async function ProjectCaseStudyPage({
   }
 
   const CaseStudyComponent = caseStudy.Component;
-  const backTarget = getCaseStudyBackTarget(resolvedSearchParams?.from);
+  const referrerContext = getReferrerContext(resolvedSearchParams?.from);
+  const backTarget = getCaseStudyBackTarget(referrerContext);
+  const projectName = caseStudy.analyticsName ?? caseStudy.title;
 
-  return <CaseStudyComponent backHref={backTarget.href} backLabel={backTarget.label} />;
+  return (
+    <>
+      <CaseStudyViewTracker
+        projectSlug={caseStudy.slug}
+        projectName={projectName}
+        referrerContext={referrerContext}
+      />
+      <CaseStudyComponent
+        backHref={backTarget.href}
+        backLabel={backTarget.label}
+        projectSlug={caseStudy.slug}
+        projectName={projectName}
+        referrerContext={referrerContext}
+      />
+    </>
+  );
 }
