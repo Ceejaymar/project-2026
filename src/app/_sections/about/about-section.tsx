@@ -3,6 +3,10 @@ import ExternalLink from '@/components/primitives/externalLink/external-link';
 import { experienceItems, socialLinks } from './about-content';
 import styles from './about-section.module.css';
 
+function getSocialElementId(label: string) {
+  return `about_social_${label.toLowerCase()}`;
+}
+
 export default function About() {
   return (
     <section id="about" className={styles.section} aria-labelledby="about-title">
@@ -48,7 +52,22 @@ export default function About() {
 
             <div className={styles.socialLinks}>
               {socialLinks.map((link) => (
-                <ExternalLink href={link.href} key={link.label}>
+                <ExternalLink
+                  href={link.href}
+                  key={link.label}
+                  analytics={{
+                    eventName: `contact_clicked: ${link.label} (About)`,
+                    eventProperties: {
+                      contact_type: 'social',
+                      platform: link.label.toLowerCase(),
+                      placement: 'about',
+                      element_id: getSocialElementId(link.label),
+                      element_label: link.label,
+                      destination_type: 'external',
+                      destination: link.href,
+                    },
+                  }}
+                >
                   {link.label}
                 </ExternalLink>
               ))}

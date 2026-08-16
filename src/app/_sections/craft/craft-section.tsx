@@ -1,6 +1,7 @@
 import { ArrowUpRightIcon, GithubLogoIcon, GlobeIcon } from '@phosphor-icons/react/ssr';
-import Link from 'next/link';
 
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getCraftOpenAnalytics, getOutboundCraftLinkAnalytics } from '@/lib/analytics';
 import { craftItems } from './craft-content';
 import styles from './craft-section.module.css';
 
@@ -21,9 +22,23 @@ export default function CraftSection() {
         {craftItems.map((item) => (
           <li className={styles.item} key={item.title}>
             <article className={styles.card}>
-              <Link className={styles.cardLink} href={`/craft/${item.slug}`}>
+              <TrackedLink
+                className={styles.cardLink}
+                href={`/craft/${item.slug}`}
+                {...getCraftOpenAnalytics({
+                  craftSlug: item.slug,
+                  craftTitle: item.title,
+                  placement: 'craft_section',
+                  placementLabel: 'Craft Section',
+                  elementId: `craft_section_${item.slug}_card_overlay`,
+                  elementLabel: `Open live demo for ${item.title}`,
+                  interaction: 'card_overlay',
+                  destination: `/craft/${item.slug}`,
+                  sourcePage: 'home',
+                })}
+              >
                 <span className="visually-hidden">Open live demo for {item.title}</span>
-              </Link>
+              </TrackedLink>
 
               {item.previewSrc ? (
                 <video
@@ -43,7 +58,22 @@ export default function CraftSection() {
                   <p>{item.description}</p>
 
                   <div className={styles.links}>
-                    <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
+                    <TrackedLink
+                      href={item.codeHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      useNextLink={false}
+                      {...getOutboundCraftLinkAnalytics({
+                        craftSlug: item.slug,
+                        craftTitle: item.title,
+                        placement: 'craft_section',
+                        placementLabel: 'Craft Section',
+                        elementId: `craft_section_${item.slug}_see_code`,
+                        elementLabel: 'See Code',
+                        destination: item.codeHref,
+                        sourcePage: 'home',
+                      })}
+                    >
                       <GithubLogoIcon aria-hidden="true" weight="bold" />
 
                       <span>See Code</span>
@@ -53,13 +83,26 @@ export default function CraftSection() {
                         aria-hidden="true"
                         weight="bold"
                       />
-                    </a>
+                    </TrackedLink>
 
-                    <Link href={`/craft/${item.slug}`}>
+                    <TrackedLink
+                      href={`/craft/${item.slug}`}
+                      {...getCraftOpenAnalytics({
+                        craftSlug: item.slug,
+                        craftTitle: item.title,
+                        placement: 'craft_section',
+                        placementLabel: 'Craft Section',
+                        elementId: `craft_section_${item.slug}_view_live`,
+                        elementLabel: 'View Live',
+                        interaction: 'view_live_link',
+                        destination: `/craft/${item.slug}`,
+                        sourcePage: 'home',
+                      })}
+                    >
                       <GlobeIcon aria-hidden="true" weight="bold" />
 
                       <span>View Live</span>
-                    </Link>
+                    </TrackedLink>
                   </div>
                 </div>
               </div>

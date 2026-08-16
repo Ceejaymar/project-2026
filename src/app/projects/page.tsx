@@ -5,7 +5,8 @@ import {
   GlobeIcon,
 } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
-import Link from 'next/link';
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getOutboundProjectLinkAnalytics, getProjectLinkAnalytics } from '@/lib/analytics';
 import styles from './projects.module.css';
 import { fullProjects, type Project, type ProjectLink } from './projects-content';
 
@@ -13,9 +14,21 @@ export default function ProjectsPage() {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link className={styles.backHomeLink} href="/#case-studies">
+        <TrackedLink
+          className={styles.backHomeLink}
+          href="/#case-studies"
+          eventName="nav_clicked: Back to home (Projects)"
+          eventProperties={{
+            source_page: 'projects',
+            placement: 'projects_page',
+            element_id: 'projects_back_home',
+            element_label: 'Back to home',
+            destination: '/#case-studies',
+            destination_type: 'internal',
+          }}
+        >
           Back to home
-        </Link>
+        </TrackedLink>
 
         <h1 className={styles.title}>Projects</h1>
         <p className={styles.lead}>
@@ -73,7 +86,7 @@ function ProjectCard({ project }: { project: Project }) {
               ))}
             </ul>
 
-            <ProjectLinks links={project.links} />
+            <ProjectLinks project={project} links={project.links} />
           </div>
         </div>
       </article>
@@ -81,34 +94,60 @@ function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-function ProjectLinks({ links }: { links: ProjectLink[] }) {
+function ProjectLinks({ project, links }: { project: Project; links: ProjectLink[] }) {
+  const projectName = getProjectAnalyticsName(project);
+
   return (
     <ul className={styles.links}>
       {links.map((link) => {
         if ('to' in link) {
           return (
             <li key={link.to}>
-              <Link
+              <TrackedLink
                 className={styles.projectLink}
-                href={{
-                  pathname: link.to,
-                  query: { from: 'projects' },
-                }}
+                href={`${link.to}?from=projects`}
+                {...getProjectLinkAnalytics({
+                  projectSlug: project.slug,
+                  projectName,
+                  placement: 'projects_page',
+                  placementLabel: 'Projects Page',
+                  elementId: `projects_page_${project.slug}_case_study`,
+                  elementLabel: link.label,
+                  destination: link.to,
+                  sourcePage: 'projects',
+                })}
               >
                 {getLinkIcon(link.type)}
                 <span>{link.label}</span>
-              </Link>
+              </TrackedLink>
             </li>
           );
         }
 
         return (
           <li key={link.url}>
-            <a className={styles.projectLink} href={link.url} target="_blank" rel="noreferrer">
+            <TrackedLink
+              className={styles.projectLink}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              useNextLink={false}
+              {...getOutboundProjectLinkAnalytics({
+                projectSlug: project.slug,
+                projectName,
+                placement: 'projects_page',
+                placementLabel: 'Projects Page',
+                elementId: `projects_page_${project.slug}_${getProjectLinkElementKey(link)}`,
+                elementLabel: link.label,
+                destination: link.url,
+                linkType: link.type,
+                sourcePage: 'projects',
+              })}
+            >
               {getLinkIcon(link.type)}
               <span>{link.label}</span>
               <ArrowUpRightIcon aria-hidden="true" weight="bold" />
-            </a>
+            </TrackedLink>
           </li>
         );
       })}
@@ -126,4 +165,20 @@ function getLinkIcon(type: ProjectLink['type']) {
     case 'marketing':
       return <GlobeIcon aria-hidden="true" weight="bold" />;
   }
+}
+
+function getProjectAnalyticsName(project: Project) {
+  return project.analyticsName ?? project.title;
+}
+
+function getProjectLinkElementKey(link: Exclude<ProjectLink, { type: 'case-study' }>) {
+  if (link.type === 'github') {
+    return 'github';
+  }
+
+  if (link.type === 'marketing') {
+    return 'marketing';
+  }
+
+  return link.label.toLowerCase() === 'live site' ? 'live_site' : 'website';
 }
