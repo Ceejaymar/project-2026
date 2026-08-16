@@ -30,14 +30,16 @@ export function useTrackCraftDemoInteraction({
       return;
     }
 
-    hasTrackedInteractionRef.current = true;
-
-    trackEvent(getCraftDemoInteractedEventName(craftTitle), {
+    const didTrack = trackEvent(getCraftDemoInteractedEventName(craftTitle), {
       craft_slug: craftSlug,
       craft_title: craftTitle,
       demo_component: demoComponent,
       interaction_type: interactionType,
       first_control_label: firstControlLabel,
     });
+
+    if (didTrack) {
+      hasTrackedInteractionRef.current = true;
+    }
   };
 }

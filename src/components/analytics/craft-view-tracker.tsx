@@ -22,14 +22,16 @@ export default function CraftViewTracker({
       return;
     }
 
-    trackedViewRef.current = craftSlug;
-
-    trackEvent(getCraftItemViewedEventName(craftTitle), {
+    const didTrack = trackEvent(getCraftItemViewedEventName(craftTitle), {
       craft_slug: craftSlug,
       craft_title: craftTitle,
       source_page: 'craft',
       demo_type: demoType,
     });
+
+    if (didTrack) {
+      trackedViewRef.current = craftSlug;
+    }
   }, [craftSlug, craftTitle, demoType]);
 
   return null;

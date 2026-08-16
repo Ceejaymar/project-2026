@@ -4,8 +4,10 @@ import posthog from 'posthog-js/dist/module.no-external';
 const ANALYTICS_IGNORE_KEY = 'analytics_ignore';
 const PRODUCTION_ENVIRONMENT = 'production';
 const PRODUCTION_HOSTNAME = 'los.codes';
+const PRODUCTION_HOSTNAMES = new Set([PRODUCTION_HOSTNAME, 'www.los.codes']);
 const HTTP_PROTOCOLS = new Set(['http:', 'https:']);
 const DESTINATION_PROPERTY_KEYS = new Set(['destination', 'href', 'url']);
+const REDACTED_ANALYTICS_DESTINATION = '[redacted]';
 const POSTHOG_URL_PROPERTY_KEYS = new Set([
   '$current_url',
   '$referrer',
@@ -108,10 +110,6 @@ type CraftOpenAnalyticsInput = CraftAnalyticsInput & {
   interaction: string;
 };
 
-type SanitizeDestinationOptions = {
-  preserveQueryKeys?: readonly string[];
-};
-
 type PostHogInitConfig = Partial<PostHogConfig> & Pick<PostHogConfig, 'loaded'>;
 
 let analyticsIgnoreOverride: boolean | null = null;
@@ -134,7 +132,7 @@ function isBrowser() {
 }
 
 function isProductionPortfolioHost() {
-  return isBrowser() && window.location.hostname === PRODUCTION_HOSTNAME;
+  return isBrowser() && PRODUCTION_HOSTNAMES.has(window.location.hostname);
 }
 
 function canUseLocalStorage() {
@@ -387,65 +385,85 @@ export function getReferrerContext(from?: string): ReferrerContext {
   return 'direct';
 }
 
-export function sanitizeAnalyticsDestination(
-  destination: string,
-  options: SanitizeDestinationOptions = {},
-) {
+function getAnalyticsBaseUrl() {
+  return isBrowser() ? window.location.origin : `https://${PRODUCTION_HOSTNAME}`;
+}
+
+function hasExplicitProtocol(value: string) {
+  return /^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value);
+}
+
+function isSafeRelativeDestination(value: string) {
+  return (
+    value.startsWith('/') ||
+    value.startsWith('#') ||
+    value.startsWith('?') ||
+    value.startsWith('./') ||
+    value.startsWith('../')
+  );
+}
+
+function formatSafeHttpDestination(parsedUrl: URL, baseUrl: string) {
+  const baseOrigin = new URL(baseUrl).origin;
+
+  if (parsedUrl.origin === baseOrigin) {
+    return parsedUrl.pathname;
+  }
+
+  return `${parsedUrl.origin}${parsedUrl.pathname}`;
+}
+
+export function sanitizeAnalyticsDestination(destination: string) {
   if (!destination) {
     return destination;
   }
 
+  const trimmedDestination = destination.trim();
+
+  if (!trimmedDestination) {
+    return '';
+  }
+
+  const isExplicitUrl = hasExplicitProtocol(trimmedDestination);
+
+  if (!isExplicitUrl && !isSafeRelativeDestination(trimmedDestination)) {
+    return REDACTED_ANALYTICS_DESTINATION;
+  }
+
   try {
-    const baseUrl = isBrowser() ? window.location.origin : `https://${PRODUCTION_HOSTNAME}`;
-    const parsedUrl = new URL(destination, baseUrl);
-    const isExternalHttpUrl =
-      HTTP_PROTOCOLS.has(parsedUrl.protocol) && parsedUrl.origin !== baseUrl;
+    const baseUrl = getAnalyticsBaseUrl();
+    const parsedUrl = new URL(trimmedDestination, baseUrl);
 
-    if (!isExternalHttpUrl) {
-      return destination;
+    if (HTTP_PROTOCOLS.has(parsedUrl.protocol)) {
+      return formatSafeHttpDestination(parsedUrl, baseUrl);
     }
 
-    const preservedSearchParams = new URLSearchParams();
-
-    for (const key of options.preserveQueryKeys ?? []) {
-      const value = parsedUrl.searchParams.get(key);
-
-      if (value !== null) {
-        preservedSearchParams.set(key, value);
-      }
+    if (isExplicitUrl) {
+      return parsedUrl.protocol;
     }
 
-    const sanitizedUrl = new URL(parsedUrl.origin + parsedUrl.pathname);
-    const preservedSearch = preservedSearchParams.toString();
-
-    if (preservedSearch) {
-      sanitizedUrl.search = preservedSearch;
-    }
-
-    return sanitizedUrl.toString();
+    return REDACTED_ANALYTICS_DESTINATION;
   } catch {
-    return destination;
+    return REDACTED_ANALYTICS_DESTINATION;
   }
 }
 
 function sanitizeCapturedUrl(value: string) {
   try {
-    const baseUrl = isBrowser() ? window.location.origin : `https://${PRODUCTION_HOSTNAME}`;
+    const baseUrl = getAnalyticsBaseUrl();
     const parsedUrl = new URL(value, baseUrl);
 
-    if (!HTTP_PROTOCOLS.has(parsedUrl.protocol)) {
-      return value;
+    if (HTTP_PROTOCOLS.has(parsedUrl.protocol)) {
+      return formatSafeHttpDestination(parsedUrl, baseUrl);
     }
 
-    const isAbsoluteUrl = /^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value);
-
-    if (isAbsoluteUrl) {
-      return `${parsedUrl.origin}${parsedUrl.pathname}`;
+    if (hasExplicitProtocol(value)) {
+      return parsedUrl.protocol;
     }
 
-    return parsedUrl.pathname;
+    return REDACTED_ANALYTICS_DESTINATION;
   } catch {
-    return value;
+    return REDACTED_ANALYTICS_DESTINATION;
   }
 }
 
@@ -554,14 +572,18 @@ function cleanProperties(properties: AnalyticsProperties): Properties {
 
 export function trackEvent(eventName: AnalyticsEventName, properties: AnalyticsProperties = {}) {
   if (!canTrackAnalytics() || !posthog.__loaded) {
-    return;
+    return false;
   }
 
   try {
     posthog.capture(eventName, cleanProperties({ ...getBaseProperties(), ...properties }));
+
+    return true;
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.warn(`PostHog event "${eventName}" failed.`, error);
     }
+
+    return false;
   }
 }
