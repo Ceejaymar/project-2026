@@ -2,9 +2,11 @@ import type { CaptureResult, PostHogConfig, Properties } from 'posthog-js';
 import posthog from 'posthog-js/dist/module.no-external';
 
 const ANALYTICS_IGNORE_KEY = 'analytics_ignore';
+const DEVELOPMENT_ENVIRONMENT = 'development';
 const PRODUCTION_ENVIRONMENT = 'production';
 const PRODUCTION_HOSTNAME = 'los.codes';
 const PRODUCTION_HOSTNAMES = new Set([PRODUCTION_HOSTNAME, 'www.los.codes']);
+const LOCAL_DEVELOPMENT_HOSTNAMES = new Set(['localhost', '127.0.0.1']);
 const HTTP_PROTOCOLS = new Set(['http:', 'https:']);
 const DESTINATION_PROPERTY_KEYS = new Set(['destination', 'href', 'url']);
 const REDACTED_ANALYTICS_DESTINATION = '[redacted]';
@@ -63,14 +65,6 @@ export type AnalyticsEventName =
   | 'craft_demo_interacted'
   | (string & {});
 
-export type ProjectLinkType = 'case-study' | 'web' | 'github' | 'marketing';
-
-export type ProjectLinkAction = 'case_study' | 'github' | 'live_site' | 'website' | 'marketing';
-
-export type ProjectEventPlacement = 'Case Studies' | 'Projects Page' | 'Case Study';
-
-export type CraftEventPlacement = 'Craft Section' | 'Craft Page' | 'Demo';
-
 export type ReferrerContext = 'home' | 'projects' | 'direct';
 
 export type ScreenshotAnalyticsMetadata = {
@@ -80,44 +74,10 @@ export type ScreenshotAnalyticsMetadata = {
   screenshotLabel: string;
 };
 
-type ProjectAnalyticsInput = {
-  projectSlug: string;
-  projectName: string;
-  placement: Placement;
-  placementLabel: ProjectEventPlacement;
-  elementId: string;
-  elementLabel: string;
-  destination: string;
-  sourcePage?: PageType;
-};
-
-type OutboundProjectAnalyticsInput = ProjectAnalyticsInput & {
-  linkType: Exclude<ProjectLinkType, 'case-study'>;
-};
-
-type CraftAnalyticsInput = {
-  craftSlug: string;
-  craftTitle: string;
-  placement: Placement;
-  placementLabel: CraftEventPlacement;
-  elementId: string;
-  elementLabel: string;
-  destination: string;
-  sourcePage?: PageType;
-};
-
-type CraftOpenAnalyticsInput = CraftAnalyticsInput & {
-  interaction: string;
-};
-
 type PostHogInitConfig = Partial<PostHogConfig> & Pick<PostHogConfig, 'loaded'>;
 
 let analyticsIgnoreOverride: boolean | null = null;
 let hasInitializedPostHog = false;
-
-export function isAnalyticsEnvironment() {
-  return process.env.NEXT_PUBLIC_VERCEL_ENV === PRODUCTION_ENVIRONMENT;
-}
 
 function getProjectToken() {
   return process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
@@ -133,6 +93,19 @@ function isBrowser() {
 
 function isProductionPortfolioHost() {
   return isBrowser() && PRODUCTION_HOSTNAMES.has(window.location.hostname);
+}
+
+function isLocalDevelopmentHost() {
+  return isBrowser() && LOCAL_DEVELOPMENT_HOSTNAMES.has(window.location.hostname);
+}
+
+function isLocalAnalyticsDevelopment() {
+  return (
+    isBrowser() &&
+    process.env.NODE_ENV === DEVELOPMENT_ENVIRONMENT &&
+    process.env.NEXT_PUBLIC_ANALYTICS_DEV === 'true' &&
+    isLocalDevelopmentHost()
+  );
 }
 
 function canUseLocalStorage() {
@@ -196,13 +169,9 @@ export function shouldIgnoreAnalytics() {
 }
 
 export function canTrackAnalytics() {
-  return (
-    isBrowser() &&
-    isAnalyticsEnvironment() &&
-    isProductionPortfolioHost() &&
-    Boolean(getProjectToken()) &&
-    !shouldIgnoreAnalytics()
-  );
+  const isAllowedContext = isProductionPortfolioHost() || isLocalAnalyticsDevelopment();
+
+  return isBrowser() && isAllowedContext && Boolean(getProjectToken()) && !shouldIgnoreAnalytics();
 }
 
 export function getPageType(pathname = isBrowser() ? window.location.pathname : ''): PageType {
@@ -232,7 +201,7 @@ export function getProjectEventName(projectName: string) {
 export function getOutboundEventName(
   projectName: string,
   elementLabel: string,
-  placementLabel: ProjectEventPlacement | CraftEventPlacement,
+  placementLabel: string,
 ) {
   return `outbound_clicked: ${projectName}, ${elementLabel} (${placementLabel})` as AnalyticsEventName;
 }
@@ -255,126 +224,6 @@ export function getCraftDemoInteractedEventName(craftTitle: string) {
 
 export function getScreenshotExpandedEventName(caseStudyTitle: string, screenshotLabel: string) {
   return `screenshot_expanded: ${caseStudyTitle}, ${screenshotLabel}` as AnalyticsEventName;
-}
-
-export function getProjectLinkAction(linkType: ProjectLinkType, elementLabel: string) {
-  if (linkType === 'case-study') {
-    return 'case_study';
-  }
-
-  if (linkType === 'github') {
-    return 'github';
-  }
-
-  if (linkType === 'marketing') {
-    return 'marketing';
-  }
-
-  return elementLabel.toLowerCase() === 'live site' ? 'live_site' : 'website';
-}
-
-export function getProjectLinkAnalytics({
-  projectSlug,
-  projectName,
-  placement,
-  elementId,
-  elementLabel,
-  destination,
-  sourcePage,
-}: ProjectAnalyticsInput) {
-  return {
-    eventName: getProjectEventName(projectName),
-    eventProperties: {
-      placement,
-      element_id: elementId,
-      element_label: elementLabel,
-      destination_type: 'internal',
-      destination,
-      project_slug: projectSlug,
-      project_name: projectName,
-      action: 'case_study',
-      source_page: sourcePage,
-    },
-  };
-}
-
-export function getOutboundProjectLinkAnalytics({
-  projectSlug,
-  projectName,
-  placement,
-  placementLabel,
-  elementId,
-  elementLabel,
-  destination,
-  linkType,
-  sourcePage,
-}: OutboundProjectAnalyticsInput) {
-  return {
-    eventName: getOutboundEventName(projectName, elementLabel, placementLabel),
-    eventProperties: {
-      placement,
-      element_id: elementId,
-      element_label: elementLabel,
-      destination_type: 'external',
-      destination,
-      project_slug: projectSlug,
-      project_name: projectName,
-      action: getProjectLinkAction(linkType, elementLabel),
-      source_page: sourcePage,
-    },
-  };
-}
-
-export function getCraftOpenAnalytics({
-  craftSlug,
-  craftTitle,
-  placement,
-  elementId,
-  elementLabel,
-  interaction,
-  destination,
-  sourcePage,
-}: CraftOpenAnalyticsInput) {
-  return {
-    eventName: getCraftItemClickedEventName(craftTitle),
-    eventProperties: {
-      placement,
-      craft_slug: craftSlug,
-      craft_title: craftTitle,
-      interaction,
-      element_id: elementId,
-      element_label: elementLabel,
-      destination_type: 'internal',
-      destination,
-      source_page: sourcePage,
-    },
-  };
-}
-
-export function getOutboundCraftLinkAnalytics({
-  craftSlug,
-  craftTitle,
-  placement,
-  placementLabel,
-  elementId,
-  elementLabel,
-  destination,
-  sourcePage,
-}: CraftAnalyticsInput) {
-  return {
-    eventName: getOutboundEventName(craftTitle, elementLabel, placementLabel),
-    eventProperties: {
-      placement,
-      craft_slug: craftSlug,
-      craft_title: craftTitle,
-      action: 'github',
-      element_id: elementId,
-      element_label: elementLabel,
-      destination_type: 'external',
-      destination,
-      source_page: sourcePage,
-    },
-  };
 }
 
 export function getReferrerContext(from?: string): ReferrerContext {
@@ -448,25 +297,6 @@ export function sanitizeAnalyticsDestination(destination: string) {
   }
 }
 
-function sanitizeCapturedUrl(value: string) {
-  try {
-    const baseUrl = getAnalyticsBaseUrl();
-    const parsedUrl = new URL(value, baseUrl);
-
-    if (HTTP_PROTOCOLS.has(parsedUrl.protocol)) {
-      return formatSafeHttpDestination(parsedUrl, baseUrl);
-    }
-
-    if (hasExplicitProtocol(value)) {
-      return parsedUrl.protocol;
-    }
-
-    return REDACTED_ANALYTICS_DESTINATION;
-  } catch {
-    return REDACTED_ANALYTICS_DESTINATION;
-  }
-}
-
 function sanitizePostHogProperties(properties?: Properties): Properties | undefined {
   if (!properties) {
     return properties;
@@ -476,7 +306,7 @@ function sanitizePostHogProperties(properties?: Properties): Properties | undefi
     Object.entries(properties).map(([key, value]) => [
       key,
       POSTHOG_URL_PROPERTY_KEYS.has(key) && typeof value === 'string'
-        ? sanitizeCapturedUrl(value)
+        ? sanitizeAnalyticsDestination(value)
         : value,
     ]),
   ) satisfies Properties;
@@ -485,6 +315,10 @@ function sanitizePostHogProperties(properties?: Properties): Properties | undefi
 function sanitizePostHogEvent(event: CaptureResult | null) {
   if (!event) {
     return event;
+  }
+
+  if (event.event === '$set') {
+    return null;
   }
 
   return {
@@ -544,12 +378,15 @@ export function initializePostHog() {
 
 function getBaseProperties(): AnalyticsProperties {
   const pagePath = isBrowser() ? window.location.pathname : '';
+  const environment = isLocalAnalyticsDevelopment()
+    ? DEVELOPMENT_ENVIRONMENT
+    : PRODUCTION_ENVIRONMENT;
 
   return {
     page_path: pagePath,
     page_type: getPageType(),
     source_page: getPageType(),
-    environment: process.env.NEXT_PUBLIC_VERCEL_ENV,
+    environment,
     is_webdriver: isBrowser() ? Boolean(window.navigator.webdriver) : false,
   };
 }

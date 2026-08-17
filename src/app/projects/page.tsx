@@ -6,7 +6,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 import Image from 'next/image';
 import TrackedLink from '@/components/analytics/tracked-link';
-import { getOutboundProjectLinkAnalytics, getProjectLinkAnalytics } from '@/lib/analytics';
+import { getOutboundEventName, getProjectEventName } from '@/lib/analytics';
 import styles from './projects.module.css';
 import { fullProjects, type Project, type ProjectLink } from './projects-content';
 
@@ -106,16 +106,18 @@ function ProjectLinks({ project, links }: { project: Project; links: ProjectLink
               <TrackedLink
                 className={styles.projectLink}
                 href={`${link.to}?from=projects`}
-                {...getProjectLinkAnalytics({
-                  projectSlug: project.slug,
-                  projectName,
+                eventName={getProjectEventName(projectName)}
+                eventProperties={{
                   placement: 'projects_page',
-                  placementLabel: 'Projects Page',
-                  elementId: `projects_page_${project.slug}_case_study`,
-                  elementLabel: link.label,
+                  element_id: `projects_page_${project.slug}_case_study`,
+                  element_label: link.label,
+                  destination_type: 'internal',
                   destination: link.to,
-                  sourcePage: 'projects',
-                })}
+                  project_slug: project.slug,
+                  project_name: projectName,
+                  action: 'case_study',
+                  source_page: 'projects',
+                }}
               >
                 {getLinkIcon(link.type)}
                 <span>{link.label}</span>
@@ -132,17 +134,18 @@ function ProjectLinks({ project, links }: { project: Project; links: ProjectLink
               target="_blank"
               rel="noreferrer"
               useNextLink={false}
-              {...getOutboundProjectLinkAnalytics({
-                projectSlug: project.slug,
-                projectName,
+              eventName={getOutboundEventName(projectName, link.label, 'Projects Page')}
+              eventProperties={{
                 placement: 'projects_page',
-                placementLabel: 'Projects Page',
-                elementId: `projects_page_${project.slug}_${getProjectLinkElementKey(link)}`,
-                elementLabel: link.label,
+                element_id: `projects_page_${project.slug}_${getProjectLinkElementKey(link)}`,
+                element_label: link.label,
+                destination_type: 'external',
                 destination: link.url,
-                linkType: link.type,
-                sourcePage: 'projects',
-              })}
+                project_slug: project.slug,
+                project_name: projectName,
+                action: getProjectLinkAction(link),
+                source_page: 'projects',
+              }}
             >
               {getLinkIcon(link.type)}
               <span>{link.label}</span>
@@ -172,6 +175,18 @@ function getProjectAnalyticsName(project: Project) {
 }
 
 function getProjectLinkElementKey(link: Exclude<ProjectLink, { type: 'case-study' }>) {
+  if (link.type === 'github') {
+    return 'github';
+  }
+
+  if (link.type === 'marketing') {
+    return 'marketing';
+  }
+
+  return link.label.toLowerCase() === 'live site' ? 'live_site' : 'website';
+}
+
+function getProjectLinkAction(link: Exclude<ProjectLink, { type: 'case-study' }>) {
   if (link.type === 'github') {
     return 'github';
   }

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { craftItems } from '@/app/_sections/craft/craft-content';
 import CraftViewTracker from '@/components/analytics/craft-view-tracker';
 import TrackedLink from '@/components/analytics/tracked-link';
-import { getOutboundCraftLinkAnalytics } from '@/lib/analytics';
+import { getOutboundEventName } from '@/lib/analytics';
 
 import ReduceMotionToggle from '../components/reduce-motion-toggle';
 import { type CraftItemSlug, craftItemRegistry } from '../craft-item-registry';
@@ -73,16 +73,18 @@ export default async function CraftPage({ params }: CraftPageProps) {
               target="_blank"
               rel="noopener noreferrer"
               useNextLink={false}
-              {...getOutboundCraftLinkAnalytics({
-                craftSlug: item.slug,
-                craftTitle: item.title,
+              eventName={getOutboundEventName(item.title, 'View code', 'Craft Page')}
+              eventProperties={{
                 placement: 'craft_page',
-                placementLabel: 'Craft Page',
-                elementId: `craft_page_${item.slug}_view_code`,
-                elementLabel: 'View code',
+                craft_slug: item.slug,
+                craft_title: item.title,
+                action: 'github',
+                element_id: `craft_page_${item.slug}_view_code`,
+                element_label: 'View code',
+                destination_type: 'external',
                 destination: item.codeHref,
-                sourcePage: 'craft',
-              })}
+                source_page: 'craft',
+              }}
             >
               View code
               <span aria-hidden="true">↗</span>

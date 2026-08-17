@@ -7,7 +7,7 @@ import {
 import Image from 'next/image';
 
 import TrackedLink from '@/components/analytics/tracked-link';
-import { getOutboundProjectLinkAnalytics, getProjectLinkAnalytics } from '@/lib/analytics';
+import { getOutboundEventName, getProjectEventName } from '@/lib/analytics';
 import { projectItems } from './projects-content';
 import styles from './projects-section.module.css';
 
@@ -57,16 +57,18 @@ export default function ProjectsSection() {
                     {project.caseStudyHref ? (
                       <TrackedLink
                         href={`${project.caseStudyHref}?from=home`}
-                        {...getProjectLinkAnalytics({
-                          projectSlug: project.slug,
-                          projectName: getProjectAnalyticsName(project),
+                        eventName={getProjectEventName(getProjectAnalyticsName(project))}
+                        eventProperties={{
                           placement: 'case_studies',
-                          placementLabel: 'Case Studies',
-                          elementId: `case_studies_${project.slug}_case_study`,
-                          elementLabel: 'Read Case Study',
+                          element_id: `case_studies_${project.slug}_case_study`,
+                          element_label: 'Read Case Study',
+                          destination_type: 'internal',
                           destination: project.caseStudyHref,
-                          sourcePage: 'home',
-                        })}
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'case_study',
+                          source_page: 'home',
+                        }}
                       >
                         <BookOpenIcon aria-hidden="true" weight="bold" />
 
@@ -80,17 +82,22 @@ export default function ProjectsSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         useNextLink={false}
-                        {...getOutboundProjectLinkAnalytics({
-                          projectSlug: project.slug,
-                          projectName: getProjectAnalyticsName(project),
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Live Site',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
                           placement: 'case_studies',
-                          placementLabel: 'Case Studies',
-                          elementId: `case_studies_${project.slug}_live_site`,
-                          elementLabel: 'Live Site',
+                          element_id: `case_studies_${project.slug}_live_site`,
+                          element_label: 'Live Site',
+                          destination_type: 'external',
                           destination: project.liveHref,
-                          linkType: 'web',
-                          sourcePage: 'home',
-                        })}
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'live_site',
+                          source_page: 'home',
+                        }}
                       >
                         <GlobeIcon aria-hidden="true" weight="bold" />
 
@@ -110,17 +117,22 @@ export default function ProjectsSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         useNextLink={false}
-                        {...getOutboundProjectLinkAnalytics({
-                          projectSlug: project.slug,
-                          projectName: getProjectAnalyticsName(project),
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Code',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
                           placement: 'case_studies',
-                          placementLabel: 'Case Studies',
-                          elementId: `case_studies_${project.slug}_code`,
-                          elementLabel: 'Code',
+                          element_id: `case_studies_${project.slug}_code`,
+                          element_label: 'Code',
+                          destination_type: 'external',
                           destination: project.codeHref,
-                          linkType: 'github',
-                          sourcePage: 'home',
-                        })}
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'github',
+                          source_page: 'home',
+                        }}
                       >
                         <GithubLogoIcon aria-hidden="true" weight="bold" />
 
@@ -140,17 +152,22 @@ export default function ProjectsSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                         useNextLink={false}
-                        {...getOutboundProjectLinkAnalytics({
-                          projectSlug: project.slug,
-                          projectName: getProjectAnalyticsName(project),
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Learn More',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
                           placement: 'case_studies',
-                          placementLabel: 'Case Studies',
-                          elementId: `case_studies_${project.slug}_learn_more`,
-                          elementLabel: 'Learn More',
+                          element_id: `case_studies_${project.slug}_learn_more`,
+                          element_label: 'Learn More',
+                          destination_type: 'external',
                           destination: project.learnMoreHref,
-                          linkType: 'web',
-                          sourcePage: 'home',
-                        })}
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'website',
+                          source_page: 'home',
+                        }}
                       >
                         <GlobeIcon aria-hidden="true" weight="bold" />
 
