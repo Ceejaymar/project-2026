@@ -14,7 +14,8 @@ export const craftItems = [
     title: 'Exclusive accordion',
     description:
       'A polished accordion interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
-    codeHref: 'https://github.com',
+    codeHref:
+      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/accordion/accordion.tsx',
     previewSrc: '/videos/accordion.mp4',
     demoType: 'accordion',
     details: [

@@ -1,7 +1,7 @@
 import { ArrowUpRightIcon, GithubLogoIcon, GlobeIcon } from '@phosphor-icons/react/ssr';
 
 import TrackedLink from '@/components/analytics/tracked-link';
-import { getCraftOpenAnalytics, getOutboundCraftLinkAnalytics } from '@/lib/analytics';
+import { getCraftItemClickedEventName, getOutboundEventName } from '@/lib/analytics';
 import { craftItems } from './craft-content';
 import styles from './craft-section.module.css';
 
@@ -25,17 +25,18 @@ export default function CraftSection() {
               <TrackedLink
                 className={styles.cardLink}
                 href={`/craft/${item.slug}`}
-                {...getCraftOpenAnalytics({
-                  craftSlug: item.slug,
-                  craftTitle: item.title,
+                eventName={getCraftItemClickedEventName(item.title)}
+                eventProperties={{
                   placement: 'craft_section',
-                  placementLabel: 'Craft Section',
-                  elementId: `craft_section_${item.slug}_card_overlay`,
-                  elementLabel: `Open live demo for ${item.title}`,
+                  craft_slug: item.slug,
+                  craft_title: item.title,
                   interaction: 'card_overlay',
+                  element_id: `craft_section_${item.slug}_card_overlay`,
+                  element_label: `Open live demo for ${item.title}`,
+                  destination_type: 'internal',
                   destination: `/craft/${item.slug}`,
-                  sourcePage: 'home',
-                })}
+                  source_page: 'home',
+                }}
               >
                 <span className="visually-hidden">Open live demo for {item.title}</span>
               </TrackedLink>
@@ -63,16 +64,18 @@ export default function CraftSection() {
                       target="_blank"
                       rel="noopener noreferrer"
                       useNextLink={false}
-                      {...getOutboundCraftLinkAnalytics({
-                        craftSlug: item.slug,
-                        craftTitle: item.title,
+                      eventName={getOutboundEventName(item.title, 'See Code', 'Craft Section')}
+                      eventProperties={{
                         placement: 'craft_section',
-                        placementLabel: 'Craft Section',
-                        elementId: `craft_section_${item.slug}_see_code`,
-                        elementLabel: 'See Code',
+                        craft_slug: item.slug,
+                        craft_title: item.title,
+                        action: 'github',
+                        element_id: `craft_section_${item.slug}_see_code`,
+                        element_label: 'See Code',
+                        destination_type: 'external',
                         destination: item.codeHref,
-                        sourcePage: 'home',
-                      })}
+                        source_page: 'home',
+                      }}
                     >
                       <GithubLogoIcon aria-hidden="true" weight="bold" />
 
@@ -87,17 +90,18 @@ export default function CraftSection() {
 
                     <TrackedLink
                       href={`/craft/${item.slug}`}
-                      {...getCraftOpenAnalytics({
-                        craftSlug: item.slug,
-                        craftTitle: item.title,
+                      eventName={getCraftItemClickedEventName(item.title)}
+                      eventProperties={{
                         placement: 'craft_section',
-                        placementLabel: 'Craft Section',
-                        elementId: `craft_section_${item.slug}_view_live`,
-                        elementLabel: 'View Live',
+                        craft_slug: item.slug,
+                        craft_title: item.title,
                         interaction: 'view_live_link',
+                        element_id: `craft_section_${item.slug}_view_live`,
+                        element_label: 'View Live',
+                        destination_type: 'internal',
                         destination: `/craft/${item.slug}`,
-                        sourcePage: 'home',
-                      })}
+                        source_page: 'home',
+                      }}
                     >
                       <GlobeIcon aria-hidden="true" weight="bold" />
 

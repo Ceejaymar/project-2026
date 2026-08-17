@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import TrackedLink from '@/components/analytics/tracked-link';
-import { getOutboundProjectLinkAnalytics } from '@/lib/analytics';
+import { getOutboundEventName } from '@/lib/analytics';
 import CaseStudyBackLink from '../components/case-study-back-link';
 import CaseStudyCallout from '../components/case-study-callout';
 import CaseStudySection from '../components/case-study-section';
@@ -144,17 +144,18 @@ function YubicoHero() {
             target="_blank"
             rel="noreferrer"
             useNextLink={false}
-            {...getOutboundProjectLinkAnalytics({
-              projectSlug: yubicoCaseStudyMeta.slug,
-              projectName,
+            eventName={getOutboundEventName(projectName, primaryLink.label, 'Case Study')}
+            eventProperties={{
               placement: 'case_study',
-              placementLabel: 'Case Study',
-              elementId: `case_study_${yubicoCaseStudyMeta.slug}_live_site`,
-              elementLabel: primaryLink.label,
+              element_id: `case_study_${yubicoCaseStudyMeta.slug}_live_site`,
+              element_label: primaryLink.label,
+              destination_type: 'external',
               destination: primaryLink.url,
-              linkType: primaryLink.type,
-              sourcePage: 'case_study',
-            })}
+              project_slug: yubicoCaseStudyMeta.slug,
+              project_name: projectName,
+              action: primaryLink.label.toLowerCase() === 'live site' ? 'live_site' : 'website',
+              source_page: 'case_study',
+            }}
           >
             {primaryLink.label}
             <span aria-hidden="true">↗</span>
