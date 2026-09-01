@@ -39,7 +39,7 @@
     "@storybook/addon-docs": "^10.4.6",
     "@storybook/addon-vitest": "^10.4.6",
     "@storybook/nextjs-vite": "^10.4.6",
-    "@types/node": "^20",
+    "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/browser-playwright": "^4.1.9",
