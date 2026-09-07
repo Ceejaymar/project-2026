@@ -14,4 +14,13 @@ export const craftItems = [
       'Includes a reduced-motion option for a calmer version of the interaction.',
     ],
   },
+  {
+    slug: 'a11y-modal',
+    title: 'Accessible Modal',
+    description:
+      'A modal interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
+    codeHref: 'https://github.com',
+    previewSrc: '',
+    details: [],
+  },
 ];
