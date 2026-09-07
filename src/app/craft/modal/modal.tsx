@@ -1,6 +1,6 @@
 'use client';
 
-import { XIcon } from '@phosphor-icons/react';
+import { ArrowUpRightIcon, XIcon } from '@phosphor-icons/react';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import FocusLock from 'react-focus-lock';
@@ -27,7 +27,9 @@ export default function Modal() {
         setIsOpen(false);
       }
     }
+
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -57,6 +59,7 @@ export default function Modal() {
                   role="dialog"
                   aria-modal="true"
                   aria-labelledby="accessible-modal-title"
+                  aria-describedby="accessible-modal-description"
                 >
                   <button
                     type="button"
@@ -67,19 +70,40 @@ export default function Modal() {
                     <XIcon aria-hidden="true" />
                     <VisuallyHidden>Close modal</VisuallyHidden>
                   </button>
-                  <h3 id="accessible-modal-title" className={styles.dialogTitle}>
-                    Modal content
-                  </h3>
-                  <p className={styles.description}>
-                    This modal contains a few interactive elements to demonstrate keyboard and focus
-                    behavior.
-                  </p>
-                  <a href="#example" className={styles.link}>
-                    Example link
-                  </a>
-                  <button type="button" className={styles.actionButton}>
-                    Example action
-                  </button>
+
+                  <div className={styles.content}>
+                    <h3 id="accessible-modal-title" className={styles.dialogTitle}>
+                      Try navigating this modal
+                    </h3>
+
+                    <div id="accessible-modal-description" className={styles.description}>
+                      <p>
+                        Use Tab and Shift + Tab to move between controls. Focus stays inside the
+                        modal until you dismiss it.
+                      </p>
+
+                      <p>
+                        Press Escape at any time to close it. When the modal closes, focus returns
+                        to the button that opened it.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={styles.actions}>
+                    <a
+                      href="https://github.com/Ceejaymar/project-2026"
+                      className={styles.sourceLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View source
+                      <ArrowUpRightIcon aria-hidden="true" />
+                    </a>
+
+                    <button type="button" className={styles.primaryButton} onClick={closeModal}>
+                      Got it
+                    </button>
+                  </div>
                 </div>
               </div>
             </RemoveScroll>

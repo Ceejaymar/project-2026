@@ -30,7 +30,7 @@ export const craftItems = [
     description:
       'A keyboard-friendly modal focused on predictable focus management, clear dismissal patterns, and an accessible experience for every user.',
     codeHref: 'https://github.com',
-    previewSrc: '',
+    previewSrc: '/videos/modal.mp4',
     details: [
       'Uses FocusLock to keep keyboard focus contained within the modal while it is open.',
       'Restores focus to the element that opened the modal after it is dismissed.',
