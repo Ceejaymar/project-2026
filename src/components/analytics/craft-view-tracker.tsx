@@ -7,14 +7,9 @@ import { getCraftItemViewedEventName, trackEvent } from '@/lib/analytics';
 type CraftViewTrackerProps = {
   craftSlug: string;
   craftTitle: string;
-  demoType: string;
 };
 
-export default function CraftViewTracker({
-  craftSlug,
-  craftTitle,
-  demoType,
-}: CraftViewTrackerProps) {
+export default function CraftViewTracker({ craftSlug, craftTitle }: CraftViewTrackerProps) {
   const trackedViewRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -26,13 +21,12 @@ export default function CraftViewTracker({
       craft_slug: craftSlug,
       craft_title: craftTitle,
       source_page: 'craft',
-      demo_type: demoType,
     });
 
     if (didTrack) {
       trackedViewRef.current = craftSlug;
     }
-  }, [craftSlug, craftTitle, demoType]);
+  }, [craftSlug, craftTitle]);
 
   return null;
 }

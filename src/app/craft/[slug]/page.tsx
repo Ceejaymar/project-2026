@@ -29,7 +29,7 @@ export default async function CraftPage({ params }: CraftPageProps) {
 
   return (
     <main className={styles.page}>
-      <CraftViewTracker craftSlug={item.slug} craftTitle={item.title} demoType={item.demoType} />
+      <CraftViewTracker craftSlug={item.slug} craftTitle={item.title} />
 
       <div className={styles.inner}>
         <div className={styles.utilityRow}>
@@ -56,7 +56,7 @@ export default async function CraftPage({ params }: CraftPageProps) {
         </div>
 
         <section className={styles.stage} aria-label={`${item.title} interactive demo`}>
-          <CraftComponent craftSlug={item.slug} craftTitle={item.title} demoType={item.demoType} />
+          <CraftComponent craftSlug={item.slug} craftTitle={item.title} />
         </section>
 
         <section className={styles.details} aria-labelledby="craft-item-title">

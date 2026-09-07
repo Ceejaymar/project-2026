@@ -18,6 +18,5 @@ export const Default: Story = {
   args: {
     craftSlug: 'a11y-accordion',
     craftTitle: 'Exclusive accordion',
-    demoType: 'accordion',
   },
 };
