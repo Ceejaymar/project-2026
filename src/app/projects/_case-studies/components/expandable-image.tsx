@@ -11,6 +11,11 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
+import {
+  getScreenshotExpandedEventName,
+  type ScreenshotAnalyticsMetadata,
+  trackEvent,
+} from '@/lib/analytics';
 import styles from './expandable-image.module.css';
 
 type ExpandableScreenshotStyle = CSSProperties & {
@@ -31,6 +36,7 @@ type ExpandableScreenshotProps = {
   objectPosition?: string;
   size?: 'wide' | 'medium';
   variant?: 'default' | 'mosaic' | 'yubico';
+  analytics?: ScreenshotAnalyticsMetadata;
 };
 
 function getNumericAspectRatio(aspectRatio: string) {
@@ -59,6 +65,7 @@ export default function ExpandableScreenshot({
   objectPosition = 'center',
   size = 'wide',
   variant = 'default',
+  analytics,
 }: ExpandableScreenshotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
@@ -110,6 +117,21 @@ export default function ExpandableScreenshot({
   function openModal() {
     if (!portalTarget) {
       return;
+    }
+
+    if (analytics) {
+      trackEvent(
+        getScreenshotExpandedEventName(analytics.caseStudyTitle, analytics.screenshotLabel),
+        {
+          case_study_slug: analytics.caseStudySlug,
+          case_study_title: analytics.caseStudyTitle,
+          screenshot_id: analytics.screenshotId,
+          screenshot_label: analytics.screenshotLabel,
+          screenshot_src: src,
+          variant,
+          source_page: 'case_study',
+        },
+      );
     }
 
     startTransition(() => {

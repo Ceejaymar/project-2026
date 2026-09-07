@@ -1,6 +1,7 @@
 import { ArrowUpRightIcon, GithubLogoIcon, GlobeIcon } from '@phosphor-icons/react/ssr';
-import Link from 'next/link';
 
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getCraftItemClickedEventName, getOutboundEventName } from '@/lib/analytics';
 import { craftItems } from './craft-content';
 import styles from './craft-section.module.css';
 
@@ -21,9 +22,24 @@ export default function CraftSection() {
         {craftItems.map((item) => (
           <li className={styles.item} key={item.title}>
             <article className={styles.card}>
-              <Link className={styles.cardLink} href={`/craft/${item.slug}`}>
+              <TrackedLink
+                className={styles.cardLink}
+                href={`/craft/${item.slug}`}
+                eventName={getCraftItemClickedEventName(item.title)}
+                eventProperties={{
+                  placement: 'craft_section',
+                  craft_slug: item.slug,
+                  craft_title: item.title,
+                  interaction: 'card_overlay',
+                  element_id: `craft_section_${item.slug}_card_overlay`,
+                  element_label: `Open live demo for ${item.title}`,
+                  destination_type: 'internal',
+                  destination: `/craft/${item.slug}`,
+                  source_page: 'home',
+                }}
+              >
                 <span className="visually-hidden">Open live demo for {item.title}</span>
-              </Link>
+              </TrackedLink>
 
               {item.previewSrc ? (
                 <video
@@ -43,7 +59,24 @@ export default function CraftSection() {
                   <p>{item.description}</p>
 
                   <div className={styles.links}>
-                    <a href={item.codeHref} target="_blank" rel="noopener noreferrer">
+                    <TrackedLink
+                      href={item.codeHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      useNextLink={false}
+                      eventName={getOutboundEventName(item.title, 'See Code', 'Craft Section')}
+                      eventProperties={{
+                        placement: 'craft_section',
+                        craft_slug: item.slug,
+                        craft_title: item.title,
+                        action: 'github',
+                        element_id: `craft_section_${item.slug}_see_code`,
+                        element_label: 'See Code',
+                        destination_type: 'external',
+                        destination: item.codeHref,
+                        source_page: 'home',
+                      }}
+                    >
                       <GithubLogoIcon aria-hidden="true" weight="bold" />
 
                       <span>See Code</span>
@@ -53,13 +86,27 @@ export default function CraftSection() {
                         aria-hidden="true"
                         weight="bold"
                       />
-                    </a>
+                    </TrackedLink>
 
-                    <Link href={`/craft/${item.slug}`}>
+                    <TrackedLink
+                      href={`/craft/${item.slug}`}
+                      eventName={getCraftItemClickedEventName(item.title)}
+                      eventProperties={{
+                        placement: 'craft_section',
+                        craft_slug: item.slug,
+                        craft_title: item.title,
+                        interaction: 'view_live_link',
+                        element_id: `craft_section_${item.slug}_view_live`,
+                        element_label: 'View Live',
+                        destination_type: 'internal',
+                        destination: `/craft/${item.slug}`,
+                        source_page: 'home',
+                      }}
+                    >
                       <GlobeIcon aria-hidden="true" weight="bold" />
 
                       <span>View Live</span>
-                    </Link>
+                    </TrackedLink>
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@
 import { CopyIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
 
+import { trackEvent } from '@/lib/analytics';
 import styles from './contact-section.module.css';
 
 type CopyEmailButtonProps = {
@@ -32,6 +33,8 @@ export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
     } catch {
       didCopy = fallbackCopy(email);
     }
+
+    trackEmailCopy(didCopy ? 'copied' : 'failed', email);
 
     if (didCopy) {
       setCopyStatus('copied');
@@ -72,6 +75,20 @@ export default function CopyEmailButton({ email }: CopyEmailButtonProps) {
       </p>
     </div>
   );
+}
+
+function trackEmailCopy(copyResult: 'copied' | 'failed', email: string) {
+  const emailDomain = email.split('@')[1];
+
+  trackEvent('contact_clicked: Email (Contact Section)', {
+    contact_type: 'email',
+    placement: 'contact_section',
+    element_id: 'contact_email_copy',
+    element_label: 'Email',
+    destination_type: 'clipboard',
+    copy_result: copyResult,
+    email_domain: emailDomain,
+  });
 }
 
 function fallbackCopy(value: string) {

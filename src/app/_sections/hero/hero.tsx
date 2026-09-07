@@ -18,7 +18,21 @@ export default function Hero() {
           crafted, from interaction states and motion to accessible UI systems.
         </p>
         <div className={styles.actions}>
-          <Button className={styles.primaryAction} href="#case-studies">
+          <Button
+            className={styles.primaryAction}
+            href="#case-studies"
+            analytics={{
+              eventName: 'cta_clicked: View Work (Hero)',
+              eventProperties: {
+                placement: 'hero',
+                element_id: 'hero_view_work',
+                element_label: 'View Work',
+                destination_type: 'internal',
+                destination: '#case-studies',
+                target_section: 'case-studies',
+              },
+            }}
+          >
             View Work
           </Button>
           <ExternalLink
@@ -26,6 +40,16 @@ export default function Hero() {
             href="/Carlos-Martinez-Resume.pdf"
             variant="interactive"
             showArrow
+            analytics={{
+              eventName: 'resume_clicked: Get my resume (Hero)',
+              eventProperties: {
+                placement: 'hero',
+                element_id: 'hero_resume',
+                element_label: 'Get my resume',
+                destination_type: 'download',
+                destination: '/Carlos-Martinez-Resume.pdf',
+              },
+            }}
           >
             Get my resume
           </ExternalLink>

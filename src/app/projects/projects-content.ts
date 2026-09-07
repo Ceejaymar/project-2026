@@ -12,7 +12,7 @@ export type ProjectLink =
 
 export type Project = {
   title: string;
-  slug?: string;
+  slug: string;
   analyticsName?: string;
   image: string;
   shortDescription: string;
@@ -49,6 +49,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Values Page Challenge',
+    slug: 'values-page-challenge',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/values-page.png',
     shortDescription:
       'A polished product-values flow focused on responsive layouts, visual hierarchy, and clean interaction states.',
@@ -69,6 +70,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Kanban',
+    slug: 'kanban',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/kanban.png',
     shortDescription:
       'A drag-and-drop kanban board for organizing job or task pipelines with a clean, focused interface.',
@@ -89,6 +91,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Resplash',
+    slug: 'resplash',
     cardSize: 'large',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/resplash.webp',
     shortDescription:
@@ -110,6 +113,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Pricing Section',
+    slug: 'pricing-section',
     image:
       'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/fc-pricing-section.webp',
     shortDescription:
@@ -131,6 +135,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Blog Card',
+    slug: 'blog-card',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/fc-blog-card.webp',
     shortDescription:
       'A small HTML and CSS component exercise focused on spacing, hierarchy, and visual polish.',
@@ -151,6 +156,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Batéy Fashion',
+    slug: 'batey-fashion',
     analyticsName: 'Batey',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/batey.webp',
     shortDescription:
@@ -172,6 +178,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Accessibility Drawer',
+    slug: 'accessibility-drawer',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/a11y-drawer.webp',
     shortDescription:
       'A customizable accessibility settings drawer for adjusting interface preferences directly in the UI.',
@@ -192,6 +199,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Portfolio Website',
+    slug: 'portfolio-website',
     cardSize: 'large',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/portfolio-website.webp',
     shortDescription:
@@ -214,6 +222,7 @@ export const fullProjects: Project[] = [
   {
     title: 'Yubico Product Finder Quiz',
     slug: 'product-finder-quiz',
+    analyticsName: 'Yubico Product Finder',
     cardSize: 'large',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/quiz-start.webp',
     shortDescription:
@@ -235,6 +244,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Weather App',
+    slug: 'weather-app',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/weather.webp',
     shortDescription:
       'A simple weather app that shows local or searched forecasts using the OpenWeather API.',
@@ -255,6 +265,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'The Ends Ecommerce',
+    slug: 'the-ends-ecommerce',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/TheEnds.webp',
     shortDescription:
       'A full-stack ecommerce project with product browsing, cart flows, authentication, and backend data handling.',
@@ -275,6 +286,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Portfolio Website, Old',
+    slug: 'portfolio-website-old',
     image:
       'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/portfolio-website-old.webp',
     shortDescription:
@@ -296,6 +308,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Dreamshare Clone',
+    slug: 'dreamshare-clone',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/Dreamshare.webp',
     shortDescription:
       'A responsive landing page recreation focused on layout, spacing, and early React/Sass practice.',
@@ -316,6 +329,7 @@ export const fullProjects: Project[] = [
   },
   {
     title: 'Knobcreek Clone',
+    slug: 'knobcreek-clone',
     image: 'https://los-project-images.s3.us-east-1.amazonaws.com/portfolio/Knobcreek.webp',
     shortDescription:
       'A responsive brand-page recreation focused on visual layout and frontend implementation practice.',

@@ -5,8 +5,9 @@ import {
   GlobeIcon,
 } from '@phosphor-icons/react/ssr';
 import Image from 'next/image';
-import Link from 'next/link';
 
+import TrackedLink from '@/components/analytics/tracked-link';
+import { getOutboundEventName, getProjectEventName } from '@/lib/analytics';
 import { projectItems } from './projects-content';
 import styles from './projects-section.module.css';
 
@@ -54,20 +55,50 @@ export default function ProjectsSection() {
 
                   <div className={styles.links}>
                     {project.caseStudyHref ? (
-                      <Link
-                        href={{
-                          pathname: project.caseStudyHref,
-                          query: { from: 'home' },
+                      <TrackedLink
+                        href={`${project.caseStudyHref}?from=home`}
+                        eventName={getProjectEventName(getProjectAnalyticsName(project))}
+                        eventProperties={{
+                          placement: 'case_studies',
+                          element_id: `case_studies_${project.slug}_case_study`,
+                          element_label: 'Read Case Study',
+                          destination_type: 'internal',
+                          destination: project.caseStudyHref,
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'case_study',
+                          source_page: 'home',
                         }}
                       >
                         <BookOpenIcon aria-hidden="true" weight="bold" />
 
                         <span>Read Case Study</span>
-                      </Link>
+                      </TrackedLink>
                     ) : null}
 
                     {project.liveHref ? (
-                      <a href={project.liveHref} target="_blank" rel="noopener noreferrer">
+                      <TrackedLink
+                        href={project.liveHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        useNextLink={false}
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Live Site',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
+                          placement: 'case_studies',
+                          element_id: `case_studies_${project.slug}_live_site`,
+                          element_label: 'Live Site',
+                          destination_type: 'external',
+                          destination: project.liveHref,
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'live_site',
+                          source_page: 'home',
+                        }}
+                      >
                         <GlobeIcon aria-hidden="true" weight="bold" />
 
                         <span>Live Site</span>
@@ -77,11 +108,32 @@ export default function ProjectsSection() {
                           aria-hidden="true"
                           weight="bold"
                         />
-                      </a>
+                      </TrackedLink>
                     ) : null}
 
                     {project.codeHref ? (
-                      <a href={project.codeHref} target="_blank" rel="noopener noreferrer">
+                      <TrackedLink
+                        href={project.codeHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        useNextLink={false}
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Code',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
+                          placement: 'case_studies',
+                          element_id: `case_studies_${project.slug}_code`,
+                          element_label: 'Code',
+                          destination_type: 'external',
+                          destination: project.codeHref,
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'github',
+                          source_page: 'home',
+                        }}
+                      >
                         <GithubLogoIcon aria-hidden="true" weight="bold" />
 
                         <span>Code</span>
@@ -91,11 +143,32 @@ export default function ProjectsSection() {
                           aria-hidden="true"
                           weight="bold"
                         />
-                      </a>
+                      </TrackedLink>
                     ) : null}
 
                     {project.learnMoreHref ? (
-                      <a href={project.learnMoreHref} target="_blank" rel="noopener noreferrer">
+                      <TrackedLink
+                        href={project.learnMoreHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        useNextLink={false}
+                        eventName={getOutboundEventName(
+                          getProjectAnalyticsName(project),
+                          'Learn More',
+                          'Case Studies',
+                        )}
+                        eventProperties={{
+                          placement: 'case_studies',
+                          element_id: `case_studies_${project.slug}_learn_more`,
+                          element_label: 'Learn More',
+                          destination_type: 'external',
+                          destination: project.learnMoreHref,
+                          project_slug: project.slug,
+                          project_name: getProjectAnalyticsName(project),
+                          action: 'website',
+                          source_page: 'home',
+                        }}
+                      >
                         <GlobeIcon aria-hidden="true" weight="bold" />
 
                         <span>
@@ -108,7 +181,7 @@ export default function ProjectsSection() {
                           aria-hidden="true"
                           weight="bold"
                         />
-                      </a>
+                      </TrackedLink>
                     ) : null}
                   </div>
                 </div>
@@ -121,13 +194,29 @@ export default function ProjectsSection() {
           <p className={styles.archiveText}>
             These are a couple standout projects. For older work, frontend challenges, experiments,
             and smaller builds, take a look at my{' '}
-            <Link href="/projects" className={styles.archiveLink}>
+            <TrackedLink
+              href="/projects"
+              className={styles.archiveLink}
+              eventName="cta_clicked: Full projects page (Case Studies)"
+              eventProperties={{
+                placement: 'case_studies',
+                element_id: 'case_studies_full_projects_page',
+                element_label: 'full projects page',
+                destination_type: 'internal',
+                destination: '/projects',
+                source_page: 'home',
+              }}
+            >
               full projects page
-            </Link>
+            </TrackedLink>
             .
           </p>
         </li>
       </ul>
     </section>
   );
+}
+
+function getProjectAnalyticsName(project: { title: string; analyticsName?: string }) {
+  return project.analyticsName ?? project.title;
 }
