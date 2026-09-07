@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Modal from './modal';
 
 const meta: Meta<typeof Modal> = {
-  title: 'Site/Accordion',
+  title: 'Site/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',
