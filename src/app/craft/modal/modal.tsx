@@ -17,6 +17,10 @@ export default function Modal() {
   }
 
   useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.code === 'Escape') {
         event.preventDefault();
@@ -27,7 +31,7 @@ export default function Modal() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isOpen]);
 
   return (
     <section className={styles.modal}>
