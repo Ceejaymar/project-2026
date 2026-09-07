@@ -62,7 +62,6 @@ export type AnalyticsEventName =
   | 'craft_item_viewed'
   | 'screenshot_expanded'
   | 'preference_changed'
-  | 'craft_demo_interacted'
   | (string & {});
 
 export type ReferrerContext = 'home' | 'projects' | 'direct';
@@ -216,10 +215,6 @@ export function getCraftItemClickedEventName(craftTitle: string) {
 
 export function getCraftItemViewedEventName(craftTitle: string) {
   return `craft_item_viewed: ${craftTitle}` as AnalyticsEventName;
-}
-
-export function getCraftDemoInteractedEventName(craftTitle: string) {
-  return `craft_demo_interacted: ${craftTitle} (Demo)` as AnalyticsEventName;
 }
 
 export function getScreenshotExpandedEventName(caseStudyTitle: string, screenshotLabel: string) {

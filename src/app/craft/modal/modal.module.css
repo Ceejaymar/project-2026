@@ -1,0 +1,311 @@
+@layer components {
+  .modal {
+    display: grid;
+    place-items: center;
+    width: min(100%, 32rem);
+  }
+
+  .openButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 2.875rem;
+    padding-inline: var(--space-5);
+
+    border: 1px solid var(--color-text-primary);
+    border-radius: 999px;
+
+    background: var(--color-text-primary);
+    color: var(--color-canvas);
+
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+
+    cursor: pointer;
+
+    box-shadow: 0 0.35rem 1rem color-mix(in srgb, black, transparent 90%);
+
+    transform: scale(1);
+    transform-origin: center;
+
+    transition:
+      transform 100ms ease-out,
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: grid;
+    place-items: center;
+
+    padding: var(--space-4);
+
+    background: color-mix(in srgb, black 42%, transparent);
+
+    animation: modal-backdrop-in 180ms ease-out both;
+  }
+
+  .dialog {
+    position: relative;
+
+    display: grid;
+    gap: var(--space-6);
+
+    width: min(32rem, 100%);
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+
+    padding: clamp(var(--space-5), 5vw, var(--space-7));
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+
+    box-shadow:
+      0 1.5rem 4rem color-mix(in srgb, black, transparent 82%),
+      0 0.35rem 1rem color-mix(in srgb, black, transparent 92%);
+
+    animation: modal-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .content {
+    display: grid;
+    gap: var(--space-3);
+    padding-right: var(--space-7);
+  }
+
+  .dialogTitle {
+    margin: 0;
+
+    color: var(--color-text-primary);
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .description {
+    display: grid;
+    gap: var(--space-3);
+
+    max-width: 27rem;
+
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: var(--leading-body);
+    text-wrap: pretty;
+  }
+
+  .description p {
+    margin: 0;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+
+    display: grid;
+    place-items: center;
+
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    background-color: transparent;
+    color: var(--color-text-secondary);
+
+    cursor: pointer;
+
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .closeButton svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .primaryButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 2.625rem;
+    padding-inline: var(--space-5);
+
+    border: 1px solid var(--color-text-primary);
+    border-radius: 999px;
+
+    background: var(--color-text-primary);
+    color: var(--color-canvas);
+
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transform: scale(1);
+    transform-origin: center;
+
+    transition:
+      transform 100ms ease-out,
+      opacity 180ms ease;
+  }
+
+  .sourceLink {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: var(--leading-label);
+    text-decoration: none;
+
+    transition: color 180ms ease;
+  }
+
+  .sourceLink svg {
+    width: 0.9rem;
+    height: 0.9rem;
+
+    transition: transform 180ms ease;
+  }
+
+  .openButton:focus-visible,
+  .closeButton:focus-visible,
+  .primaryButton:focus-visible,
+  .sourceLink:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 0.25rem;
+  }
+
+  /*
+   * Press feedback.
+   * :active applies while the pointer is held down.
+   */
+  .openButton:active,
+  .primaryButton:active {
+    transform: scale(0.96);
+  }
+
+  @media (hover: hover) {
+    .openButton:hover {
+      box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, black, transparent 86%);
+      opacity: 0.94;
+    }
+
+    .closeButton:hover {
+      border-color: var(--color-border);
+
+      background-color: color-mix(in srgb, var(--color-text-primary), transparent 94%);
+
+      color: var(--color-text-primary);
+    }
+
+    .primaryButton:hover {
+      opacity: 0.9;
+    }
+
+    .sourceLink:hover {
+      color: var(--color-text-primary);
+    }
+
+    .sourceLink:hover svg {
+      transform: translate(0.1rem, -0.1rem);
+    }
+  }
+
+  @keyframes modal-backdrop-in {
+    from {
+      background: transparent;
+    }
+
+    to {
+      background: color-mix(in srgb, black 42%, transparent);
+    }
+  }
+
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem) scale(0.985);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wrapper,
+    .dialog {
+      animation: none;
+    }
+
+    .openButton,
+    .closeButton,
+    .primaryButton,
+    .sourceLink,
+    .sourceLink svg {
+      transition: none;
+    }
+
+    .openButton:active,
+    .primaryButton:active {
+      transform: none;
+    }
+
+    .sourceLink:hover svg {
+      transform: none;
+    }
+  }
+
+  :global(html[data-craft-reduce-motion="true"]) .wrapper,
+  :global(html[data-craft-reduce-motion="true"]) .dialog {
+    animation: none;
+  }
+
+  :global(html[data-craft-reduce-motion="true"]) .openButton,
+  :global(html[data-craft-reduce-motion="true"]) .closeButton,
+  :global(html[data-craft-reduce-motion="true"]) .primaryButton,
+  :global(html[data-craft-reduce-motion="true"]) .sourceLink,
+  :global(html[data-craft-reduce-motion="true"]) .sourceLink svg {
+    transition: none;
+  }
+
+  :global(html[data-craft-reduce-motion="true"]) .openButton:active,
+  :global(html[data-craft-reduce-motion="true"]) .primaryButton:active,
+  :global(html[data-craft-reduce-motion="true"]) .sourceLink:hover svg {
+    transform: none;
+  }
+}

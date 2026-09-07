@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
-import Accordion from './accordion';
+import Modal from './modal';
 
-const meta: Meta<typeof Accordion> = {
-  title: 'Site/Accordion',
-  component: Accordion,
+const meta: Meta<typeof Modal> = {
+  title: 'Site/Modal',
+  component: Modal,
   parameters: {
     layout: 'centered',
   },
@@ -12,6 +12,6 @@ const meta: Meta<typeof Accordion> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Accordion>;
+type Story = StoryObj<typeof Modal>;
 
 export const Default: Story = {};

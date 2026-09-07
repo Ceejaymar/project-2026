@@ -1,9 +1,9 @@
-import type { ComponentType } from 'react';
 import Accordion from './accordion/accordion';
-import type { CraftDemoProps } from './types';
+import Modal from './modal/modal';
 
 export const craftItemRegistry = {
   'a11y-accordion': Accordion,
-} satisfies Record<string, ComponentType<CraftDemoProps>>;
+  'a11y-modal': Modal,
+};
 
 export type CraftItemSlug = keyof typeof craftItemRegistry;
