@@ -56,7 +56,7 @@ export default async function CraftPage({ params }: CraftPageProps) {
         </div>
 
         <section className={styles.stage} aria-label={`${item.title} interactive demo`}>
-          <CraftComponent craftSlug={item.slug} craftTitle={item.title} />
+          <CraftComponent />
         </section>
 
         <section className={styles.details} aria-labelledby="craft-item-title">
