@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import FocusLock from 'react-focus-lock';
 import { RemoveScroll } from 'react-remove-scroll';
-
+import { craftItems } from '@/app/_sections/craft/craft-content';
 import VisuallyHidden from '@/components/visually-hidden';
 import styles from './modal.module.css';
 
@@ -91,7 +91,7 @@ export default function Modal() {
 
                   <div className={styles.actions}>
                     <a
-                      href="https://github.com/Ceejaymar/project-2026"
+                      href={craftItems[1].codeHref}
                       className={styles.sourceLink}
                       target="_blank"
                       rel="noopener noreferrer"

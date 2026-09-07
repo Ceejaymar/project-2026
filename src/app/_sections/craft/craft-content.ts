@@ -29,7 +29,7 @@ export const craftItems = [
     title: 'Accessible Modal',
     description:
       'A keyboard-friendly modal focused on predictable focus management, clear dismissal patterns, and an accessible experience for every user.',
-    codeHref: 'https://github.com',
+    codeHref: 'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/modal/modal.tsx',
     previewSrc: '/videos/modal.mp4',
     details: [
       'Uses FocusLock to keep keyboard focus contained within the modal while it is open.',
