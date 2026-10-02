@@ -16,8 +16,9 @@ import SkipLink from '../components/a11y/skip-link';
 import SiteNavigation from '../components/site/site-nav';
 
 export const metadata: Metadata = {
-  title: 'Los',
-  description: 'Carlos Martinez developer portfolio website',
+  title: 'Carlos | Frontend Engineer in NYC',
+  description:
+    'Frontend engineer/builder in New York focused on polished, accessible product interfaces.',
 };
 
 export default function RootLayout({

@@ -5,17 +5,21 @@ import { getCraftItemClickedEventName, getOutboundEventName } from '@/lib/analyt
 import { craftItems } from './craft-content';
 import styles from './craft-section.module.css';
 
+const craftCount = craftItems.length.toString().padStart(2, '0');
+
 export default function CraftSection() {
   return (
     <section id="craft" className={styles.section} aria-labelledby="craft-title">
       <div className={styles.header}>
         <h2 id="craft-title" className={styles.title}>
-          Craft
+          Crafted Interactions
         </h2>
 
-        <p className={styles.kicker}>Selected Craft</p>
+        <p className={styles.kicker}>
+          Small UI studies exploring motion, accessibility, states, and more
+        </p>
 
-        <p className={styles.count}>01 piece</p>
+        <p className={styles.count}>{craftCount} INTERACTIONS</p>
       </div>
 
       <ul className={styles.grid}>

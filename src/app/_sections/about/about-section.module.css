@@ -127,6 +127,14 @@
     line-height: var(--leading-body);
   }
 
+  .experienceDescription {
+    width: 100%;
+    margin-top: 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    line-height: var(--leading-body);
+  }
+
   @media (min-width: 40rem) {
     .portrait {
       width: 9rem;
@@ -157,6 +165,10 @@
     .period {
       text-align: right;
       white-space: nowrap;
+    }
+
+    .experienceDescription {
+      grid-column: 1 / -1;
     }
   }
 
