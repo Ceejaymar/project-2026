@@ -30,6 +30,28 @@ export default function ProjectsSection() {
         {projectItems.map((project) => (
           <li className={styles.item} data-preview-kind={project.previewType} key={project.title}>
             <article className={styles.project}>
+              {project.caseStudyHref ? (
+                <TrackedLink
+                  className={styles.cardLink}
+                  href={`${project.caseStudyHref}?from=home`}
+                  eventName={getProjectEventName(getProjectAnalyticsName(project))}
+                  eventProperties={{
+                    placement: 'case_studies',
+                    element_id: `case_studies_${project.slug}_card_overlay`,
+                    element_label: `Open ${project.title} case study`,
+                    destination_type: 'internal',
+                    destination: project.caseStudyHref,
+                    project_slug: project.slug,
+                    project_name: getProjectAnalyticsName(project),
+                    action: 'case_study',
+                    interaction: 'card_overlay',
+                    source_page: 'home',
+                  }}
+                >
+                  <span className="visually-hidden">Read the {project.title} case study</span>
+                </TrackedLink>
+              ) : null}
+
               <div className={styles.projectImage} aria-hidden="true">
                 <Image
                   src={project.imageSrc}

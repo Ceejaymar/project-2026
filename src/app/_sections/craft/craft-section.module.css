@@ -22,7 +22,6 @@
     font-size: var(--text-label);
     line-height: var(--leading-label);
     letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
   }
 
   .grid {

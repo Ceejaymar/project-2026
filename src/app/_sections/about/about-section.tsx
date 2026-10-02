@@ -31,14 +31,15 @@ export default function About() {
               />
             </div>
             <p>
-              I’m a frontend engineer with a strong eye for design, focused on building polished,
-              accessible interfaces that preserve design intent all the way into production.
+              I’m Carlos, a New York-based frontend engineer working between design and engineering.
+              I specialize in translating product design into polished, accessible interfaces that
+              hold up in production.
             </p>
 
             <p>
-              I enjoy working in the space between design and development, where small interaction
-              details, thoughtful systems, and clear UX decisions can make a product feel more
-              useful and considered.
+              Over the past several years, I’ve worked across cybersecurity, health tech, education,
+              developer tools, and consumer product experiences, building interfaces that balance
+              usability, craft, and engineering quality.
             </p>
 
             <p>
@@ -88,6 +89,10 @@ export default function About() {
                 </div>
 
                 <p className={styles.period}>{item.period}</p>
+
+                {item.description ? (
+                  <p className={styles.experienceDescription}>{item.description}</p>
+                ) : null}
               </li>
             ))}
           </ul>

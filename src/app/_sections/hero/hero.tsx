@@ -59,6 +59,7 @@ export default function Hero() {
         <HeroPortrait className={styles.desktopPortrait} />
       </div>
       <div className={styles.marqueeWrapper}>
+        <p className={styles.marqueeTitle}>Tools and technologies I work with</p>
         <Marquee />
       </div>
     </section>
