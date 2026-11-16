@@ -1,10 +1,7 @@
 @layer components {
   .explorer {
-    --pill-duration: 540ms;
-    --text-delay: 200ms;
-    --text-duration: 400ms;
-
-    --pill-spring: linear(
+    --pill-open-duration: 540ms;
+    --pill-open-easing: linear(
       0,
       0.42 9%,
       0.83 19%,
@@ -17,6 +14,16 @@
       0.985 93%,
       1
     );
+
+    --pill-close-duration: 320ms;
+    --pill-close-easing: linear(0, 0.55 20%, 0.9 42%, 1.04 58%, 1.08 68%, 1.05 78%, 0.98 91%, 1);
+
+    --text-delay: 200ms;
+    --text-duration: 400ms;
+
+    --panel-open-duration: 300ms;
+    --panel-close-duration: 220ms;
+    --panel-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
     display: grid;
     place-items: center;
@@ -53,11 +60,13 @@
     background: var(--color-text-primary);
     color: var(--color-canvas);
 
-    transition: max-width var(--pill-duration) var(--pill-spring);
+    transition: max-width var(--pill-close-duration) var(--pill-close-easing);
   }
 
   .item[data-active="true"] {
     max-width: 29rem;
+
+    transition: max-width var(--pill-open-duration) var(--pill-open-easing);
   }
 
   @media (max-width: 34rem) {
@@ -99,11 +108,13 @@
     display: grid;
     grid-template-rows: 0fr;
 
-    transition: grid-template-rows var(--pill-duration) var(--pill-spring);
+    transition: grid-template-rows var(--panel-close-duration) var(--panel-easing);
   }
 
   .item[data-active="true"] .panel {
     grid-template-rows: 1fr;
+
+    transition: grid-template-rows var(--panel-open-duration) var(--panel-easing);
   }
 
   .panelInner {
