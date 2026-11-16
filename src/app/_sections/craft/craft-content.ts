@@ -40,4 +40,19 @@ export const craftItems = [
       'Pairs icon-only controls with visually hidden text so their purpose remains clear to screen reader users.',
     ],
   },
+  {
+    slug: 'morphing-pills',
+    title: 'Morphing Pills',
+    description:
+      'An interactive collection of expanding pills featuring spring-like CSS animations, subtle directional transitions, and thoughtful accessibility.',
+    codeHref:
+      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills.tsx',
+    details: [
+      'Uses native CSS animations with custom easing curves to create a spring-like expansion and subtle bounce.',
+      'Animates text independently from the container, with directional entrances based on navigation.',
+      'Keeps one pill expanded at a time, with previous and next controls for navigating between items.',
+      'Uses native buttons, accessible expanded states, and visible keyboard focus indicators.',
+      'Respects system and page-level reduced-motion preferences while preserving functionality.',
+    ],
+  },
 ];
