@@ -47,6 +47,7 @@ export const craftItems = [
       'An interactive collection of expanding pills featuring spring-like CSS animations, subtle directional transitions, and thoughtful accessibility.',
     codeHref:
       'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills.tsx',
+    previewSrc: '/videos/morphing-pill.mp4',
     details: [
       'Uses native CSS animations with custom easing curves to create a spring-like expansion and subtle bounce.',
       'Animates text independently from the container, with directional entrances based on navigation.',
