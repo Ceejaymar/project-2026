@@ -234,7 +234,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     .item,
-    .panel {
+    .item[data-active="true"],
+    .panel,
+    .item[data-active="true"] .panel {
       transition: none;
     }
 
@@ -243,6 +245,7 @@
       opacity: 1;
       transform: none;
     }
+
     .navigation {
       animation: none;
     }
@@ -257,8 +260,11 @@
     }
   }
 
+  /* Page-level reduced-motion toggle */
   :global(html[data-craft-reduce-motion="true"]) .item,
-  :global(html[data-craft-reduce-motion="true"]) .panel {
+  :global(html[data-craft-reduce-motion="true"]) .item[data-active="true"],
+  :global(html[data-craft-reduce-motion="true"]) .panel,
+  :global(html[data-craft-reduce-motion="true"]) .item[data-active="true"] .panel {
     transition: none;
   }
 
