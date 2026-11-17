@@ -67,28 +67,55 @@ export default async function CraftPage({ params }: CraftPageProps) {
 
             <p className={styles.description}>{item.description}</p>
 
-            <TrackedLink
-              className={styles.codeLink}
-              href={item.codeHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              useNextLink={false}
-              eventName={getOutboundEventName(item.title, 'View code', 'Craft Page')}
-              eventProperties={{
-                placement: 'craft_page',
-                craft_slug: item.slug,
-                craft_title: item.title,
-                action: 'github',
-                element_id: `craft_page_${item.slug}_view_code`,
-                element_label: 'View code',
-                destination_type: 'external',
-                destination: item.codeHref,
-                source_page: 'craft',
-              }}
-            >
-              View code
-              <span aria-hidden="true">↗</span>
-            </TrackedLink>
+            <div className={styles.actionLinks}>
+              <TrackedLink
+                className={styles.codeLink}
+                href={item.codeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                useNextLink={false}
+                eventName={getOutboundEventName(item.title, 'View code', 'Craft Page')}
+                eventProperties={{
+                  placement: 'craft_page',
+                  craft_slug: item.slug,
+                  craft_title: item.title,
+                  action: 'github',
+                  element_id: `craft_page_${item.slug}_view_code`,
+                  element_label: 'View code',
+                  destination_type: 'external',
+                  destination: item.codeHref,
+                  source_page: 'craft',
+                }}
+              >
+                View code
+                <span aria-hidden="true">↗</span>
+              </TrackedLink>
+
+              {item.inspiration && (
+                <TrackedLink
+                  className={styles.codeLink}
+                  href={item.inspiration.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  useNextLink={false}
+                  eventName={getOutboundEventName(item.title, 'View inspiration', 'Craft Page')}
+                  eventProperties={{
+                    placement: 'craft_page',
+                    craft_slug: item.slug,
+                    craft_title: item.title,
+                    action: 'inspiration',
+                    element_id: `craft_page_${item.slug}_inspiration`,
+                    element_label: 'View original inspiration',
+                    destination_type: 'external',
+                    destination: item.inspiration.href,
+                    source_page: 'craft',
+                  }}
+                >
+                  Inspo: {item.inspiration.label}
+                  <span aria-hidden="true">↗</span>
+                </TrackedLink>
+              )}
+            </div>
           </div>
 
           <ul className={styles.detailsList}>

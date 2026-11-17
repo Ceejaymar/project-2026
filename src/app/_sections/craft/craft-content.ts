@@ -5,6 +5,10 @@ export type CraftItem = {
   codeHref: string;
   previewSrc?: string;
   details: string[];
+  inspiration?: {
+    label: string;
+    href: string;
+  };
 };
 
 export const craftItems = [
@@ -44,7 +48,7 @@ export const craftItems = [
     slug: 'morphing-pills',
     title: 'Morphing Pills',
     description:
-      'An interactive collection of expanding pills featuring spring-like CSS animations, subtle directional transitions, and thoughtful accessibility.',
+      'An Apple-inspired interaction exploring expanding pills, spring-like CSS animations, directional text transitions, and accessibility.',
     codeHref:
       'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills.tsx',
     previewSrc: '/videos/morphing-pills.mp4',
@@ -55,5 +59,9 @@ export const craftItems = [
       'Uses native buttons, accessible expanded states, and visible keyboard focus indicators.',
       'Respects system and page-level reduced-motion preferences while preserving functionality.',
     ],
+    inspiration: {
+      label: 'Apple — iPhone Duo',
+      href: 'https://www.apple.com/iphone-duo/#product-viewer',
+    },
   },
 ];
