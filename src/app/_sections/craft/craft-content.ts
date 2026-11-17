@@ -5,6 +5,10 @@ export type CraftItem = {
   codeHref: string;
   previewSrc?: string;
   details: string[];
+  inspiration?: {
+    label: string;
+    href: string;
+  };
 };
 
 export const craftItems = [
@@ -39,5 +43,25 @@ export const craftItems = [
       'Defines dialog semantics with `role="dialog"` and `aria-modal`, and associates the modal with its visible title.',
       'Pairs icon-only controls with visually hidden text so their purpose remains clear to screen reader users.',
     ],
+  },
+  {
+    slug: 'morphing-pills',
+    title: 'Morphing Pills',
+    description:
+      'An Apple-inspired interaction exploring expanding pills, spring-like CSS animations, directional text transitions, and accessibility.',
+    codeHref:
+      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills.tsx',
+    previewSrc: '/videos/morphing-pills.mp4',
+    details: [
+      'Uses native CSS animations with custom easing curves to create a spring-like expansion and subtle bounce.',
+      'Animates text independently from the container, with directional entrances based on navigation.',
+      'Keeps one pill expanded at a time, with previous and next controls for navigating between items.',
+      'Uses native buttons, accessible expanded states, and visible keyboard focus indicators.',
+      'Respects system and page-level reduced-motion preferences while preserving functionality.',
+    ],
+    inspiration: {
+      label: 'Apple — iPhone Duo',
+      href: 'https://www.apple.com/iphone-duo/#product-viewer',
+    },
   },
 ];

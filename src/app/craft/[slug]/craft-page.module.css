@@ -86,6 +86,13 @@
     text-wrap: pretty;
   }
 
+  .actionLinks {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+  }
+
   .codeLink,
   .codeLink:visited {
     display: inline-flex;
