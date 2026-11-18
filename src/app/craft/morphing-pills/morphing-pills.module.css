@@ -286,7 +286,7 @@
   /*
  * Motion implementation
  *
-  disable CSS animations
+ * disable CSS animations
  */
 
   .explorer[data-engine="motion"] .item,
@@ -305,5 +305,16 @@
   .explorer[data-engine="motion"] .item[data-active="true"] .panelInner p,
   .explorer[data-engine="motion"][data-direction="UP"] .item[data-active="true"] .panelInner p {
     animation: none;
+  }
+
+  .explorer[data-engine="motion"] .navigation {
+    animation: none;
+  }
+
+  .navigationInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
   }
 }

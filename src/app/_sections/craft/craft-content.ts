@@ -9,9 +9,18 @@ export type CraftItem = {
     label: string;
     href: string;
   };
+  comparison?: {
+    approaches: [CraftApproach, CraftApproach];
+  };
 };
 
-export const craftItems = [
+export type CraftApproach = {
+  label: string;
+  codeHref: string;
+  highlights: string[];
+};
+
+export const craftItems: CraftItem[] = [
   {
     slug: 'a11y-accordion',
     title: 'Exclusive accordion',
@@ -46,19 +55,43 @@ export const craftItems = [
   },
   {
     slug: 'morphing-pills',
-    title: 'Morphing Pills',
+    title: 'Morphing Pills: CSS vs Motion',
     description:
-      'An Apple-inspired interaction exploring expanding pills, spring-like CSS animations, directional text transitions, and accessibility.',
+      'An Apple-inspired interaction built with CSS and Motion, exploring two approaches to fluid transitions, spring behavior, and accessible animation.',
     codeHref:
       'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills.tsx',
     previewSrc: '/videos/morphing-pills.mp4',
     details: [
-      'Uses native CSS animations with custom easing curves to create a spring-like expansion and subtle bounce.',
-      'Animates text independently from the container, with directional entrances based on navigation.',
-      'Keeps one pill expanded at a time, with previous and next controls for navigating between items.',
+      'Animates width, height, and text independently to create fluid transitions.',
+      'Supports direct selection and previous/next navigation, with one pill expanded at a time.',
       'Uses native buttons, accessible expanded states, and visible keyboard focus indicators.',
-      'Respects system and page-level reduced-motion preferences while preserving functionality.',
+      'Respects system and page-level reduced-motion preferences.',
     ],
+
+    comparison: {
+      approaches: [
+        {
+          label: 'CSS',
+          codeHref:
+            'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills-css.tsx',
+          highlights: [
+            'Uses custom linear() easing curves to simulate spring physics',
+            'Uses grid-based height transitions and directional keyframes for text and navigation.',
+            'Runs entirely through native CSS animations without an additional animation dependency.',
+          ],
+        },
+        {
+          label: 'Motion',
+          codeHref:
+            'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/morphing-pills/morphing-pills-motion.tsx',
+          highlights: [
+            'Uses physics-based springs with adjustable stiffness, damping, and mass for more natural movement.',
+            'Animates height, text, and navigation directly through React state.',
+            'Smoothly adapts to interrupted animations and changing targets without manually defining easing curves.',
+          ],
+        },
+      ],
+    },
     inspiration: {
       label: 'Apple — iPhone Duo',
       href: 'https://www.apple.com/iphone-duo/#product-viewer',

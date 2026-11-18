@@ -32,13 +32,29 @@ export default function MorphingPillsMotion() {
       <div className={styles.pillGroup}>
         {activeIndex !== null && (
           <div className={styles.navigation}>
-            <button type="button" aria-label="Previous feature" onClick={() => changeFeature(-1)}>
-              <CaretUpIcon aria-hidden="true" />
-            </button>
+            <motion.div
+              className={styles.navigationInner}
+              initial={{
+                opacity: reduceMotion ? 1 : 0,
+                y: reduceMotion ? 0 : 32,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.3,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+            >
+              <button type="button" aria-label="Previous feature" onClick={() => changeFeature(-1)}>
+                <CaretUpIcon aria-hidden="true" />
+              </button>
 
-            <button type="button" aria-label="Next feature" onClick={() => changeFeature(1)}>
-              <CaretDownIcon aria-hidden="true" />
-            </button>
+              <button type="button" aria-label="Next feature" onClick={() => changeFeature(1)}>
+                <CaretDownIcon aria-hidden="true" />
+              </button>
+            </motion.div>
           </div>
         )}
 
