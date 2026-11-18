@@ -282,4 +282,28 @@
     opacity: 1;
     transform: none;
   }
+
+  /*
+ * Motion implementation
+ *
+  disable CSS animations
+ */
+
+  .explorer[data-engine="motion"] .item,
+  .explorer[data-engine="motion"] .item[data-active="true"] {
+    transition: none;
+  }
+
+  .explorer[data-engine="motion"] .panel,
+  .explorer[data-engine="motion"] .item[data-active="true"] .panel {
+    display: block;
+    grid-template-rows: none;
+    overflow: hidden;
+    transition: none;
+  }
+
+  .explorer[data-engine="motion"] .item[data-active="true"] .panelInner p,
+  .explorer[data-engine="motion"][data-direction="UP"] .item[data-active="true"] .panelInner p {
+    animation: none;
+  }
 }

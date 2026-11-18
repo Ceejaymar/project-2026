@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
 import MorphingPills from './morphing-pills';
+import MorphingPillsCSS from './morphing-pills-css';
+import MorphingPillsMotion from './morphing-pills-motion';
 
 const meta: Meta<typeof MorphingPills> = {
-  title: 'Craft/Morphing Pills',
+  title: 'Site/Morphing Pills',
   component: MorphingPills,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
 };
 
@@ -13,4 +16,12 @@ export default meta;
 
 type Story = StoryObj<typeof MorphingPills>;
 
-export const Default: Story = {};
+export const Comparison: Story = {};
+
+export const CSSOnly: Story = {
+  render: () => <MorphingPillsCSS />,
+};
+
+export const MotionOnly: Story = {
+  render: () => <MorphingPillsMotion />,
+};

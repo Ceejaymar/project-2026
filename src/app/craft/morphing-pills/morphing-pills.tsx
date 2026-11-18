@@ -1,85 +1,29 @@
-'use client';
-
-import { CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react';
-import { useId, useState } from 'react';
-import styles from './morphing-pills.module.css';
-import { morphingPillItems } from './morphing-pills-content';
+import styles from './comparison.module.css';
+import MorphingPillsCSS from './morphing-pills-css';
+import MorphingPillsMotion from './morphing-pills-motion';
 
 export default function MorphingPills() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [direction, setDirection] = useState<'UP' | 'DOWN'>('DOWN');
-
-  const instanceId = useId();
-
-  function changeFeature(direction: -1 | 1) {
-    setDirection(direction === 1 ? 'DOWN' : 'UP');
-
-    setActiveIndex((current) => {
-      if (current === null) return 0;
-
-      return (current + direction + morphingPillItems.length) % morphingPillItems.length;
-    });
-  }
-
-  function handleDirection(index: number) {
-    if (index === activeIndex) return;
-
-    if (activeIndex !== null) {
-      setDirection(index > activeIndex ? 'DOWN' : 'UP');
-    } else {
-      setDirection('DOWN');
-    }
-
-    setActiveIndex(index);
-  }
-
   return (
-    <section className={styles.explorer} aria-label="Feature explorer" data-direction={direction}>
-      <div className={styles.pillGroup}>
-        {activeIndex !== null && (
-          <div className={styles.navigation}>
-            <button type="button" aria-label="Previous feature" onClick={() => changeFeature(-1)}>
-              <CaretUpIcon aria-hidden="true" />
-            </button>
+    <div className={styles.comparison}>
+      <section className={styles.demo} aria-labelledby="css-demo-title">
+        <h2 id="css-demo-title" className={styles.title}>
+          CSS
+        </h2>
 
-            <button type="button" aria-label="Next feature" onClick={() => changeFeature(1)}>
-              <CaretDownIcon aria-hidden="true" />
-            </button>
-          </div>
-        )}
+        <div className={styles.demoStage}>
+          <MorphingPillsCSS />
+        </div>
+      </section>
 
-        <ul className={styles.list}>
-          {morphingPillItems.map((item, index) => {
-            const isActive = activeIndex === index;
-            const panelId = `${instanceId}-${item.id}`;
+      <section className={styles.demo} aria-labelledby="motion-demo-title">
+        <h2 id="motion-demo-title" className={styles.title}>
+          Motion
+        </h2>
 
-            return (
-              <li key={item.id} className={styles.item} data-active={isActive}>
-                <button
-                  type="button"
-                  className={styles.trigger}
-                  aria-expanded={isActive}
-                  aria-controls={panelId}
-                  onClick={() => handleDirection(index)}
-                >
-                  <span>{item.title}</span>
-                  <span aria-hidden="true">{isActive ? '' : '+'}</span>
-                </button>
-
-                <div id={panelId} className={styles.panel} aria-hidden={!isActive}>
-                  <div className={styles.panelInner}>
-                    <p>{item.description}</p>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-
-      <p className="visually-hidden" role="status">
-        {activeIndex !== null ? `${morphingPillItems[activeIndex].title} selected` : ''}
-      </p>
-    </section>
+        <div className={styles.demoStage}>
+          <MorphingPillsMotion />
+        </div>
+      </section>
+    </div>
   );
 }
