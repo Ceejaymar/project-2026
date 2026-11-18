@@ -1,30 +1,43 @@
 'use client';
 
-import { useReducedMotion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 export function useCraftReducedMotion() {
-  const prefersReducedMotion = useReducedMotion();
+  const [systemReducedMotion, setSystemReducedMotion] = useState(false);
   const [pageReducedMotion, setPageReducedMotion] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const updatePreference = () => {
+    const updateSystemPreference = () => {
+      setSystemReducedMotion(mediaQuery.matches);
+    };
+
+    const updatePagePreference = () => {
       setPageReducedMotion(root.dataset.craftReduceMotion === 'true');
     };
 
-    updatePreference();
+    // Read initial preferences
+    updateSystemPreference();
+    updatePagePreference();
 
-    const observer = new MutationObserver(updatePreference);
+    // Subscribe to system preference changes
+    mediaQuery.addEventListener('change', updateSystemPreference);
+
+    // Subscribe to page-level preference changes
+    const observer = new MutationObserver(updatePagePreference);
 
     observer.observe(root, {
       attributes: true,
       attributeFilter: ['data-craft-reduce-motion'],
     });
 
-    return () => observer.disconnect();
+    return () => {
+      mediaQuery.removeEventListener('change', updateSystemPreference);
+      observer.disconnect();
+    };
   }, []);
 
-  return Boolean(prefersReducedMotion) || pageReducedMotion;
+  return systemReducedMotion || pageReducedMotion;
 }
