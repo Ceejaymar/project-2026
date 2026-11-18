@@ -22,7 +22,7 @@
     --text-duration: 400ms;
 
     --panel-open-duration: 300ms;
-    --panel-close-duration: 220ms;
+    --panel-close-duration: 300ms;
     --panel-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
     display: grid;
