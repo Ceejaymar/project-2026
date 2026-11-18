@@ -6,6 +6,7 @@ import TrackedLink from '@/components/analytics/tracked-link';
 import { getOutboundEventName } from '@/lib/analytics';
 
 import ReduceMotionToggle from '../components/reduce-motion-toggle';
+import CraftComparison from '../craft-comparison';
 import { type CraftItemSlug, craftItemRegistry } from '../craft-item-registry';
 
 import styles from './craft-page.module.css';
@@ -118,11 +119,15 @@ export default async function CraftPage({ params }: CraftPageProps) {
             </div>
           </div>
 
-          <ul className={styles.detailsList}>
-            {item.details.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
+          <div className={styles.detailsBody}>
+            <ul className={styles.detailsList}>
+              {item.details.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+
+            {item.comparison && <CraftComparison approaches={item.comparison.approaches} />}
+          </div>
         </section>
       </div>
     </main>
