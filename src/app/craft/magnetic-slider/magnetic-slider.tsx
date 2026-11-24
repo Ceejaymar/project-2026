@@ -16,13 +16,17 @@ export default function MagneticSlider() {
   const thumbRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef(0);
   const edgeLockRef = useRef<'left' | 'right' | null>(null);
+  const releaseRef = useRef<{
+    side: 'left' | 'right';
+    previousStretch: number;
+  } | null>(null);
 
   const [value, setValue] = useState(0);
 
   const x = useMotionValue(0);
 
   const stretch = useSpring(0, {
-    stiffness: 350,
+    stiffness: 250,
     damping: 28,
   });
 
@@ -39,6 +43,25 @@ export default function MagneticSlider() {
 
     valueRef.current = percentage;
     setValue(Math.round(percentage));
+  });
+
+  useMotionValueEvent(stretch, 'change', (latest) => {
+    const release = releaseRef.current;
+    if (!release) return;
+
+    const contraction = release.previousStretch - latest;
+
+    const direction = release.side === 'left' ? 1 : -1;
+
+    const nextX = x.get() + contraction * direction;
+
+    x.set(Math.max(0, Math.min(getMaxX(), nextX)));
+
+    release.previousStretch = latest;
+  });
+
+  useMotionValueEvent(stretch, 'animationComplete', () => {
+    releaseRef.current = null;
   });
 
   const getMaxX = useCallback(() => {
@@ -106,10 +129,6 @@ export default function MagneticSlider() {
           <motion.div
             ref={thumbRef}
             className={styles.thumb}
-            // drag="x"
-            // dragConstraints={trackRef}
-            // dragElastic={0}
-            // dragMomentum={false}
             style={{ x }}
             role="slider"
             tabIndex={0}
@@ -119,6 +138,7 @@ export default function MagneticSlider() {
             aria-valuenow={value}
             onKeyDown={handleKeyDown}
             onPanStart={() => {
+              releaseRef.current = null;
               stretch.jump(0);
               const currentX = x.get();
               const maxX = getMaxX();
@@ -154,15 +174,14 @@ export default function MagneticSlider() {
                   return;
                 }
 
-                // Preserve the leading edge's position
-                // when the stretched shape becomes a normal thumb.
-                const visibleStretch = stretch.get();
-
-                stretch.jump(0);
-
-                x.set(lockedSide === 'left' ? visibleStretch : maxX - visibleStretch);
+                releaseRef.current = {
+                  side: lockedSide,
+                  previousStretch: stretch.get(),
+                };
 
                 edgeLockRef.current = null;
+
+                stretch.set(0);
                 return;
               }
 
