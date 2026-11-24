@@ -58,7 +58,9 @@ export default function MagneticSlider() {
       const extraWidth =
         capture.side === 'left' ? capture.startX - latest : latest - capture.startX;
 
-      stretch.jump(Math.max(0, extraWidth));
+      const maxCaptureStretch = 25;
+
+      stretch.jump(Math.max(0, Math.min(maxCaptureStretch, extraWidth)));
     }
 
     const maxX = getMaxX();
@@ -270,7 +272,7 @@ export default function MagneticSlider() {
                 const capture = {
                   side,
                   startX: currentX,
-                };
+                } as const;
 
                 captureRef.current = capture;
 
