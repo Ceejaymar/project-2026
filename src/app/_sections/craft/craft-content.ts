@@ -39,7 +39,7 @@ export const craftItems: CraftItem[] = [
   },
   {
     slug: 'a11y-modal',
-    title: 'Accessible Modal',
+    title: 'Accessible modal',
     description:
       'A keyboard-friendly modal focused on predictable focus management, clear dismissal patterns, and an accessible experience for every user.',
     codeHref: 'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/modal/modal.tsx',
@@ -55,7 +55,7 @@ export const craftItems: CraftItem[] = [
   },
   {
     slug: 'morphing-pills',
-    title: 'Morphing Pills: CSS vs Motion',
+    title: 'Morphing pills: CSS vs Motion',
     description:
       'An Apple-inspired interaction built with CSS and Motion, exploring two approaches to fluid transitions, spring behavior, and accessible animation.',
     codeHref:
@@ -96,5 +96,14 @@ export const craftItems: CraftItem[] = [
       label: 'Apple — iPhone Duo',
       href: 'https://www.apple.com/iphone-duo/#product-viewer',
     },
+  },
+
+  {
+    slug: 'magnetic-slider',
+    title: 'Magnetic slider',
+    description: '',
+    codeHref: '',
+    previewSrc: '/videos/xxxx',
+    details: ['', ''],
   },
 ];
