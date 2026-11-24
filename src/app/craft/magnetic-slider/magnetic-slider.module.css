@@ -51,6 +51,14 @@
     border-radius: 999px;
     background: var(--color-focus);
     pointer-events: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & svg {
+      margin-inline: -0.2rem;
+    }
   }
 
   .thumbVisual[data-origin="right"] {

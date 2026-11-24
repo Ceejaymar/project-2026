@@ -1,5 +1,6 @@
 'use client';
 
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import {
   animate,
   motion,
@@ -42,7 +43,12 @@ export default function MagneticSlider() {
     damping: 28,
   });
 
-  const visualWidth = useMotionTemplate`calc(100% + ${stretch}px)`;
+  const arrivalStretch = useSpring(0, {
+    stiffness: 400,
+    damping: 22,
+  });
+
+  const visualWidth = useMotionTemplate`calc(100% + ${stretch}px + ${arrivalStretch}px)`;
 
   const getMaxX = useCallback(() => {
     if (!trackRef.current || !thumbRef.current) return 0;
@@ -50,7 +56,7 @@ export default function MagneticSlider() {
     return Math.max(0, trackRef.current.clientWidth - thumbRef.current.clientWidth);
   }, []);
 
-  // Track the slider position and stretch during magnetic capture.
+  // Track slider position and stretch during magnetic capture.
   useMotionValueEvent(x, 'change', (latest) => {
     const capture = captureRef.current;
 
@@ -60,7 +66,7 @@ export default function MagneticSlider() {
 
       const maxCaptureStretch = 25;
 
-      stretch.jump(Math.max(0, Math.min(maxCaptureStretch, extraWidth)));
+      arrivalStretch.jump(Math.max(0, Math.min(maxCaptureStretch, extraWidth)));
     }
 
     const maxX = getMaxX();
@@ -175,6 +181,7 @@ export default function MagneticSlider() {
 
               releaseRef.current = null;
               stretch.jump(0);
+              arrivalStretch.jump(0);
 
               const currentX = x.get();
               const maxX = getMaxX();
@@ -211,10 +218,10 @@ export default function MagneticSlider() {
                   lockedSide === 'left' ? offsetFromLock : -offsetFromLock,
                 );
 
-                const breakawayDistance = Math.min(70, maxX / 2);
+                const breakawayDistance = Math.min(95, maxX / 2);
 
                 if (pullDistance < breakawayDistance) {
-                  stretch.set(pullDistance * 0.6);
+                  stretch.jump(pullDistance * 0.45);
                   return;
                 }
 
@@ -268,6 +275,7 @@ export default function MagneticSlider() {
                 setStretchOrigin(side);
 
                 stretch.jump(0);
+                arrivalStretch.jump(0);
 
                 const capture = {
                   side,
@@ -276,11 +284,11 @@ export default function MagneticSlider() {
 
                 captureRef.current = capture;
 
-                // Animate toward the endpoint rather than jumping.
+                // Smooth magnetic arrival.
                 animate(x, side === 'left' ? 0 : maxX, {
                   type: 'tween',
-                  duration: 0.15,
-                  ease: [0.22, 1, 0.36, 1],
+                  duration: 0.3,
+                  ease: [0.42, 1, 0.58, 1],
 
                   onComplete: () => {
                     // Ignore a capture that was cancelled.
@@ -288,8 +296,8 @@ export default function MagneticSlider() {
 
                     captureRef.current = null;
 
-                    // The stretched shape contracts after attachment.
-                    stretch.set(0);
+                    // Contract the stretched shape after attachment.
+                    arrivalStretch.set(0);
 
                     edgeLockRef.current = side;
                     lockOffsetRef.current = panOffsetRef.current;
@@ -316,7 +324,10 @@ export default function MagneticSlider() {
               data-origin={stretchOrigin}
               aria-hidden="true"
               style={{ width: visualWidth }}
-            />
+            >
+              <CaretLeftIcon weight="fill" size={18} />
+              <CaretRightIcon weight="fill" size={18} />
+            </motion.div>
           </motion.div>
         </div>
       </div>
