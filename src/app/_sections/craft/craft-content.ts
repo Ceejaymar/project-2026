@@ -104,6 +104,6 @@ export const craftItems: CraftItem[] = [
     description: '',
     codeHref: '',
     previewSrc: '/videos/xxxx',
-    details: ['', ''],
+    details: ['These controls follow the WAI-ARIA slider keyboard pattern.', ''],
   },
 ];
