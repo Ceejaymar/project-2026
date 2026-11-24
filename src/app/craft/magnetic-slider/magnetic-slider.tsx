@@ -90,10 +90,10 @@ export default function MagneticSlider() {
           <motion.div
             ref={thumbRef}
             className={styles.thumb}
-            drag="x"
-            dragConstraints={trackRef}
-            dragElastic={0}
-            dragMomentum={false}
+            // drag="x"
+            // dragConstraints={trackRef}
+            // dragElastic={0}
+            // dragMomentum={false}
             style={{ x }}
             role="slider"
             tabIndex={0}
@@ -102,6 +102,32 @@ export default function MagneticSlider() {
             aria-valuemax={100}
             aria-valuenow={value}
             onKeyDown={handleKeyDown}
+            onPan={(_, info) => {
+              const maxX = getMaxX();
+              if (maxX <= 0) return;
+
+              const currentX = x.get();
+              const edgeZone = Math.min(40, maxX / 4);
+
+              const pullingFromLeft = currentX < edgeZone && info.delta.x > 0;
+              const pullingFromRight = currentX > maxX - edgeZone && info.delta.x < 0;
+
+              let resistance = 1;
+
+              if (pullingFromLeft || pullingFromRight) {
+                const distanceFromEdge = pullingFromLeft ? currentX : maxX - currentX;
+
+                const progress = Math.min(1, distanceFromEdge / edgeZone);
+
+                const easedProgress = progress * progress * (3 - 2 * progress);
+
+                resistance = 0.1 + 0.6 * easedProgress;
+              }
+
+              const nextX = currentX + info.delta.x * resistance;
+
+              x.set(Math.max(0, Math.min(maxX, nextX)));
+            }}
           />
         </div>
       </div>
