@@ -1,13 +1,14 @@
 'use client';
 
 import { motion, useMotionValue, useMotionValueEvent } from 'motion/react';
-import { type KeyboardEvent, useRef, useState } from 'react';
+import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './magnetic-slider.module.css';
 
 export default function MagneticSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
+  const valueRef = useRef(0);
 
   const [value, setValue] = useState(0);
 
@@ -18,16 +19,35 @@ export default function MagneticSlider() {
 
     if (maxX <= 0) return;
 
-    const percentage = (latest / maxX) * 100;
+    const percentage = Math.max(0, Math.min(100, (latest / maxX) * 100));
 
-    setValue(Math.round(Math.max(0, Math.min(100, percentage))));
+    valueRef.current = percentage;
+    setValue(Math.round(percentage));
   });
 
-  function getMaxX() {
+  const getMaxX = useCallback(() => {
     if (!trackRef.current || !thumbRef.current) return 0;
 
     return trackRef.current.clientWidth - thumbRef.current.clientWidth;
-  }
+  }, []);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      const maxX = getMaxX();
+
+      x.set((valueRef.current / 100) * maxX);
+    });
+
+    if (trackRef.current) {
+      observer.observe(trackRef.current);
+    }
+
+    if (thumbRef.current) {
+      observer.observe(thumbRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [x, getMaxX]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     let nextValue = value;
