@@ -243,13 +243,18 @@ export default function MagneticSlider() {
                 const progress = Math.min(1, distanceFromEdge / edgeZone);
                 const easedProgress = progress * progress * (3 - 2 * progress);
 
-                resistance = 0.1 + 0.6 * easedProgress;
+                resistance = 0.1 + 0.9 * easedProgress;
               }
 
-              const nextX = Math.max(0, Math.min(maxX, currentX + info.delta.x * resistance));
+              const dragSensitivity = 0.6;
+
+              const nextX = Math.max(
+                0,
+                Math.min(maxX, currentX + info.delta.x * resistance * dragSensitivity),
+              );
 
               // 3. Detect when approaching a magnetic endpoint.
-              const captureDistance = Math.min(20, maxX / 4);
+              const captureDistance = Math.min(24, maxX / 4);
 
               const approachingLeft = info.delta.x < 0 && nextX <= captureDistance;
               const approachingRight = info.delta.x > 0 && nextX >= maxX - captureDistance;
@@ -272,7 +277,7 @@ export default function MagneticSlider() {
                 // Animate toward the endpoint rather than jumping.
                 animate(x, side === 'left' ? 0 : maxX, {
                   type: 'tween',
-                  duration: 0.13,
+                  duration: 0.15,
                   ease: [0.22, 1, 0.36, 1],
 
                   onComplete: () => {
