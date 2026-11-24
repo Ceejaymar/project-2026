@@ -248,7 +248,7 @@ export default function MagneticSlider() {
                 resistance = 0.1 + 0.9 * easedProgress;
               }
 
-              const dragSensitivity = 0.6;
+              const dragSensitivity = 0.55;
 
               const nextX = Math.max(
                 0,
