@@ -1,6 +1,12 @@
 'use client';
 
-import { motion, useMotionValue, useMotionValueEvent } from 'motion/react';
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useMotionValueEvent,
+  useSpring,
+} from 'motion/react';
 import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './magnetic-slider.module.css';
@@ -9,10 +15,20 @@ export default function MagneticSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef(0);
+  const edgeLockRef = useRef<'left' | 'right' | null>(null);
 
   const [value, setValue] = useState(0);
 
   const x = useMotionValue(0);
+
+  const stretch = useSpring(0, {
+    stiffness: 350,
+    damping: 28,
+  });
+
+  const visualWidth = useMotionTemplate`calc(100% + ${stretch}px)`;
+
+  const [stretchOrigin, setStretchOrigin] = useState<'left' | 'right'>('left');
 
   useMotionValueEvent(x, 'change', (latest) => {
     const maxX = getMaxX();
@@ -102,9 +118,53 @@ export default function MagneticSlider() {
             aria-valuemax={100}
             aria-valuenow={value}
             onKeyDown={handleKeyDown}
+            onPanStart={() => {
+              stretch.jump(0);
+              const currentX = x.get();
+              const maxX = getMaxX();
+
+              if (currentX <= 1) {
+                edgeLockRef.current = 'left';
+              } else if (currentX >= maxX - 1) {
+                edgeLockRef.current = 'right';
+              } else {
+                edgeLockRef.current = null;
+              }
+
+              if (edgeLockRef.current) {
+                setStretchOrigin(edgeLockRef.current);
+              }
+            }}
             onPan={(_, info) => {
               const maxX = getMaxX();
               if (maxX <= 0) return;
+
+              if (edgeLockRef.current) {
+                const lockedSide = edgeLockRef.current;
+
+                const pullDistance = Math.max(
+                  0,
+                  lockedSide === 'left' ? info.offset.x : -info.offset.x,
+                );
+
+                const breakawayDistance = Math.min(70, maxX / 2);
+
+                if (pullDistance < breakawayDistance) {
+                  stretch.set(pullDistance * 0.6);
+                  return;
+                }
+
+                // Preserve the leading edge's position
+                // when the stretched shape becomes a normal thumb.
+                const visibleStretch = stretch.get();
+
+                stretch.jump(0);
+
+                x.set(lockedSide === 'left' ? visibleStretch : maxX - visibleStretch);
+
+                edgeLockRef.current = null;
+                return;
+              }
 
               const currentX = x.get();
               const edgeZone = Math.min(40, maxX / 4);
@@ -128,7 +188,18 @@ export default function MagneticSlider() {
 
               x.set(Math.max(0, Math.min(maxX, nextX)));
             }}
-          />
+            onPanEnd={() => {
+              edgeLockRef.current = null;
+              stretch.set(0);
+            }}
+          >
+            <motion.div
+              className={styles.thumbVisual}
+              data-origin={stretchOrigin}
+              aria-hidden="true"
+              style={{ width: visualWidth }}
+            />
+          </motion.div>
         </div>
       </div>
     </section>
