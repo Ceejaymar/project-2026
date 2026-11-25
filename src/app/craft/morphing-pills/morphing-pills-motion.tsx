@@ -4,7 +4,7 @@ import { CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react';
 import { motion } from 'motion/react';
 import { useId } from 'react';
 
-import { useCraftReducedMotion } from './hooks/use-craft-reduced-motion';
+import { useCraftReducedMotion } from '../hooks/use-craft-reduced-motion';
 import { usePillSelection } from './hooks/use-pill-selection';
 import styles from './morphing-pills.module.css';
 import { morphingPillItems } from './morphing-pills-content';

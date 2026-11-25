@@ -22,24 +22,28 @@ export type CraftApproach = {
 
 export const craftItems: CraftItem[] = [
   {
-    slug: 'a11y-accordion',
-    title: 'Exclusive accordion',
+    slug: 'magnetic-slider',
+    title: 'Magnetic slider',
     description:
-      'A polished accordion interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
+      'An Apple-inspired slider with magnetic endpoints, elastic stretching, and spring-driven animations that create a tactile, playful dragging experience.',
     codeHref:
-      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/accordion/accordion.tsx',
-    previewSrc: '/videos/accordion.mp4',
+      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/magnetic-slider/magnetic-slider.tsx',
+    previewSrc: '/videos/magnetic-slider.mp4',
     details: [
-      'Built around native button controls for predictable keyboard interaction.',
-      'Keeps the interaction focused by allowing one section to remain open at a time.',
-      'Uses motion to reinforce the relationship between each trigger and its content.',
-      'Maintains clear visual states without relying on animation alone.',
-      'Includes a reduced-motion option for a calmer version of the interaction.',
+      'Built with Motion, using custom drag resistance, magnetic snapping, and spring-based animations.',
+      // 'Elastic stretching creates a sticky feel when pulling away from or approaching either endpoint.',
+      'Separate spring configurations allow independent control over arrival and release animations.',
+      'Supports Arrow keys, Home, and End, following the WAI-ARIA slider keyboard pattern.',
+      'Responsive positioning preserves the slider value when its container resizes.',
     ],
+    inspiration: {
+      label: 'Apple — iPhone Duo: Foldable design',
+      href: 'https://www.apple.com/iphone-duo/#product-viewer',
+    },
   },
   {
     slug: 'a11y-modal',
-    title: 'Accessible Modal',
+    title: 'Accessible modal',
     description:
       'A keyboard-friendly modal focused on predictable focus management, clear dismissal patterns, and an accessible experience for every user.',
     codeHref: 'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/modal/modal.tsx',
@@ -55,7 +59,7 @@ export const craftItems: CraftItem[] = [
   },
   {
     slug: 'morphing-pills',
-    title: 'Morphing Pills: CSS vs Motion',
+    title: 'Morphing pills: CSS vs Motion',
     description:
       'An Apple-inspired interaction built with CSS and Motion, exploring two approaches to fluid transitions, spring behavior, and accessible animation.',
     codeHref:
@@ -67,7 +71,6 @@ export const craftItems: CraftItem[] = [
       'Uses native buttons, accessible expanded states, and visible keyboard focus indicators.',
       'Respects system and page-level reduced-motion preferences.',
     ],
-
     comparison: {
       approaches: [
         {
@@ -96,5 +99,21 @@ export const craftItems: CraftItem[] = [
       label: 'Apple — iPhone Duo',
       href: 'https://www.apple.com/iphone-duo/#product-viewer',
     },
+  },
+  {
+    slug: 'a11y-accordion',
+    title: 'Exclusive accordion',
+    description:
+      'A polished accordion interaction focused on clear hierarchy, purposeful motion, and responsive feedback.',
+    codeHref:
+      'https://github.com/Ceejaymar/project-2026/blob/main/src/app/craft/accordion/accordion.tsx',
+    previewSrc: '/videos/accordion.mp4',
+    details: [
+      'Built around native button controls for predictable keyboard interaction.',
+      'Keeps the interaction focused by allowing one section to remain open at a time.',
+      'Uses motion to reinforce the relationship between each trigger and its content.',
+      'Maintains clear visual states without relying on animation alone.',
+      'Includes a reduced-motion option for a calmer version of the interaction.',
+    ],
   },
 ];
