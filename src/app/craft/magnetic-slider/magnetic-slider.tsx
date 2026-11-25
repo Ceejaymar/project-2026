@@ -4,6 +4,7 @@ import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import {
   animate,
   motion,
+  type PanInfo,
   useMotionTemplate,
   useMotionValue,
   useMotionValueEvent,
@@ -13,40 +14,58 @@ import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from 're
 
 import styles from './magnetic-slider.module.css';
 
+type Side = 'left' | 'right';
+
+type InteractionMode =
+  | { type: 'idle' }
+  | { type: 'locked'; side: Side; lockOffset: number }
+  | { type: 'capturing'; side: Side; startX: number };
+
+// All existing animation values are unchanged.
+const SETTINGS = {
+  releaseSpring: {
+    stiffness: 250,
+    damping: 28,
+  },
+  arrivalSpring: {
+    stiffness: 250,
+    damping: 18,
+  },
+  maxCaptureStretch: 25,
+  breakawayDistance: 95,
+  stretchMultiplier: 0.45,
+  edgeZone: 40,
+  dragSensitivity: 0.55,
+  captureDistance: 24,
+  captureDuration: 0.1,
+  captureEase: [0.42, 1, 0.58, 1] as [number, number, number, number],
+};
+
+function clamp(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value));
+}
+
 export default function MagneticSlider() {
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const valueRef = useRef(0);
+  const panOffsetRef = useRef(0);
 
-  const edgeLockRef = useRef<'left' | 'right' | null>(null);
-  const lockOffsetRef = useRef(0);
+  const modeRef = useRef<InteractionMode>({ type: 'idle' });
 
+  // Release can continue while the thumb is freely dragging.
   const releaseRef = useRef<{
-    side: 'left' | 'right';
+    side: Side;
     previousStretch: number;
   } | null>(null);
 
-  const captureRef = useRef<{
-    side: 'left' | 'right';
-    startX: number;
-  } | null>(null);
-
-  const panOffsetRef = useRef(0);
-
   const [value, setValue] = useState(0);
-  const [stretchOrigin, setStretchOrigin] = useState<'left' | 'right'>('left');
+  const [stretchOrigin, setStretchOrigin] = useState<Side>('left');
 
   const x = useMotionValue(0);
 
-  const stretch = useSpring(0, {
-    stiffness: 250,
-    damping: 28,
-  });
-
-  const arrivalStretch = useSpring(0, {
-    stiffness: 250,
-    damping: 18,
-  });
+  const stretch = useSpring(0, SETTINGS.releaseSpring);
+  const arrivalStretch = useSpring(0, SETTINGS.arrivalSpring);
 
   const visualWidth = useMotionTemplate`calc(100% + ${stretch}px + ${arrivalStretch}px)`;
 
@@ -56,29 +75,37 @@ export default function MagneticSlider() {
     return Math.max(0, trackRef.current.clientWidth - thumbRef.current.clientWidth);
   }, []);
 
-  // Track slider position and stretch during magnetic capture.
+  // Cancel existing interactions and animations.
+  function resetInteraction() {
+    x.stop();
+
+    modeRef.current = { type: 'idle' };
+    releaseRef.current = null;
+
+    stretch.jump(0);
+    arrivalStretch.jump(0);
+  }
+
+  // Track the slider's percentage and incoming magnetic stretch.
   useMotionValueEvent(x, 'change', (latest) => {
-    const capture = captureRef.current;
+    const mode = modeRef.current;
 
-    if (capture) {
-      const extraWidth =
-        capture.side === 'left' ? capture.startX - latest : latest - capture.startX;
+    if (mode.type === 'capturing') {
+      const extraWidth = mode.side === 'left' ? mode.startX - latest : latest - mode.startX;
 
-      const maxCaptureStretch = 25;
-
-      arrivalStretch.jump(Math.max(0, Math.min(maxCaptureStretch, extraWidth)));
+      arrivalStretch.jump(clamp(extraWidth, 0, SETTINGS.maxCaptureStretch));
     }
 
     const maxX = getMaxX();
     if (maxX <= 0) return;
 
-    const percentage = Math.max(0, Math.min(100, (latest / maxX) * 100));
+    const percentage = clamp((latest / maxX) * 100, 0, 100);
 
     valueRef.current = percentage;
     setValue(Math.round(percentage));
   });
 
-  // Move the thumb forward as the stretched shape contracts.
+  // Move the thumb forward as the outgoing stretch contracts.
   useMotionValueEvent(stretch, 'change', (latest) => {
     const release = releaseRef.current;
     if (!release) return;
@@ -88,7 +115,7 @@ export default function MagneticSlider() {
 
     const nextX = x.get() + contraction * direction;
 
-    x.set(Math.max(0, Math.min(getMaxX(), nextX)));
+    x.set(clamp(nextX, 0, getMaxX()));
 
     release.previousStretch = latest;
   });
@@ -100,9 +127,7 @@ export default function MagneticSlider() {
   // Preserve the slider's percentage when its dimensions change.
   useEffect(() => {
     const observer = new ResizeObserver(() => {
-      const maxX = getMaxX();
-
-      x.set((valueRef.current / 100) * maxX);
+      x.set((valueRef.current / 100) * getMaxX());
     });
 
     if (trackRef.current) {
@@ -144,17 +169,150 @@ export default function MagneticSlider() {
 
     event.preventDefault();
 
-    const clampedValue = Math.max(0, Math.min(100, nextValue));
+    resetInteraction();
 
-    // Cancel an incoming capture before moving with the keyboard.
-    x.stop();
-    captureRef.current = null;
-    releaseRef.current = null;
-    edgeLockRef.current = null;
-    stretch.jump(0);
+    const clampedValue = clamp(nextValue, 0, 100);
 
+    // The x change listener updates value automatically.
     x.set((clampedValue / 100) * getMaxX());
-    setValue(clampedValue);
+  }
+
+  function handlePanStart() {
+    resetInteraction();
+    panOffsetRef.current = 0;
+
+    const currentX = x.get();
+    const maxX = getMaxX();
+
+    let side: Side | null = null;
+
+    if (currentX <= 1) {
+      side = 'left';
+    } else if (currentX >= maxX - 1) {
+      side = 'right';
+    }
+
+    if (side) {
+      modeRef.current = {
+        type: 'locked',
+        side,
+        lockOffset: 0,
+      };
+
+      setStretchOrigin(side);
+    }
+  }
+
+  function handlePan(info: PanInfo) {
+    panOffsetRef.current = info.offset.x;
+
+    const mode = modeRef.current;
+
+    // Let an incoming magnetic capture finish.
+    if (mode.type === 'capturing') return;
+
+    const maxX = getMaxX();
+    if (maxX <= 0) return;
+
+    // 1. Stretch while attached to an endpoint.
+    if (mode.type === 'locked') {
+      const offsetFromLock = info.offset.x - mode.lockOffset;
+
+      const pullDistance = Math.max(0, mode.side === 'left' ? offsetFromLock : -offsetFromLock);
+
+      const breakawayDistance = Math.min(SETTINGS.breakawayDistance, maxX / 2);
+
+      if (pullDistance < breakawayDistance) {
+        stretch.jump(pullDistance * SETTINGS.stretchMultiplier);
+        return;
+      }
+
+      // Release the anchored edge with a spring.
+      releaseRef.current = {
+        side: mode.side,
+        previousStretch: stretch.get(),
+      };
+
+      modeRef.current = { type: 'idle' };
+
+      stretch.set(0);
+      return;
+    }
+
+    // 2. Apply resistance when moving away from an edge.
+    const currentX = x.get();
+    const edgeZone = Math.min(SETTINGS.edgeZone, maxX / 4);
+
+    const pullingFromLeft = currentX < edgeZone && info.delta.x > 0;
+    const pullingFromRight = currentX > maxX - edgeZone && info.delta.x < 0;
+
+    let resistance = 1;
+
+    if (pullingFromLeft || pullingFromRight) {
+      const distanceFromEdge = pullingFromLeft ? currentX : maxX - currentX;
+
+      const progress = Math.min(1, distanceFromEdge / edgeZone);
+      const easedProgress = progress * progress * (3 - 2 * progress);
+
+      resistance = 0.1 + 0.9 * easedProgress;
+    }
+
+    const nextX = clamp(currentX + info.delta.x * resistance * SETTINGS.dragSensitivity, 0, maxX);
+
+    // 3. Detect when approaching a magnetic endpoint.
+    const captureDistance = Math.min(SETTINGS.captureDistance, maxX / 4);
+
+    const approachingLeft = info.delta.x < 0 && nextX <= captureDistance;
+    const approachingRight = info.delta.x > 0 && nextX >= maxX - captureDistance;
+
+    if (approachingLeft || approachingRight) {
+      const side: Side = approachingLeft ? 'left' : 'right';
+
+      resetInteraction();
+      setStretchOrigin(side);
+
+      const capture: InteractionMode = {
+        type: 'capturing',
+        side,
+        startX: currentX,
+      };
+
+      modeRef.current = capture;
+
+      // Smooth magnetic arrival.
+      animate(x, side === 'left' ? 0 : maxX, {
+        type: 'tween',
+        duration: SETTINGS.captureDuration,
+        ease: SETTINGS.captureEase,
+
+        onComplete: () => {
+          // Ignore a capture that was cancelled.
+          if (modeRef.current !== capture) return;
+
+          // Contract the stretched shape after attachment.
+          arrivalStretch.set(0);
+
+          modeRef.current = {
+            type: 'locked',
+            side,
+            lockOffset: panOffsetRef.current,
+          };
+        },
+      });
+
+      return;
+    }
+
+    // 4. Normal movement between endpoints.
+    x.set(nextX);
+  }
+
+  function handlePanEnd() {
+    // Allow incoming magnetic capture to complete.
+    if (modeRef.current.type !== 'capturing') {
+      modeRef.current = { type: 'idle' };
+      stretch.set(0);
+    }
   }
 
   return (
@@ -172,152 +330,9 @@ export default function MagneticSlider() {
             aria-valuemax={100}
             aria-valuenow={value}
             onKeyDown={handleKeyDown}
-            onPanStart={() => {
-              // Cancel any incoming magnetic capture.
-              x.stop();
-              captureRef.current = null;
-              panOffsetRef.current = 0;
-              lockOffsetRef.current = 0;
-
-              releaseRef.current = null;
-              stretch.jump(0);
-              arrivalStretch.jump(0);
-
-              const currentX = x.get();
-              const maxX = getMaxX();
-
-              if (currentX <= 1) {
-                edgeLockRef.current = 'left';
-              } else if (currentX >= maxX - 1) {
-                edgeLockRef.current = 'right';
-              } else {
-                edgeLockRef.current = null;
-              }
-
-              if (edgeLockRef.current) {
-                setStretchOrigin(edgeLockRef.current);
-              }
-            }}
-            onPan={(_, info) => {
-              panOffsetRef.current = info.offset.x;
-
-              // Let an incoming capture finish without pointer interference.
-              if (captureRef.current) return;
-
-              const maxX = getMaxX();
-              if (maxX <= 0) return;
-
-              // 1. Stretch when pulling away from an attached endpoint.
-              if (edgeLockRef.current) {
-                const lockedSide = edgeLockRef.current;
-
-                const offsetFromLock = info.offset.x - lockOffsetRef.current;
-
-                const pullDistance = Math.max(
-                  0,
-                  lockedSide === 'left' ? offsetFromLock : -offsetFromLock,
-                );
-
-                const breakawayDistance = Math.min(95, maxX / 2);
-
-                if (pullDistance < breakawayDistance) {
-                  stretch.jump(pullDistance * 0.45);
-                  return;
-                }
-
-                // Release the anchored edge with a spring.
-                releaseRef.current = {
-                  side: lockedSide,
-                  previousStretch: stretch.get(),
-                };
-
-                edgeLockRef.current = null;
-
-                stretch.set(0);
-                return;
-              }
-
-              // 2. Apply resistance when moving away from an edge.
-              const currentX = x.get();
-              const edgeZone = Math.min(40, maxX / 4);
-
-              const pullingFromLeft = currentX < edgeZone && info.delta.x > 0;
-              const pullingFromRight = currentX > maxX - edgeZone && info.delta.x < 0;
-
-              let resistance = 1;
-
-              if (pullingFromLeft || pullingFromRight) {
-                const distanceFromEdge = pullingFromLeft ? currentX : maxX - currentX;
-
-                const progress = Math.min(1, distanceFromEdge / edgeZone);
-                const easedProgress = progress * progress * (3 - 2 * progress);
-
-                resistance = 0.1 + 0.9 * easedProgress;
-              }
-
-              const dragSensitivity = 0.55;
-
-              const nextX = Math.max(
-                0,
-                Math.min(maxX, currentX + info.delta.x * resistance * dragSensitivity),
-              );
-
-              // 3. Detect when approaching a magnetic endpoint.
-              const captureDistance = Math.min(24, maxX / 4);
-
-              const approachingLeft = info.delta.x < 0 && nextX <= captureDistance;
-              const approachingRight = info.delta.x > 0 && nextX >= maxX - captureDistance;
-
-              if (approachingLeft || approachingRight) {
-                const side = approachingLeft ? 'left' : 'right';
-
-                releaseRef.current = null;
-                setStretchOrigin(side);
-
-                stretch.jump(0);
-                arrivalStretch.jump(0);
-
-                const capture = {
-                  side,
-                  startX: currentX,
-                } as const;
-
-                captureRef.current = capture;
-
-                // Smooth magnetic arrival
-                animate(x, side === 'left' ? 0 : maxX, {
-                  type: 'tween',
-                  duration: 0.1,
-                  ease: [0.42, 1, 0.58, 1],
-
-                  onComplete: () => {
-                    // Ignore a capture that was cancelled.
-                    if (captureRef.current !== capture) return;
-
-                    captureRef.current = null;
-
-                    // Contract the stretched shape after attachment.
-                    arrivalStretch.set(0);
-
-                    edgeLockRef.current = side;
-                    lockOffsetRef.current = panOffsetRef.current;
-                  },
-                });
-
-                return;
-              }
-
-              // 4. Normal movement between endpoints.
-              x.set(nextX);
-            }}
-            onPanEnd={() => {
-              edgeLockRef.current = null;
-
-              // Allow incoming magnetic capture to complete.
-              if (!captureRef.current) {
-                stretch.set(0);
-              }
-            }}
+            onPanStart={handlePanStart}
+            onPan={(_, info) => handlePan(info)}
+            onPanEnd={handlePanEnd}
           >
             <motion.div
               className={styles.thumbVisual}
