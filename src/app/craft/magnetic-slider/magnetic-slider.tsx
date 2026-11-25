@@ -12,6 +12,9 @@ import {
 } from 'motion/react';
 import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
 
+// Adjust this import to your existing hook's location.
+import { useCraftReducedMotion } from '../hooks/use-craft-reduced-motion';
+
 import styles from './magnetic-slider.module.css';
 
 type Side = 'left' | 'right';
@@ -21,7 +24,6 @@ type InteractionMode =
   | { type: 'locked'; side: Side; lockOffset: number }
   | { type: 'capturing'; side: Side; startX: number };
 
-// All existing animation values are unchanged.
 const SETTINGS = {
   releaseSpring: {
     stiffness: 250,
@@ -53,7 +55,6 @@ export default function MagneticSlider() {
 
   const modeRef = useRef<InteractionMode>({ type: 'idle' });
 
-  // Release can continue while the thumb is freely dragging.
   const releaseRef = useRef<{
     side: Side;
     previousStretch: number;
@@ -61,6 +62,8 @@ export default function MagneticSlider() {
 
   const [value, setValue] = useState(0);
   const [stretchOrigin, setStretchOrigin] = useState<Side>('left');
+
+  const reduceMotion = useCraftReducedMotion();
 
   const x = useMotionValue(0);
 
@@ -76,7 +79,7 @@ export default function MagneticSlider() {
   }, []);
 
   // Cancel existing interactions and animations.
-  function resetInteraction() {
+  const resetInteraction = useCallback(() => {
     x.stop();
 
     modeRef.current = { type: 'idle' };
@@ -84,13 +87,48 @@ export default function MagneticSlider() {
 
     stretch.jump(0);
     arrivalStretch.jump(0);
-  }
+  }, [x, stretch, arrivalStretch]);
 
-  // Track the slider's percentage and incoming magnetic stretch.
+  // Start magnetic capture toward an endpoint.
+  // Also reused when a resize interrupts capture.
+  const startCapture = useCallback(
+    (side: Side, startX: number, maxX: number) => {
+      const capture: InteractionMode = {
+        type: 'capturing',
+        side,
+        startX,
+      };
+
+      modeRef.current = capture;
+
+      animate(x, side === 'left' ? 0 : maxX, {
+        type: 'tween',
+        duration: SETTINGS.captureDuration,
+        ease: SETTINGS.captureEase,
+
+        onComplete: () => {
+          // Ignore captures cancelled by input or resize.
+          if (modeRef.current !== capture) return;
+
+          // Contract the stretched shape after attachment.
+          arrivalStretch.set(0);
+
+          modeRef.current = {
+            type: 'locked',
+            side,
+            lockOffset: panOffsetRef.current,
+          };
+        },
+      });
+    },
+    [x, arrivalStretch],
+  );
+
+  // Track position and incoming magnetic stretch.
   useMotionValueEvent(x, 'change', (latest) => {
     const mode = modeRef.current;
 
-    if (mode.type === 'capturing') {
+    if (mode.type === 'capturing' && !reduceMotion) {
       const extraWidth = mode.side === 'left' ? mode.startX - latest : latest - mode.startX;
 
       arrivalStretch.jump(clamp(extraWidth, 0, SETTINGS.maxCaptureStretch));
@@ -105,10 +143,10 @@ export default function MagneticSlider() {
     setValue(Math.round(percentage));
   });
 
-  // Move the thumb forward as the outgoing stretch contracts.
+  // Move the thumb forward as outgoing stretch contracts.
   useMotionValueEvent(stretch, 'change', (latest) => {
     const release = releaseRef.current;
-    if (!release) return;
+    if (!release || reduceMotion) return;
 
     const contraction = release.previousStretch - latest;
     const direction = release.side === 'left' ? 1 : -1;
@@ -124,10 +162,60 @@ export default function MagneticSlider() {
     releaseRef.current = null;
   });
 
-  // Preserve the slider's percentage when its dimensions change.
+  // Settle ongoing animations when Reduce motion is enabled.
+  useEffect(() => {
+    if (!reduceMotion) return;
+
+    const mode = modeRef.current;
+    const release = releaseRef.current;
+    const remainingStretch = stretch.get();
+
+    resetInteraction();
+
+    if (mode.type === 'capturing') {
+      // Finish magnetic arrival immediately.
+      x.set(mode.side === 'left' ? 0 : getMaxX());
+    } else if (release) {
+      // Complete the remaining breakaway movement immediately.
+      const direction = release.side === 'left' ? 1 : -1;
+
+      x.set(clamp(x.get() + remainingStretch * direction, 0, getMaxX()));
+    }
+  }, [reduceMotion, resetInteraction, stretch, x, getMaxX]);
+
+  // Preserve position when dimensions change.
+  // Retarget an active capture if the track is resized.
   useEffect(() => {
     const observer = new ResizeObserver(() => {
-      x.set((valueRef.current / 100) * getMaxX());
+      const maxX = getMaxX();
+
+      const projectedX = clamp((valueRef.current / 100) * maxX, 0, maxX);
+
+      const mode = modeRef.current;
+
+      if (mode.type !== 'capturing') {
+        x.set(projectedX);
+        return;
+      }
+
+      // Invalidate the old capture before stopping its tween.
+      modeRef.current = { type: 'idle' };
+      x.stop();
+
+      arrivalStretch.jump(0);
+
+      // Preserve the current percentage in the new dimensions.
+      x.set(projectedX);
+
+      if (reduceMotion) {
+        x.set(mode.side === 'left' ? 0 : maxX);
+        return;
+      }
+
+      if (maxX <= 0) return;
+
+      // Restart capture toward the newly positioned endpoint.
+      startCapture(mode.side, projectedX, maxX);
     });
 
     if (trackRef.current) {
@@ -139,7 +227,7 @@ export default function MagneticSlider() {
     }
 
     return () => observer.disconnect();
-  }, [x, getMaxX]);
+  }, [x, getMaxX, arrivalStretch, reduceMotion, startCapture]);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     let nextValue = value;
@@ -173,13 +261,15 @@ export default function MagneticSlider() {
 
     const clampedValue = clamp(nextValue, 0, 100);
 
-    // The x change listener updates value automatically.
     x.set((clampedValue / 100) * getMaxX());
   }
 
   function handlePanStart() {
     resetInteraction();
     panOffsetRef.current = 0;
+
+    // Reduced motion: allow dragging without a stretch lock.
+    if (reduceMotion) return;
 
     const currentX = x.get();
     const maxX = getMaxX();
@@ -208,14 +298,14 @@ export default function MagneticSlider() {
 
     const mode = modeRef.current;
 
-    // Let an incoming magnetic capture finish.
+    // Let incoming capture finish without pointer interference.
     if (mode.type === 'capturing') return;
 
     const maxX = getMaxX();
     if (maxX <= 0) return;
 
     // 1. Stretch while attached to an endpoint.
-    if (mode.type === 'locked') {
+    if (mode.type === 'locked' && !reduceMotion) {
       const offsetFromLock = info.offset.x - mode.lockOffset;
 
       const pullDistance = Math.max(0, mode.side === 'left' ? offsetFromLock : -offsetFromLock);
@@ -227,7 +317,7 @@ export default function MagneticSlider() {
         return;
       }
 
-      // Release the anchored edge with a spring.
+      // Release the anchored edge with its original spring.
       releaseRef.current = {
         side: mode.side,
         previousStretch: stretch.get(),
@@ -244,6 +334,7 @@ export default function MagneticSlider() {
     const edgeZone = Math.min(SETTINGS.edgeZone, maxX / 4);
 
     const pullingFromLeft = currentX < edgeZone && info.delta.x > 0;
+
     const pullingFromRight = currentX > maxX - edgeZone && info.delta.x < 0;
 
     let resistance = 1;
@@ -263,6 +354,7 @@ export default function MagneticSlider() {
     const captureDistance = Math.min(SETTINGS.captureDistance, maxX / 4);
 
     const approachingLeft = info.delta.x < 0 && nextX <= captureDistance;
+
     const approachingRight = info.delta.x > 0 && nextX >= maxX - captureDistance;
 
     if (approachingLeft || approachingRight) {
@@ -271,34 +363,12 @@ export default function MagneticSlider() {
       resetInteraction();
       setStretchOrigin(side);
 
-      const capture: InteractionMode = {
-        type: 'capturing',
-        side,
-        startX: currentX,
-      };
-
-      modeRef.current = capture;
-
-      // Smooth magnetic arrival.
-      animate(x, side === 'left' ? 0 : maxX, {
-        type: 'tween',
-        duration: SETTINGS.captureDuration,
-        ease: SETTINGS.captureEase,
-
-        onComplete: () => {
-          // Ignore a capture that was cancelled.
-          if (modeRef.current !== capture) return;
-
-          // Contract the stretched shape after attachment.
-          arrivalStretch.set(0);
-
-          modeRef.current = {
-            type: 'locked',
-            side,
-            lockOffset: panOffsetRef.current,
-          };
-        },
-      });
+      if (reduceMotion) {
+        // Snap directly to the endpoint without animation.
+        x.set(side === 'left' ? 0 : maxX);
+      } else {
+        startCapture(side, currentX, maxX);
+      }
 
       return;
     }
@@ -308,10 +378,15 @@ export default function MagneticSlider() {
   }
 
   function handlePanEnd() {
-    // Allow incoming magnetic capture to complete.
+    // Allow an animated magnetic capture to complete.
     if (modeRef.current.type !== 'capturing') {
       modeRef.current = { type: 'idle' };
-      stretch.set(0);
+
+      if (reduceMotion) {
+        stretch.jump(0);
+      } else {
+        stretch.set(0);
+      }
     }
   }
 
