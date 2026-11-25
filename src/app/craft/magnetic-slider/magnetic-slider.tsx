@@ -44,8 +44,8 @@ export default function MagneticSlider() {
   });
 
   const arrivalStretch = useSpring(0, {
-    stiffness: 400,
-    damping: 22,
+    stiffness: 250,
+    damping: 18,
   });
 
   const visualWidth = useMotionTemplate`calc(100% + ${stretch}px + ${arrivalStretch}px)`;
@@ -284,10 +284,10 @@ export default function MagneticSlider() {
 
                 captureRef.current = capture;
 
-                // Smooth magnetic arrival.
+                // Smooth magnetic arrival
                 animate(x, side === 'left' ? 0 : maxX, {
                   type: 'tween',
-                  duration: 0.3,
+                  duration: 0.1,
                   ease: [0.42, 1, 0.58, 1],
 
                   onComplete: () => {
